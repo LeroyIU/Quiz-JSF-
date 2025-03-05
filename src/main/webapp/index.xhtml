@@ -1,14 +1,23 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="https://www.w3.org/1999/xhtml"
-      xmlns:h="https://java.sun.com/jsf/html">
-<h:head>
-<title>Home</title>
-</h:head>
-<h:body>
-       #{HelloWorldBean.message}
-<br /><br />
-      Lorem Ipsum Dolor Sit Amet ...
-
-</h:body>
-</html>
+<ui:composition template="/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+      <p:panelGrid columns="1" styleClass="ui-panelgrid-blank w-100">
+            <p:card style="width: 100%; background-color: red;">
+                  <p>Motivator</p>
+            </p:card>
+      </p:panelGrid>
+      <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100">
+            <p:card style="background-color: green;">
+                   News
+            </p:card>
+            <p:card style="background-color: yellow;">
+                  Rangliste
+            </p:card>
+      </p:panelGrid>
+     </ui:define>
+</ui:composition>
