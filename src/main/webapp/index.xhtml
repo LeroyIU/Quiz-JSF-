@@ -3,20 +3,21 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:p="http://primefaces.org/ui"
->
+     xmlns:p="http://primefaces.org/ui">
+
      <ui:define name="content">
       <p:panelGrid columns="1" styleClass="ui-panelgrid-blank w-100">
-            <p:card style="width: 100%; background-color: red;">
-                  <p>Motivator</p>
+            <p:card style="width: 100%; background-color: lightcoral;">
+                  <h2 style="color: white;">"The beautiful thing about learning is that nobody can take it away from you." - B.B. King</h2>
+                  <h:outputText value="Keep pushing forward and never stop learning!" style="color: white;" />
             </p:card>
       </p:panelGrid>
       <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100">
-            <p:card style="background-color: green;">
-                   News
+            <p:card style="background-color: lightgreen;">
+                  <ui:include src="/templates/news.xhtml" />
             </p:card>
-            <p:card style="background-color: yellow;">
-                  Rangliste
+            <p:card style="background-color: lightblue;">
+                  <ui:include src="/templates/ranking.xhtml" />
             </p:card>
       </p:panelGrid>
      </ui:define>

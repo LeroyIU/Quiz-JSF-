@@ -2,51 +2,74 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
         <title>Home</title>
+        <style>
+            body.light-mode {
+                background-color: #ffffff;
+                color: #000000;
+            }
+            body.dark-mode {
+                background-color: #121212;
+                color: #ffffff;
+            }
+            .dark-mode .card, .dark-mode .ui-menubar, .dark-mode .ui-menuitem {
+                background-color: #1e1e1e;
+                color: #ffffff;
+            }
+        </style>
+        <script>
+            function toggleDarkMode() {
+                document.body.classList.toggle('dark-mode');
+            }
+        </script>
     </h:head>
-    <h:body>
+    <h:body class="#{themeSwitcherBean.theme}-mode">
         <f:view locale="#{localeBean.locale}">
             <f:loadBundle basename="messages" var="msg" />
-        <h:form>
-            <p:menubar>
-                <p:menuitem icon="pi pi-home" url="#" />
-                <p:menuitem value="#{msg['menu_news.text']}" url="#" />
-                <p:menuitem value="#{msg['menu_question.text']}" url="#" />
-                <p:menuitem value="#{msg['menu_quiz.text']}" url="#" />
-                <p:menuitem value="#{msg['menu_category.text']}" url="#" />
-                <p:menuitem value="#{msg['menu_friendslist.text']}" url="#" />
-                <p:submenu label="User" icon="pi pi-fw pi-user" styleClass="ml-auto">
-                    <p:menuitem value="#{msg['menu_username.text']}" />
-                    <p:menuitem value="#{msg['menu_profilesettings.text']}" url="#" />
-                    <p:menuitem>
-                        <p:toggleSwitch value="#{msg['menu_language.text']}">
-                            Sprache
-                        </p:toggleSwitch>
-                    </p:menuitem>
-                    <p:menuitem>
-                        <p:toggleSwitch value="Darkmode/Whitemode">
-                            Whitemode/Darkmode
-                        </p:toggleSwitch>
-                    </p:menuitem>
-                    <p:menuitem value="Logout" url="#" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
-        <ui:insert name="content">Put content here</ui:insert>
-        <h:form>
-            <p:menubar style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; padding: 10px; display: flex;">
-                <p:menuitem value="Impressum" url="#" />
-                <p:menuitem value="Support (E-Mail)" url="#" />
-                <p:menuitem value="#{msg['menu_privacy.text']}" url="#" />
-            </p:menubar>
-        </h:form>
-    </f:view>
+            <h:form id="mainForm">
+                <p:menubar>
+                    <p:menuitem icon="pi pi-home" url="/cleverquiz/index.xhtml" />
+                    <p:menuitem value="#{msg['menu_news.text']}" url="/cleverquiz/pages/create_news.xhtml" />
+                    <p:menuitem value="#{msg['menu_question.text']}" url="/cleverquiz/pages/create_question.xhtml" />
+                    <p:menuitem value="#{msg['menu_quiz.text']}" url="/cleverquiz/pages/quiz.xhtml" />
+                    <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
+                    <p:menuitem value="#{msg['menu_friendslist.text']}" url="/cleverquiz/pages/friends.xhtml" />
+                    <p:submenu label="User" icon="pi pi-fw pi-user" styleClass="ml-auto">
+                        <p:menuitem value="#{msg['menu_username.text']}" />
+                        <p:menuitem value="#{msg['menu_profilesettings.text']}" url="#" />
+                        <p:menuitem value="#{localeBean.language == 'en' ? 'Switch to English' : 'Wechsel zu Deutsch'}" action="#{localeBean.toggleLanguage}" immediate="true" onclick="location.reload();" />
+                        <p:menuitem>
+                            <p:toggleSwitch value="Darkmode/Whitemode" onLabel="Darkmode" offLabel="Whitemode" onchange="toggleDarkMode()">
+                                Whitemode/Darkmode
+                            </p:toggleSwitch>
+                        </p:menuitem>
+                        <p:menuitem value="Logout" url="#" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
+            <ui:insert name="content">Put content here</ui:insert>
+            <h:form id="footerForm">
+                <p:menubar style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; padding: 10px; display: flex;">
+                    <p:menuitem value="#{msg['menu_imprint.text']}" url="/cleverquiz/pages/imprint.xhtml" />
+                    <p:menuitem value="Support (E-Mail)" url="#" />
+                    <p:menuitem value="#{msg['menu_privacy.text']}" url="/cleverquiz/pages/privacy.xhtml"/>
+                </p:menubar>
+            </h:form>
+            <!-- Dialog for creating a new category -->
+            <p:dialog header="Neue Kategorie anlegen" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
+                <h:form id="categoryForm">
+                    <h:outputLabel for="categoryName" value="Kategorie Name:" />
+                    <h:inputText id="categoryName" value="#{categoryBean.categoryName}" />
+                    <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update="categoryForm" />
+                </h:form>
+            </p:dialog>
+        </f:view>
     </h:body>
 </html>
