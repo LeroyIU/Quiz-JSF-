@@ -4,7 +4,11 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui">
      
-     <p:dataTable value="#{rankingBean.rankingList}" var="ranking" paginator="true" rows="10">
+     <p:dataTable value="#{rankingBean.rankingList}" var="ranking" 
+        paginator="true" paginatorPosition="bottom"
+        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+        currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords} Einträgen"
+        rows="10" stripedRows="true">
          <p:column headerText="Position">
              <h:outputText value="#{ranking.position}" />
          </p:column>

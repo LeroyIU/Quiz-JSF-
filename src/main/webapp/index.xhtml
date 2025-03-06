@@ -6,19 +6,19 @@
      xmlns:p="http://primefaces.org/ui">
 
      <ui:define name="content">
-      <p:panelGrid columns="1" styleClass="ui-panelgrid-blank w-100">
+      <p:panelGrid columns="1" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid">
             <p:card style="width: 100%; background-color: lightcoral;">
                   <h2 style="color: white;">"The beautiful thing about learning is that nobody can take it away from you." - B.B. King</h2>
                   <h:outputText value="Keep pushing forward and never stop learning!" style="color: white;" />
             </p:card>
       </p:panelGrid>
-      <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100">
-            <p:card style="background-color: lightgreen;">
+      <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid">
+            <p:card>
                   <ui:include src="/templates/news.xhtml" />
             </p:card>
-            <p:card style="background-color: lightblue;">
+            <p:card>
                   <ui:include src="/templates/ranking.xhtml" />
-            </p:card>
+            </p:card>      
       </p:panelGrid>
      </ui:define>
 </ui:composition>

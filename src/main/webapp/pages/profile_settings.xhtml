@@ -1,0 +1,86 @@
+<ui:composition template="/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+      <div class="card">
+        <h5><h:outputText value="#{msg['menu_profilesettings.text']}" /></h5>
+        <style>
+            /* reset on the showcase style*/
+            body .ui-panelgrid .ui-panelgrid-cell {
+                background-color: transparent;
+            }
+    
+            /* example use of styles for your form */
+            .my-heading-row {
+                background-color: var(--surface-c);
+                font-weight: bold;
+            }
+        </style>
+    
+        <!--
+        Note: Rows and columns can have style, styleClass, and id.
+        Note: A column with a defined styleClass will ignore the styleClass specified in the columnClasses list.
+        Note: Note the use of ui-fluid to ensure that components are sized correctly and the use of ui-panelgrid-blank to remove borders.
+        -->
+      <h:form>
+        <p:panelGrid columns="2"
+                     columnClasses="ui-grid-col-8,ui-grid-col-4"
+                     layout="grid"
+                     styleClass="ui-panelgrid-blank ui-fluid"
+                     style="border:0px none; background-color:transparent;">
+
+            <p:row>
+              <p:panelGrid columns="2"
+                     columnClasses="ui-grid-col-2,ui-grid-col-4"
+                     layout="grid"
+                     styleClass="ui-panelgrid-blank ui-fluid"
+                     style="border:0px none; background-color:transparent;">
+                  <p:row>
+                    <p:outputLabel for="@next" value="Last Name"/>
+                    <p:inputText/>
+
+                    <p:outputLabel for="@next" value="First Name"/>
+                    <p:inputText/>
+                  </p:row>
+                  <p:row>
+                    <p:outputLabel for="@next" value="PLZ"/>
+                    <p:inputText/>
+            
+                    <p:outputLabel for="@next" value="Straße"/>
+                    <p:inputText/>
+                  </p:row>
+              </p:panelGrid>
+
+                <p:column styleClass="ui-grid-col-4">
+                  <h5>XP: 12345</h5>
+                  <hr />
+                  <h5>Select Badge:</h5>
+                  <p:selectOneRadio id="page" value="#{radioView.page}" layout="pageDirection">
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                  </p:selectOneRadio>
+                </p:column>
+            </p:row>
+
+            <p:row>
+              <p:column styleClass="ui-grid-col-12">
+                  <p:outputLabel for="@next" value="About me"/>
+                  <p:inputTextarea rows="5"/>
+              </p:column>
+            </p:row>
+    
+            <p:row>
+                <p:column styleClass="ui-grid-col-12">
+                    <p:commandButton value="Edit" styleClass="mr-2" style="width: auto"/>
+                    <p:commandButton value="Save" styleClass="mr-2" style="width: auto"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+      </h:form>
+    </div>
+    </ui:define>
+</ui:composition>

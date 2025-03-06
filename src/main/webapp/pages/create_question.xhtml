@@ -5,6 +5,65 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        Frage erstellen
+        <h:form>
+        <p:panelGrid columns="4" id="panelGrid"
+            columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
+            layout="grid"
+            styleClass="ui-panelgrid-blank ui-fluid"
+            style="border:0px none; background-color:transparent;">
+            <p:row>
+                <p:column />
+                <h5>Frage erstellen</h5>
+                <p:column />
+                <p:column />
+            </p:row>
+            <p:row>
+                <p:column />
+                <p:outputLabel for="@next" value="Frage:"/>
+                <p:inputText/>
+                <p:column />
+            </p:row>
+            <p:row>
+                <p:column />
+                <p:column styleClass="ui-grid-col-4">
+                    <div class="field col-12 md:col-4">
+                    <p:outputLabel for="@next" value="Kategorie"/>
+                    <p:selectOneMenu>
+                        <f:selectItem itemLabel="Select One" noSelectionOption="true"/>
+                    </p:selectOneMenu>
+                </div>
+                </p:column>
+                <p:column styleClass="ui-grid-col-4">
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Schwierigkeitsgrad"/>
+                        <p:selectOneMenu>
+                            <f:selectItem itemLabel="Select One" noSelectionOption="true"/>
+                        </p:selectOneMenu>
+                    </div>
+                </p:column>
+                <p:column />
+            </p:row>
+            <p:row>
+                <p:column />
+                <p:outputLabel value="Antwort:"/>
+                <p:inputText/>
+                <p:selectBooleanCheckbox itemLabel="Correct?"/>
+            </p:row>
+            <ui:repeat var="row" value="#{questionBean.rows}">
+                <p:row>
+                    <p:column />
+                    <p:outputLabel value="Antwort:"/>
+                    <p:inputText/>
+                    <p:selectBooleanCheckbox itemLabel="Correct?"/>
+                </p:row>
+            </ui:repeat>
+            <p:row>
+                <p:column />
+                <p:commandButton value="+" styleClass="mr-2" style="width: auto" actionListener="#{questionBean.addRow}" update="panelGrid"/>
+                <p:commandButton value="Save" styleClass="mr-2" style="width: auto"/>
+                <p:column />
+            </p:row>
+        </p:panelGrid>
+    </h:form>
     </ui:define>
 </ui:composition>
