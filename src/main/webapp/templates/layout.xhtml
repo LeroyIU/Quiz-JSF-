@@ -9,6 +9,7 @@
     xmlns:pe="http://primefaces.org/ui/extensions">
 
     <h:head>
+        <!-- ToDo: title muss noch dynamsich werden -->
         <title>Home</title>
         <style>
             .ui-menubar {
@@ -19,11 +20,13 @@
             }
         </style>
     </h:head>
-    <h:body style="margin: 0;">
+    <!-- Workaround um die Hintergrundfarbe für den kompletten Body zu ändern -->
+    <!-- Orientiert sich an der Backgroundcolor der verwendeten Themes -->
+    <h:body style="margin: 0; background-color: #{themeSwitcherBean.backgroundColor};">
         <f:view locale="#{localeBean.locale}">
             <f:loadBundle basename="messages" var="msg" />
             <h:form>
-                <p:menubar style="top: 0; left: 0;">
+                <p:menubar style="top: 0; left: 0; z-index: 999;">
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;" url="/cleverquiz/index.xhtml" />
                     <p:menuitem value="#{msg['menu_news.text']}" url="/cleverquiz/pages/create_news.xhtml" />
                     <p:menuitem value="#{msg['menu_question.text']}" url="/cleverquiz/pages/create_question.xhtml" />
@@ -35,24 +38,18 @@
                         <p:menuitem value="#{msg['menu_profilesettings.text']}" url="/cleverquiz/pages/profile_settings.xhtml" />
                         <p:menuitem value="#{localeBean.language == 'en' ? 'Switch to English' : 'Wechsel zu Deutsch'}" action="#{localeBean.toggleLanguage}" immediate="true" onclick="location.reload();" />
                         <p:menuitem>
-                            <h:outputLabel for="toggleSwitch" value="Dark Mode" />
-                                <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" onLabel="Dark" offLabel="White">
-                                    <f:facet name="onLabel">
-                                        <i class="pi pi-moon"></i> Dark Mode
-                                    </f:facet>
-
-                                    <!-- Off-Label mit Icon -->
-                                    <f:facet name="offLabel">
-                                        <i class="pi pi-sun"></i> Light Mode
-                                    </f:facet>
-                                    <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none" oncomplete="location.reload();" />
-                                </p:toggleSwitch>
+                            <h:outputLabel for="toggleSwitch" value="Darkmode:" />
+                            <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" style="float: right;">
+                                <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none" oncomplete="location.reload();" />
+                            </p:toggleSwitch>
                         </p:menuitem>
                         <p:menuitem value="Logout" url="/cleverquiz/pages/logout.xhtml" />
                     </p:submenu>
                 </p:menubar>
             </h:form>
-            <ui:insert name="content"/>
+            <div class="layout-content" style="padding-top: 70px;">
+                <ui:insert name="content" />
+            </div>
             <h:form id="footerForm">
                 <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
                     <p:menuitem value="#{msg['menu_imprint.text']}" url="/cleverquiz/pages/imprint.xhtml" />
