@@ -44,7 +44,7 @@
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;" url="/cleverquiz/index.xhtml" />
                     <p:menuitem value="#{msg['menu_news.text']}" url="/cleverquiz/pages/create_news.xhtml" />
                     <p:menuitem value="#{msg['menu_question.text']}" url="/cleverquiz/pages/create_question.xhtml" />
-                    <p:menuitem value="#{msg['menu_quiz.text']}" url="/cleverquiz/pages/quiz.xhtml" />
+                    <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();" />
                     <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
                     <p:menuitem value="#{msg['menu_friendslist.text']}" url="/cleverquiz/pages/friends.xhtml" />
                     <p:submenu label="User" icon="pi pi-fw pi-user" style="margin-right: 10px;">
@@ -79,6 +79,26 @@
                     <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update="categoryForm" />
                 </h:form>
             </p:dialog>
+            <!-- Dialog for starting a new game -->
+            <p:dialog header="Spiel starten" widgetVar="startGameDialog" modal="true" closable="true" resizable="false">
+            <h:form id="startGameForm">
+                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                    <h:outputLabel for="categorySelect" value="Kategorie:" />
+                    <p:selectOneMenu id="categorySelect" value="#{gameBean.selectedCategory}">
+                        <f:selectItems value="#{gameBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
+                    </p:selectOneMenu>
+                    
+                    <h:outputLabel for="questionCountSelect" value="Anzahl der Fragen:" />
+                    <p:selectOneMenu id="questionCountSelect" value="#{gameBean.questionCount}">
+                        <f:selectItem itemLabel="10" itemValue="10" />
+                        <f:selectItem itemLabel="15" itemValue="15" />
+                        <f:selectItem itemLabel="20" itemValue="20" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                
+                <p:commandButton value="Start" action="#{gameBean.startGame}" update="startGameForm" oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml';" style="margin-top: 10px;" />
+            </h:form>
+        </p:dialog>
         </f:view>
     </h:body>
 </html>
