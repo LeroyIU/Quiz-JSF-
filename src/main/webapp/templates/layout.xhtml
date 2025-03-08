@@ -39,6 +39,7 @@
     <h:body class="#{themeSwitcherBean.theme}-mode">
         <f:view locale="#{localeBean.locale}">
             <f:loadBundle basename="messages" var="msg" />
+            <p:growl id="growl" showDetail="true" />
             <h:form id="mainForm">
                 <p:menubar style="display: flex; justify-content: center;">
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;" url="/cleverquiz/index.xhtml" />
@@ -74,9 +75,11 @@
             <!-- Dialog for creating a new category -->
             <p:dialog header="Neue Kategorie anlegen" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
                 <h:form id="categoryForm">
-                    <h:outputLabel for="categoryName" value="Kategorie:" />
-                    <h:inputText id="categoryName" />
-                    <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update="categoryForm" />
+                    <p:panelGrid columns="2" columnClasses="label,value" styleClass="no-border" style="margin-bottom:10px;">
+                        <h:outputLabel for="categoryName" value="Kategorie:" />
+                        <h:inputText id="categoryName" value="#{categoryBean.categoryName}" />
+                    </p:panelGrid>
+                    <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
                 </h:form>
             </p:dialog>
         </f:view>
