@@ -6,19 +6,21 @@
      xmlns:p="http://primefaces.org/ui">
 
      <ui:define name="content">
-      <p:panelGrid columns="1" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid" style="margin-top: 80px;">
-            <p:card style="width: 100%; background-color: lightcoral;">
-                  <h2 style="color: white;">"The beautiful thing about learning is that nobody can take it away from you." - B.B. King</h2>
-                  <h:outputText value="Keep pushing forward and never stop learning!" style="color: white;" />
-            </p:card>
-      </p:panelGrid>
-      <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid">
-            <p:card>
-                  <ui:include src="/templates/news.xhtml" />
-            </p:card>
-            <p:card>
-                  <ui:include src="/templates/ranking.xhtml" />
-            </p:card>      
-      </p:panelGrid>
-     </ui:define>
+      <div>
+            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid" layout="grid">
+                  <p:card style="width: 100%; background-color: lightcoral;">
+                        <h2 style="color: white;">"The beautiful thing about learning is that nobody can take it away from you." - B.B. King</h2>
+                        <h:outputText value="Keep pushing forward and never stop learning!" style="color: white;" />
+                  </p:card>
+            </p:panelGrid>
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid">
+                  <p:card>
+                        <ui:include src="/templates/news.xhtml" />
+                  </p:card>
+                  <p:card>
+                        <ui:include src="/templates/ranking.xhtml" />
+                  </p:card>      
+            </p:panelGrid>
+      </div>
+      </ui:define>
 </ui:composition>

@@ -15,6 +15,7 @@
                 position: fixed;
                 width: 100%;
                 justify-content: center;
+                display: flex;
             }
         </style>
     </h:head>
@@ -22,7 +23,7 @@
         <f:view locale="#{localeBean.locale}">
             <f:loadBundle basename="messages" var="msg" />
             <h:form>
-                <p:menubar style="justify-content: center; top: 0; left: 0;">
+                <p:menubar style="top: 0; left: 0;">
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;" url="/cleverquiz/index.xhtml" />
                     <p:menuitem value="#{msg['menu_news.text']}" url="/cleverquiz/pages/create_news.xhtml" />
                     <p:menuitem value="#{msg['menu_question.text']}" url="/cleverquiz/pages/create_question.xhtml" />
@@ -51,7 +52,7 @@
                     </p:submenu>
                 </p:menubar>
             </h:form>
-            <ui:insert name="content" style="margin-top: 80px;" />
+            <ui:insert name="content"/>
             <h:form id="footerForm">
                 <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
                     <p:menuitem value="#{msg['menu_imprint.text']}" url="/cleverquiz/pages/imprint.xhtml" />
@@ -63,7 +64,7 @@
             <p:dialog header="Neue Kategorie anlegen" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
                 <h:form id="categoryForm">
                     <h:outputLabel for="categoryName" value="Kategorie:" />
-                    <h:inputText id="categoryName" />
+                    <p:inputText id="categroyName"/>
                     <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update="categoryForm" />
                 </h:form>
             </p:dialog>
