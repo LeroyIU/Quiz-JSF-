@@ -2,6 +2,9 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity class representing difficulty levels.
+ */
 @Entity
 @Table(name = "Difficulty")
 public class Difficulty {

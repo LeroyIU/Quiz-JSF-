@@ -2,6 +2,9 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity class representing an answer.
+ */
 @Entity
 @Table(name = "Answer")
 public class Answer {
