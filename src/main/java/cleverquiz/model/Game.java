@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+/**
+ * Entity class representing a game.
+ */
 @Entity
 @Table(name = "Game")
 public class Game {

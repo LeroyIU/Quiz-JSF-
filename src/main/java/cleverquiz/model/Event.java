@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+/**
+ * Entity class representing an event.
+ */
 @Entity
 @Table(name = "Event")
 public class Event {

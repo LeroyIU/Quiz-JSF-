@@ -2,6 +2,9 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity class representing a category.
+ */
 @Entity
 @Table(name = "Category")
 public class Category {

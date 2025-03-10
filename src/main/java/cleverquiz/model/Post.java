@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+/**
+ * Entity class representing a post.
+ */
 @Entity
 @Table(name = "Post")
 public class Post {
