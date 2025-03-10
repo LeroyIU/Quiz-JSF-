@@ -1,0 +1,42 @@
+<ui:composition template="/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+    <h:form id="newsForm">
+        <p:growl id="growl" showDetail="true" />
+        <p:panelGrid columns="4"
+            columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-4,ui-grid-col-2"
+            layout="grid"
+            styleClass="ui-panelgrid-blank ui-fluid"
+            style="border:0px none; background-color:transparent;">
+            <p:row>
+                <p:column />
+                <h5>News erstellen</h5>
+                <p:column />
+                <p:column />
+            </p:row>
+            <p:row>
+                <p:column />
+                <p:outputLabel for="title" value="Titel"/>
+                <p:inputText id="title" value="#{createNewsBean.title}" />
+                <p:column />
+            </p:row>
+            <p:row>
+                <p:column />
+                <p:outputLabel for="description" value="Beschreibung"/>
+                <p:inputTextarea id="description" rows="5" value="#{createNewsBean.description}" />
+                <p:column />
+            </p:row>
+            <p:row>
+                <p:column />
+                <p:column />
+                <p:commandButton value="Save" action="#{createNewsBean.saveNews}" update="newsForm growl" resetValues="true" styleClass="mr-2" style="width: auto"/>
+                <p:column />
+            </p:row>
+        </p:panelGrid>
+    </h:form>
+    </ui:define>
+</ui:composition>
