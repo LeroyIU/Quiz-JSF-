@@ -1,6 +1,7 @@
 package cleverquiz.model;
 
 import jakarta.persistence.*;
+import java.util.Date;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,6 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+
     private String username;
     private String email;
     private String password;
@@ -27,6 +29,9 @@ public class User {
     private String favMusic;
     private String favFood;
     private String name;
+    private String plz;
+    private String ort;
+    private String field;
     private String aboutme;
 
     public static User create(String name, String email, String password) {
