@@ -1,0 +1,28 @@
+package cleverquiz.model;
+
+import jakarta.persistence.*;
+
+import java.util.Date;
+
+@Entity
+@Table(name = "Post")
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer postId;
+
+    private String text;
+    private Date date;
+
+    public Integer getPostId() {
+        return postId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+}
