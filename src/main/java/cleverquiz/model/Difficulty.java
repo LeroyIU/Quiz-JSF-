@@ -1,17 +1,21 @@
 package cleverquiz.model;
 
-/**
- * Entity class representing difficulty levels.
- */
-public enum Difficulty {
-        Easy(1), Medium(2), Hard(4);
+import jakarta.persistence.*;
 
-        int points;
+@Entity
+@Table(name = "Difficulty")
+public class Difficulty {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer difficultyId;
 
-        Difficulty(int points) {
-            this.points = points;
-        }
+    private String name;
 
-        public int getValue() { return points;}
+    public Integer getDifficultyId() {
+        return difficultyId;
+    }
 
+    public String getName() {
+        return name;
+    }
 }
