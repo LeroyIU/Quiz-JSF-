@@ -25,8 +25,9 @@
     <h:body style="margin: 0; background-color: #{themeSwitcherBean.backgroundColor};">
         <f:view locale="#{localeBean.locale}">
             <f:loadBundle basename="messages" var="msg" />
-            <h:form>
-                <p:menubar style="top: 0; left: 0; z-index: 999;">
+            <p:growl id="growl" showDetail="true" />
+            <h:form id="mainForm">
+                <p:menubar style="display: flex; justify-content: center; top: 0; left: 0; z-index: 999;">
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;" url="/cleverquiz/index.xhtml" />
                     <p:menuitem value="#{msg['menu_news.text']}" url="/cleverquiz/pages/create_news.xhtml" />
                     <p:menuitem value="#{msg['menu_question.text']}" url="/cleverquiz/pages/create_question.xhtml" />
@@ -60,9 +61,11 @@
             <!-- Dialog for creating a new category -->
             <p:dialog header="Neue Kategorie anlegen" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
                 <h:form id="categoryForm">
-                    <h:outputLabel for="categoryName" value="Kategorie:" />
-                    <p:inputText id="categroyName"/>
-                    <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update="categoryForm" />
+                    <p:panelGrid columns="2" columnClasses="label,value" styleClass="no-border" style="margin-bottom:10px;">
+                        <h:outputLabel for="categoryName" value="Kategorie:" />
+                        <h:inputText id="categoryName" value="#{categoryBean.categoryName}" />
+                    </p:panelGrid>
+                    <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
                 </h:form>
             </p:dialog>
             <!-- Dialog for starting a new game -->
