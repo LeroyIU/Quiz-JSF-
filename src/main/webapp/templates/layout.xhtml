@@ -18,6 +18,18 @@
                 justify-content: center;
                 display: flex;
             }
+            .login-container {
+                max-width: 400px;
+                margin: 100px auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+            }
+            .login-image {
+                max-width: 400px;
+                margin: 100px auto;
+                padding: 20px;
+            }
         </style>
     </h:head>
     <!-- Workaround um die Hintergrundfarbe für den kompletten Body zu ändern -->
@@ -54,7 +66,7 @@
             <h:form id="footerForm">
                 <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
                     <p:menuitem value="#{msg['menu_imprint.text']}" url="/cleverquiz/pages/imprint.xhtml" />
-                    <p:menuitem value="Support (E-Mail)" url="#" />
+                    <p:menuitem value="Support" url="mailto:support@cleverquiz.de?subject=Supportanfrage" />
                     <p:menuitem value="#{msg['menu_privacy.text']}" url="/cleverquiz/pages/privacy.xhtml"/>
                 </p:menubar>
             </h:form>
