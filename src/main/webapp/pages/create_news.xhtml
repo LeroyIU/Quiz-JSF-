@@ -5,7 +5,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-    <h:form>
+    <h:form id="newsForm">
+        <p:growl id="growl" showDetail="true" />
         <p:panelGrid columns="4"
             columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-4,ui-grid-col-2"
             layout="grid"
@@ -19,20 +20,20 @@
             </p:row>
             <p:row>
                 <p:column />
-                <p:outputLabel for="@next" value="Titel"/>
-                <p:inputText/>
+                <p:outputLabel for="title" value="Titel"/>
+                <p:inputText id="title" value="#{createNewsBean.title}" />
                 <p:column />
             </p:row>
             <p:row>
                 <p:column />
-                <p:outputLabel for="@next" value="Beschreibung"/>
-                <p:inputTextarea rows="5"/>
+                <p:outputLabel for="description" value="Beschreibung"/>
+                <p:inputTextarea id="description" rows="5" value="#{createNewsBean.description}" />
                 <p:column />
             </p:row>
             <p:row>
                 <p:column />
                 <p:column />
-                <p:commandButton value="Save" styleClass="mr-2" style="width: auto"/>
+                <p:commandButton value="Save" action="#{createNewsBean.saveNews}" update="newsForm growl" resetValues="true" styleClass="mr-2" style="width: auto"/>
                 <p:column />
             </p:row>
         </p:panelGrid>
