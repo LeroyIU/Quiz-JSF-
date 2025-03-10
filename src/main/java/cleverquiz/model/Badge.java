@@ -2,6 +2,9 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity class representing a badge.
+ */
 @Entity
 @Table(name = "Badge")
 public class Badge {

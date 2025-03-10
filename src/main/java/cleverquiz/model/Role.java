@@ -2,6 +2,9 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity class representing user roles.
+ */
 @Entity
 @Table(name = "Role")
 public class Role {

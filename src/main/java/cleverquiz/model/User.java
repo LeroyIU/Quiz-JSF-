@@ -3,6 +3,9 @@ package cleverquiz.model;
 import jakarta.persistence.*;
 import java.util.Date;
 
+/**
+ * Entity class representing a user in the system.
+ */
 @Entity
 @Table(name = "User")
 public class User {

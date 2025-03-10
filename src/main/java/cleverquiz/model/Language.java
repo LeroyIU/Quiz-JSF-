@@ -2,6 +2,9 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity class representing a language.
+ */
 @Entity
 @Table(name = "Language")
 public class Language {
