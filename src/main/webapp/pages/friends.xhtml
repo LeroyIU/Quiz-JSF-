@@ -5,6 +5,59 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        Freunde
+        <h:form id="friendsForm">
+            <p:growl id="growl2" showDetail="true" />
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <h3>Friends</h3>
+                    <p:dataTable value="#{friendsBean.friends}" var="friend" selectionMode="single" selection="#{friendsBean.selectedFriend}" rowKey="#{friend.username}">
+                        <p:ajax event="rowSelect" update=":friendsForm:friendDialog" oncomplete="PF('friendDialog').show()" />
+                        <p:column headerText="Username">
+                            <h:outputText value="#{friend.username}" />
+                        </p:column>
+                        <p:column headerText="Badge">
+                            <h:outputText value="#{friend.badge}" />
+                        </p:column>
+                        <p:column headerText="Last Seen">
+                            <h:outputText value="#{friend.lastSeen}" />
+                        </p:column>
+                        <p:column headerText="Actions">
+                            <p:commandButton value="Delete" icon="pi pi-times" styleClass="ui-button-danger" action="#{friendsBean.deleteFriend(friend)}" update="friendsForm" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div class="ui-g-6">
+                    <h3>Search</h3>
+                    <h:panelGroup style="display: flex; align-items: center;">
+                        <p:inputText value="#{friendsBean.searchQuery}" placeholder="Search by username" style="margin-right: 10px;" />
+                        <p:commandButton value="Search" action="#{friendsBean.search}" update="searchResults" />
+                    </h:panelGroup>
+                    <p:dataTable id="searchResults" value="#{friendsBean.searchResults}" var="result">
+                        <p:column headerText="Username">
+                            <h:outputText value="#{result.username}" />
+                        </p:column>
+                        <p:column headerText="Actions">
+                            <p:commandButton value="Add" icon="pi pi-plus" styleClass="ui-button-primary" action="#{friendsBean.addFriend(result)}" update="friendsForm"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+
+            <p:dialog id="friendDialog" header="Friend Details" widgetVar="friendDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" cellpadding="10">
+                    <h:outputLabel value="Username:" />
+                    <h:outputText value="#{friendsBean.selectedFriend.username}" />
+
+                    <h:outputLabel value="Last Seen:" />
+                    <h:outputText value="#{friendsBean.selectedFriend.lastSeen}" />
+
+                    <h:outputLabel value="XP:" />
+                    <h:outputText value="#{friendsBean.selectedFriend.xp}" />
+
+                    <h:outputLabel value="About Me:" />
+                    <h:outputText value="#{friendsBean.selectedFriend.aboutMe}" />
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
     </ui:define>
 </ui:composition>
