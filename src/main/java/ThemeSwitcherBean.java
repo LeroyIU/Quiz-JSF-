@@ -19,4 +19,8 @@ public class ThemeSwitcherBean implements Serializable {
     public String getTheme() {
         return darkTheme ? "arya" : "saga";
     }
+
+    public String getBackgroundColor() {
+        return darkTheme ? "#1e1e1e" : "#ffffff";
+    }
 }

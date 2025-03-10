@@ -10,7 +10,7 @@
         currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords} Einträgen"
         rows="5" styleClass="ui-panelgrid-blank w-100">
          <p:column headerText="Neuigkeiten">
-             <p:card style="background-color: white; margin-bottom: 10px;">
+             <p:card style="margin-bottom: 10px;">
                  <h2 style="font-weight: bold;">#{news.title}</h2>
                  <h:outputText value="#{news.content}" />
                  <h:outputText value="#{news.date}" style="float: right; font-size: small;" />
