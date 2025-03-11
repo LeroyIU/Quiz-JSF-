@@ -1,14 +1,14 @@
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class GameBean implements Serializable {
     private List<String> categories;
     private String selectedCategory;
@@ -54,12 +54,11 @@ public class GameBean implements Serializable {
 
     public void setQuestionCount(int questionCount) {
         this.questionCount = questionCount;
+          System.out.println("Question Count set to: " + questionCount); // Debug-Ausgabe
     }
-
     public long getTotalTime() {
-        return totalTime;
+        return totalTime; 
     }
-
     public long getQuestionTime() {
         return questionTime;
     }
@@ -76,11 +75,18 @@ public class GameBean implements Serializable {
         return gameId;
     }
 
+    public int getCurrentQuestionIndex() {
+        return currentQuestionIndex;
+    }
+
     public void startGame() {
+        System.out.println("Selected Category: " + selectedCategory);
+        System.out.println("Question Count: " + questionCount);
         totalTime = 0;
         questionTime = 0;
         currentQuestionIndex = 0;
         gameId = UUID.randomUUID().toString();
+        System.out.println("gameID: " + gameId);
         loadNextQuestion();
     }
 
@@ -90,11 +96,12 @@ public class GameBean implements Serializable {
         totalTime += questionTime;
         printAnswers();
         currentQuestionIndex++;
+        System.out.println("currentQuestionIndex: " + currentQuestionIndex);
+        System.out.println("questionCount: " + questionCount); // Debug-Ausgabe
         if (currentQuestionIndex < questionCount) {
             loadNextQuestion();
         } else {
             // End of quiz, show a message
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Game Over!"));
             currentQuestion = null;
         }
     }
@@ -115,6 +122,29 @@ public class GameBean implements Serializable {
             System.out.println("Answer ID: " + i + ", Selected: " + selectedAnswers[i]);
         }
         System.out.println("Time for question: " + questionTime + " seconds");
+    }
+
+    public boolean isGameOver() {
+        return currentQuestion == null;
+    }
+
+    public void destroyGame() {
+        currentQuestion = null;
+        currentQuestionIndex = 0;
+        selectedAnswers = new boolean[4];
+        totalTime = 0;
+        questionTime = 0;
+        questionStartTime = 0;
+        gameId = null;
+        System.out.println("Game destroyed.");
+
+        // Redirect to the URL stored in the data-url attribute
+        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("proceedButton:data-url");
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static class Question {
