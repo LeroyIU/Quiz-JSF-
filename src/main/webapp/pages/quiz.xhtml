@@ -5,6 +5,81 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-      Quiz
+        <h:form id="quizForm">
+            <p:panelGrid columns="4"
+                         columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
+                         layout="grid"
+                         styleClass="ui-panelgrid-blank ui-fluid"
+                         style="border:0px none; background-color:transparent;">
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-2"/>
+                    <p:column styleClass="ui-grid-col-2">
+                        <h:outputText value="Question #{gameBean.currentQuestionIndex + 1} of #{gameBean.questionCount}" />
+                    </p:column>
+                    <p:column  styleClass="ui-grid-col-8" />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                  <p:column styleClass="ui-grid-col-4"/>
+                  <p:column styleClass="ui-grid-col-6">
+                        <h:outputText value="#{gameBean.currentQuestion.text}" style="font-weight: bold;" />
+                    </p:column>
+                    <p:column  styleClass="ui-grid-col-2" />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <h:selectBooleanCheckbox value="#{gameBean.selectedAnswers[0]}" style="float: right; width: 20px; height: 20px;"/>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[0]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <h:selectBooleanCheckbox value="#{gameBean.selectedAnswers[1]}" style="float: right; width: 20px; height: 20px;"/>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[1]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <h:selectBooleanCheckbox value="#{gameBean.selectedAnswers[2]}" style="float: right; width: 20px; height: 20px;"/>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[2]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <h:selectBooleanCheckbox value="#{gameBean.selectedAnswers[3]}" style="float: right; width: 20px; height: 20px;"/>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[3]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <p:column />
+                    <p:commandButton value="Next" action="#{gameBean.nextQuestion}" update="quizForm" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                  <p:column styleClass="ui-grid-col-4"/>
+                  <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                      <h:outputText value="Game Over!" style="font-size: 24px; color: red;" />
+                  </p:column>
+                  <p:column styleClass="ui-grid-col-2"/>
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver() and gameBean.currentQuestionIndex == 0}">
+                  <p:column styleClass="ui-grid-col-4"/>
+                  <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        <h:outputText value="Currently no game is running. Please start a game." style="font-size: 24px; color: red;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-2"/>
+                </p:row>
+            </p:panelGrid>
+            <h:messages globalOnly="true" />
+            <f:event type="preRenderView" listener="#{gameBean.checkGameOver}" />
+        </h:form>
+        <script>
+            setInterval(function() {
+                var totalTimeElement = document.getElementById('quizForm:totalTime');
+                var questionTimeElement = document.getElementById('quizForm:questionTime');
+                totalTimeElement.innerText = 'Total Time: ' + "#{gameBean.totalTime}";
+                questionTimeElement.innerText = 'Question Time: ' + "#{gameBean.questionTime}";
+            }, 1000);
+        </script>
     </ui:define>
 </ui:composition>

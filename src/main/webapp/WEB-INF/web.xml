@@ -5,7 +5,7 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-    <display-name>Clever Quiz</display-name>
+    <display-name>Cleverquiz</display-name>
 
     <!-- JSF-Servlet-Konfiguration -->
     <servlet>
@@ -36,4 +36,14 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>#{themeSwitcherBean.theme}</param-value>
     </context-param>
+
+    <!-- Prüfen, ob der User eingeloggt ist -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>AuthFilter</filter-class>
+        </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

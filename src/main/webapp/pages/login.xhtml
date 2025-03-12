@@ -1,10 +1,70 @@
-<ui:composition template="/templates/layout.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
-    <ui:define name="content">
-      Login
-    </ui:define>
-</ui:composition>
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:head>
+      <style>
+        .ui-menubar {
+            position: fixed;
+            width: 100%;
+            justify-content: center;
+            display: flex;
+        }
+        .login-container {
+            max-width: 400px;
+            margin-top: 100px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .login-image {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+        }
+    </style>
+    </h:head>
+    <body>
+            <!-- Login Form -->
+            <p:panelGrid columns="2" 
+            layout="grid"
+            styleClass="ui-panelgrid-blank ui-fluid"
+            style="border:0px none; background-color:transparent;"
+            columnClasses="ui-grid-col-4,ui-grid-col-8">
+              <h:graphicImage value="./Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%; float:right;" class="login-image" />
+              <p:column>
+                <div class="login-container">
+                    <h3 class="text-center">Login to Cleverquiz</h3>
+                    <h:form id="loginForm">
+                      <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                          <p:outputLabel for="username" value="Username" />
+                          <p:inputText id="username" value="#{loginBean.username}" required="true" />
+
+                          <p:outputLabel for="password" value="Password" />
+                          <p:password id="password" value="#{loginBean.password}" required="true" />
+                      </p:panelGrid>
+
+                      <p:commandButton value="Login" styleClass="btn btn-primary btn-block" action="#{loginBean.login}" />
+                      <h:messages globalOnly="true" />
+                      <h:outputText value="Don't have an account? " />
+                      <a href="/cleverquiz/pages/register.xhtml">Register here</a>
+                      
+                  </h:form>
+                </div>
+            </p:column>
+          </p:panelGrid>
+          <h:form id="footerForm">
+                <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
+                    <p:menuitem value="Impressum" url="/cleverquiz/pages/imprint.xhtml" />
+                    <p:menuitem value="Support" url="mailto:support@cleverquiz.de?subject=Supportanfrage" />
+                    <p:menuitem value="Datenschutzerklärung" url="/cleverquiz/pages/privacy.xhtml"/>
+                </p:menubar>
+            </h:form>
+    </body>
+</html>
