@@ -21,6 +21,7 @@ public class GameBean implements Serializable {
     private long questionStartTime;
     private List<Question> questions;
     private String gameId;
+    private String redirectUrl;
 
     // Initialize categories and other properties
     public GameBean() {
@@ -77,6 +78,14 @@ public class GameBean implements Serializable {
 
     public int getCurrentQuestionIndex() {
         return currentQuestionIndex;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 
     public void startGame() {
@@ -138,12 +147,39 @@ public class GameBean implements Serializable {
         gameId = null;
         System.out.println("Game destroyed.");
 
-        // Redirect to the URL stored in the data-url attribute
-        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("proceedButton:data-url");
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect(url);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Redirect to the URL stored in the redirectUrl property
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void destroyGameWithRedirect(String redirectUrl) {
+        currentQuestion = null;
+        currentQuestionIndex = 0;
+        selectedAnswers = new boolean[4];
+        totalTime = 0;
+        questionTime = 0;
+        questionStartTime = 0;
+        gameId = null;
+        System.out.println("Game destroyed.");
+
+        // Redirect to the URL passed as a parameter
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void checkGameOver() {
+        if (isGameOver()) {
+            destroyGame();
         }
     }
 

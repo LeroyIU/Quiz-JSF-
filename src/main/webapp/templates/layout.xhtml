@@ -62,7 +62,7 @@
             function showWarningPopup(url) {
                 if (!#{gameBean.isGameOver()}) {
                     PF('warningDialog').show();
-                    document.getElementById('proceedButton').setAttribute('data-url', url);
+                    document.getElementById('redirectUrl').value = url;
                 } else {
                     window.location.href = url;
                 }
@@ -81,7 +81,7 @@
                     <p:menuitem value="#{msg['menu_news.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
                     <p:menuitem value="#{msg['menu_question.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
                     <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();" />
-                    <p:menuitem value="#{msg['menu_category.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_category.xhtml')" />
+                    <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
                     <p:menuitem value="#{msg['menu_friendslist.text']}" onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
                     <p:submenu label="User" icon="pi pi-fw pi-user" style="margin-right: 10px;">
                         <p:menuitem value="#{msg['menu_username.text']}" />
@@ -113,7 +113,11 @@
                     <div class="warning-dialog-content">
                         <h:outputText value="A game is currently running. Do you want to proceed and lose the current game?" />
                         <div class="warning-dialog-buttons">
-                            <p:commandButton id="proceedButton" value="Proceed" action="#{gameBean.destroyGame}" update="warningForm" styleClass="proceed-button" />
+                            <h:inputHidden id="redirectUrl" value="" />
+                            <p:remoteCommand name="destroyGameWithRedirect" action="#{gameBean.destroyGameWithRedirect}" update="warningForm">
+                                <f:param name="redirectUrl" value="" />
+                            </p:remoteCommand>
+                            <p:commandButton id="proceedButton" value="Proceed" onclick="destroyGameWithRedirect([{name: 'redirectUrl', value: document.getElementById('redirectUrl').value}]); PF('warningDialog').hide();" type="button" styleClass="proceed-button" />
                             <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button" />
                         </div>
                     </div>
@@ -122,11 +126,22 @@
             <!-- Dialog for creating a new category -->
             <p:dialog header="Neue Kategorie anlegen" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
                 <h:form id="categoryForm">
-                    <p:panelGrid columns="2" columnClasses="label,value" styleClass="no-border" style="margin-bottom:10px;">
+                    <p:panelGrid columns="2" columnClasses="label,value" styleClass="ui-panelgrid-blank ui-fluid"
+                    style="border:0px none; background-color:transparent;">
+                    <p:row>
+                        <p:column>
                         <h:outputLabel for="categoryName" value="Kategorie:" />
-                        <h:inputText id="categoryName" value="#{categoryBean.categoryName}" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="categoryName" value="#{categoryBean.categoryName}" />
+                    </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column />
+                        <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
+                    </p:row>
                     </p:panelGrid>
-                    <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
+                    
                 </h:form>
             </p:dialog>
             <!-- Dialog for starting a new game -->

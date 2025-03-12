@@ -9,7 +9,6 @@
             <p:growl id="growl2" showDetail="true" />
             <div class="ui-g">
                 <div class="ui-g-6">
-                    <h3>Friends</h3>
                     <p:dataTable value="#{friendsBean.friends}" var="friend" selectionMode="single" selection="#{friendsBean.selectedFriend}" rowKey="#{friend.username}">
                         <p:ajax event="rowSelect" update=":friendsForm:friendDialog" oncomplete="PF('friendDialog').show()" />
                         <p:column headerText="Username">

@@ -51,9 +51,10 @@
                       </p:panelGrid>
 
                       <p:commandButton value="Login" styleClass="btn btn-primary btn-block" action="#{loginBean.login}" />
-
+                      <h:messages globalOnly="true" />
                       <h:outputText value="Don't have an account? " />
                       <a href="/cleverquiz/pages/register.xhtml">Register here</a>
+                      
                   </h:form>
                 </div>
             </p:column>

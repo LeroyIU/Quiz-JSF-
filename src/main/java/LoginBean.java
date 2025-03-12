@@ -1,7 +1,9 @@
+import java.io.IOException;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
 
 @ManagedBean
 @RequestScoped
@@ -33,11 +35,22 @@ public class LoginBean {
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
 
-        // Redirect to the home page
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Simulate login validation
+        if ("user".equals(username) && "123".equals(password)) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+            sessionBean.setLoggedIn(true);
+            System.out.println("User login successful!");
+
+            // Redirect to the home page
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Show error message
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Failed", "Invalid username or password"));
         }
     }
 }
