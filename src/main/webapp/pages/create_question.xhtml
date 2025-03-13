@@ -15,12 +15,6 @@
                 style="border:0px none; background-color:transparent; padding-bottom: 100px;">
                 <p:row>
                     <p:column />
-                    <p:outputLabel for="question" value="Frage:"/>
-                    <p:inputText id="question" value="#{questionBean.question}" />
-                    <p:column />
-                </p:row>
-                <p:row>
-                    <p:column />
                     <p:column styleClass="ui-grid-col-4">
                         <div class="field col-12 md:col-4">
                             <p:outputLabel for="category" value="Kategorie"/>
@@ -44,6 +38,12 @@
                             </p:selectOneMenu>
                         </div>
                     </p:column>
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="question" value="Frage:"/>
+                    <p:inputText id="question" value="#{questionBean.question}" />
                     <p:column />
                 </p:row>
                 <c:forEach var="row" items="#{questionBean.rows}">

@@ -7,8 +7,13 @@
     <ui:define name="content">
         <h:form id="friendsForm">
             <p:growl id="growl2" showDetail="true" />
-            <div class="ui-g">
-                <div class="ui-g-6">
+            <p:panelGrid columns="4" id="panelGrid"
+                columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-5,ui-grid-col-1"
+                layout="grid"
+                styleClass="ui-panelgrid-blank ui-fluid"
+                style="border:0px none; background-color:transparent; padding-bottom: 100px;">
+                <p:column />
+                <p:panelGrid columns="1">
                     <p:dataTable value="#{friendsBean.friends}" var="friend" selectionMode="single" selection="#{friendsBean.selectedFriend}" rowKey="#{friend.username}">
                         <p:ajax event="rowSelect" update=":friendsForm:friendDialog" oncomplete="PF('friendDialog').show()" />
                         <p:column headerText="Username">
@@ -24,8 +29,8 @@
                             <p:commandButton value="Delete" icon="pi pi-times" styleClass="ui-button-danger" action="#{friendsBean.deleteFriend(friend)}" update="friendsForm" />
                         </p:column>
                     </p:dataTable>
-                </div>
-                <div class="ui-g-6">
+                </p:panelGrid>
+                <p:panelGrid columns="1">
                     <h3>Search</h3>
                     <h:panelGroup style="display: flex; align-items: center;">
                         <p:inputText value="#{friendsBean.searchQuery}" placeholder="Search by username" style="margin-right: 10px;" />
@@ -39,11 +44,16 @@
                             <p:commandButton value="Add" icon="pi pi-plus" styleClass="ui-button-primary" action="#{friendsBean.addFriend(result)}" update="friendsForm"/>
                         </p:column>
                     </p:dataTable>
-                </div>
-            </div>
+                </p:panelGrid>
+                <p:column />
+            </p:panelGrid>
 
             <p:dialog id="friendDialog" header="Friend Details" widgetVar="friendDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" cellpadding="10">
+                <p:panelGrid columns="2" id="panelGrid_dialog"
+                columnClasses="ui-grid-col-4,ui-grid-col-8"
+                layout="grid"
+                styleClass="ui-panelgrid-blank ui-fluid"
+                style="border:0px none; background-color:transparent; min-width: 400px;">
                     <h:outputLabel value="Username:" />
                     <h:outputText value="#{friendsBean.selectedFriend.username}" />
 

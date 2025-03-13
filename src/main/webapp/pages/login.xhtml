@@ -37,7 +37,7 @@
             styleClass="ui-panelgrid-blank ui-fluid"
             style="border:0px none; background-color:transparent;"
             columnClasses="ui-grid-col-4,ui-grid-col-8">
-              <h:graphicImage value="./Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%; float:right;" class="login-image" />
+              <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%; float:right;" class="login-image" />
               <p:column>
                 <div class="login-container">
                     <h3 class="text-center">Login to Cleverquiz</h3>
@@ -50,10 +50,13 @@
                           <p:password id="password" value="#{loginBean.password}" required="true" />
                       </p:panelGrid>
 
-                      <p:commandButton value="Login" styleClass="btn btn-primary btn-block" action="#{loginBean.login}" />
+                      <p:commandButton value="Login" styleClass="btn btn-primary btn-block" action="#{loginBean.login}" update="@form:growl" />
+                      <p:growl id="growl" showDetail="true" life="3000" />
                       <h:messages globalOnly="true" />
-                      <h:outputText value="Don't have an account? " />
-                      <a href="/cleverquiz/pages/register.xhtml">Register here</a>
+                      <div style="margin-top: 15px;">
+                        <h:outputText value="Don't have an account? " />
+                        <a href="/cleverquiz/pages/register.xhtml">Register here</a>
+                    </div>
                       
                   </h:form>
                 </div>
