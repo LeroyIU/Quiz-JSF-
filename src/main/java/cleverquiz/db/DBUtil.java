@@ -42,6 +42,10 @@ public class DBUtil {
         return sessionFactory;
     }
 
+    public static Session getSession() {
+        return getSessionFactory().openSession();
+    }
+
     public static void main(String[] args) {
         // Neue Session öffnen
         Session session = getSessionFactory().openSession();
