@@ -19,11 +19,11 @@
                     <p:column  styleClass="ui-grid-col-8" />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
-                  <p:column styleClass="ui-grid-col-4"/>
+                  <p:column styleClass="ui-grid-col-3"/>
                   <p:column styleClass="ui-grid-col-6">
                         <h:outputText value="#{gameBean.currentQuestion.text}" style="font-weight: bold;" />
                     </p:column>
-                    <p:column  styleClass="ui-grid-col-2" />
+                    <p:column  styleClass="ui-grid-col-3" />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />

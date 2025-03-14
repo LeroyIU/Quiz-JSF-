@@ -8,12 +8,13 @@
      <ui:define name="content">
       <div>
             <p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid" layout="grid">
-                  <p:card style="width: 100%; background-color: lightcoral;">
-                        <h2 style="color: white;">"The beautiful thing about learning is that nobody can take it away from you." - B.B. King</h2>
-                        <h:outputText value="Keep pushing forward and never stop learning!" style="color: white;" />
+                  <p:card style="width: 100%; background-color: beige;">
+                        <h2 style="text-align: center; color: black;">
+                              <h:outputText value="#{motivationBean.randomMotivation}" />
+                        </h2>
                   </p:card>
             </p:panelGrid>
-            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid">
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid" style="margin-bottom: 100px;">
                   <p:card>
                         <ui:include src="/templates/news.xhtml" />
                   </p:card>
