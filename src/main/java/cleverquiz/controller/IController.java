@@ -71,13 +71,6 @@ public interface IController {
     List<User> getFriends(int userId);
 
     /**
-     * add a friend
-     *
-     * @return true, if friendship is saved
-     */
-    boolean addFriend(int ownerId, int friendId);
-
-    /**
      * Remove a friend
      *
      * @param userId         user
@@ -107,36 +100,16 @@ public interface IController {
      * @param name     with name
      * @param email    with email
      * @param password with password
-     * @return user, if it could be created, otherwise null
+     * @return true, if user could be added, otherwise false
      */
-    User addUser(String name, String email, String password);
+    boolean addUser(String name, String email, String password);
 
     /**
      * Update user game with current answer
      *
-     * @param user     user to update
-     * @param question question text
-     * @param answers  list of answers
+     * @param questionId question id
+     * @param answers    user answers
      */
-    void updateGame(User user, Question question, List<UserAnswer> answers);
+    void updateGame(int questionId, List<UserAnswer> answers);
 
-    /**
-     * Create new news post
-     *
-     * @param title    title of post
-     * @param text     text of post
-     * @param author user id of author
-     * @return true, if news post could be inserted into database, otherwise false
-     */
-    boolean createNews(String title, String text, User author);
-
-    User login(String username, String password);
-
-    /**
-     * Get a user by their ID
-     *
-     * @param userId the ID of the user
-     * @return the user object, or null if not found
-     */
-    User getUserById(int userId);
 }
