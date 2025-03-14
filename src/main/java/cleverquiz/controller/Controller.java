@@ -1,6 +1,5 @@
 package cleverquiz.controller;
 
-import cleverquiz.db.DBUtil;
 import cleverquiz.model.*;
 
 import java.util.List;
@@ -9,94 +8,66 @@ public class Controller implements IController {
 
     @Override
     public List<News> getLatestNews() {
-        return DBUtil.getLatestNews();
+        return List.of();
     }
 
     @Override
     public List<User> getUserRanking() {
-        return DBUtil.getUserRanking();
+        return List.of();
     }
 
     @Override
     public List<Badge> getUserBadges(int userId) {
-        return DBUtil.getUserBadges(userId);
+        return List.of();
     }
 
     @Override
     public List<Category> getCategories() {
-        return DBUtil.getCategories();
+        return List.of();
     }
 
     @Override
     public boolean addCategory(String name) {
-        return DBUtil.addCategory(name);
+        return false;
     }
 
     @Override
     public boolean createQuestion(Difficulty difficulty, String question, List<Answer> answers) {
-        return DBUtil.createQuestion(difficulty, question, answers);
+        return false;
     }
 
     @Override
     public List<Question> startQuiz(Category category, int amount) {
-        return DBUtil.startQuiz(category, amount);
+        return List.of();
     }
 
     @Override
     public List<User> getFriends(int userId) {
-        return DBUtil.getFriends(userId);
-    }
-
-    @Override
-    public boolean addFriend(int ownerId, int friendId) {
-        return DBUtil.addFriend(ownerId, friendId);
+        return List.of();
     }
 
     @Override
     public void deleteFriend(int userId, int friendToDelete) {
-        DBUtil.removeFriend(userId, friendToDelete);
+
     }
 
     @Override
     public List<User> searchUser(String token) {
-        return DBUtil.serchUser(token);
+        return List.of();
     }
 
     @Override
     public User editProfile(User user) {
-        return DBUtil.editProfile(user);
+        return null;
     }
 
     @Override
-    public User addUser(String name, String email, String password) {
-        User user = User.create(name, email, password);
-        return DBUtil.createUser(user);
+    public boolean addUser(String name, String email, String password) {
+        return false;
     }
 
     @Override
-    public User login(String username, String password) {
-        return DBUtil.login(username, password);
-    }
+    public void updateGame(int questionId, List<UserAnswer> answers) {
 
-    @Override
-    public void updateGame(User user, Question question, List<UserAnswer> answers) {
-        boolean correct = true;
-        for (UserAnswer userAnswer : answers) {
-            correct &= userAnswer.isCorrect();
-        }
-        int xp = 0;
-        if(correct) xp = question.getDifficulty().getValue();
-        int userxp = user.getXp();
-        user.setXp(userxp + xp);
-        editProfile(user);
-    }
-
-    public boolean createNews(String title, String text, User author) {
-        return DBUtil.createNews(title, text, author);
-
-    }
-
-    public User getUserById(int userId) {
-        return DBUtil.getUserById(userId);
     }
 }
