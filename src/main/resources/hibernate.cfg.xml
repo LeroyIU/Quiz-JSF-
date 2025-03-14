@@ -11,7 +11,23 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- Entity-Klassen registrieren - - >
-        <mapping class="com.example.model.User"/>-->
+        <!-- Entity-Klassen registrieren -->
+        <mapping class="cleverquiz.model.Answer"/>
+         <mapping class="cleverquiz.model.Badge"/>
+        <mapping class="cleverquiz.model.Category"/>
+        <mapping class="cleverquiz.model.Difficulty"/>
+        <mapping class="cleverquiz.model.Event"/>
+        <mapping class="cleverquiz.model.Friends"/>
+        <mapping class="cleverquiz.model.FriendsId"/>
+        <mapping class="cleverquiz.model.Game"/>
+        <mapping class="cleverquiz.model.Language"/>
+        <mapping class="cleverquiz.model.News"/>
+        <mapping class="cleverquiz.model.Question"/>
+        <mapping class="cleverquiz.model.Role"/>
+        <mapping class="cleverquiz.model.User"/>
+        <mapping class="cleverquiz.model.UserAnswer"/>
+        <mapping class="cleverquiz.model.UserBadge"/>
+        <mapping class="cleverquiz.model.UserBadgeId"/>
+        <mapping class="cleverquiz.model.UserRole"/>
     </session-factory>
 </hibernate-configuration>
