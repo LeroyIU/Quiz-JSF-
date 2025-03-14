@@ -1,18 +1,14 @@
 package cleverquiz.db;
 
-import cleverquiz.model.*;
+import cleverquiz.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
 import java.util.Properties;
 
 public class DBUtil {
@@ -42,295 +38,13 @@ public class DBUtil {
         }
     }
 
-    private static SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
-
-    public static Session getSession() {
-        return getSessionFactory().openSession();
-    }
-
-    /**
-     * Get the latest 15 news
-     *
-     * @return latest 15 news
-     */
-    public static List<News> getLatestNews() {
-        Session session = DBUtil.getSession();
-        Query<News> query = session.createQuery(
-                "FROM News ORDER BY date DESC", News.class);
-        query.setMaxResults(15);
-        List<News> news = query.list();
-        session.close();
-        return news;
-    }
-
-    /**
-     * Get 30 best users
-     *
-     * @return 30 best user by xp
-     */
-    public static List<User> getUserRanking() {
-        Session session = DBUtil.getSession();
-        Query<User> query = session.createQuery(
-                "FROM User ORDER BY xp desc", User.class);
-        query.setMaxResults(30);
-        List<User> user = query.list();
-        session.close();
-        return user;
-    }
-
-    /**
-     * Get badges owned by user
-     *
-     * @param userId owner
-     * @return badges owned by user
-     */
-    public static List<Badge> getUserBadges(int userId) {
-        List<Badge> badges = null;
-        try (Session session = getSession()) {
-            String sql = "SELECT b.* FROM Badge b " +
-                    "JOIN User_Badge ub ON b.badgeId = ub.badgeId " +
-                    "WHERE ub.userId = :userId";
-            NativeQuery<Badge> query = session.createNativeQuery(sql, Badge.class);
-            query.setParameter("userId", userId);
-            badges = query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return badges;
-    }
-
-    /**
-     * Get categories
-     *
-     * @return categories
-     */
-    public static List<Category> getCategories() {
-        List<Category> categories = null;
-        try (Session session = DBUtil.getSession()) {
-            Query<Category> query = session.createQuery("FROM Category", Category.class);
-            categories = query.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return categories;
-    }
-
-    /**
-     * Add a new category
-     *
-     * @param name with name
-     * @return true, if category could be added, otherwise false
-     */
-    public static boolean addCategory(String name) {
-        Transaction transaction = null;
-        boolean success = false;
-
-        try (Session session = DBUtil.getSession()) {
-            transaction = session.beginTransaction();
-
-            // Neue Kategorie erstellen
-            Category category = new Category();
-            category.setName(name);
-
-            // Speichern
-            session.persist(category);
-            transaction.commit();
-            success = true; // Erfolg
-
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback(); // Rollback bei Fehler
-            e.printStackTrace();
-            success = false;
-        }
-        return success;
-    }
-
-    public static boolean createQuestion(Difficulty difficulty, String questionText, List<Answer> answers) {
-        //validator
-        int correct = 0;
-        for (Answer answer : answers) {
-            if(answer.getCorrectness()) correct++;
-        }
-        if(answers.size() < 4 || correct < 1) return false;
-
-        //transaction
-        Transaction transaction = null;
-        boolean success = false;
-
-        try (Session session = getSession()) {
-            transaction = session.beginTransaction();
-
-            // Neue Frage anlegen
-            Question question = new Question();
-            question.setText(questionText);
-            question.setDifficulty(difficulty);
-            question.setDate(LocalDate.now());
-
-            // Frage speichern, damit sie eine ID bekommt
-            session.persist(question);
-
-            // Antworten verknüpfen und speichern
-            for (Answer answer : answers) {
-                answer.setQuestion(question); // Foreign Key setzen
-                session.persist(answer);
-            }
-
-            transaction.commit();
-            success = true;
-
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-
-        return success;
-    }
-
-
-    /**
-     * Start a quiz
-     *
-     * @param category with category
-     * @param amount   with amount of questions
-     * @return list of questions
-     */
-    public static List<Question> startQuiz(Category category, int amount) {
-        List<Question> questions = null;
-
-        try (Session session = getSession()) {
-            Query<Question> query = session.createQuery(
-                    "FROM Question WHERE category.id = :categoryId ORDER BY RAND()", Question.class);
-            query.setParameter("categoryId", category.getCategoryId());
-            query.setMaxResults(amount); // Begrenze die Anzahl der Ergebnisse
-            questions = query.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return questions;
-    }
-
-    public static List<User> getFriends(int userId) {
-        List<User> friends = null;
-
-        try (Session session = getSession()) {
-            String sql = "SELECT u.* FROM User u " +
-                    "JOIN Friends f ON u.userId = f.userid2 " +
-                    "WHERE f.userid1 = :userId";
-
-            Query<User> query = session.createNativeQuery(sql, User.class);
-            query.setParameter("userId", userId);
-            friends = query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return friends;
-    }
-
-    public static boolean addFriend(int userId1, int userId2) {
-        boolean success = false;
-
-        try (Session session = getSession()) {
-            Transaction tx = session.beginTransaction();
-
-            // Optional: userId1 < userId2, um doppelte Einträge in beide Richtungen zu vermeiden
-            int u1 = Math.min(userId1, userId2);
-            int u2 = Math.max(userId1, userId2);
-
-            String sql = "INSERT INTO Friends (userId1, userId2) VALUES (:u1, :u2)";
-            Query query = session.createNativeQuery(sql);
-            query.setParameter("u1", u1);
-            query.setParameter("u2", u2);
-            query.executeUpdate();
-
-            tx.commit();
-            success = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return success;
-    }
-
-    public static boolean removeFriend(int owner, int friend) {
-        boolean success = false;
-
-        try (Session session = getSession()) {
-            Transaction transaction = session.beginTransaction();
-
-            String sql = "DELETE FROM Friends WHERE (userid1 = :userId1 AND userid2 = :userId2) " +
-                    "OR (userid1 = :userId2 AND userid2 = :userId1)";
-
-            Query query = session.createNativeQuery(sql);
-            query.setParameter("userId1", owner);
-            query.setParameter("userId2", friend);
-
-            int result = query.executeUpdate();
-            transaction.commit();
-
-            success = result > 0; // Falls mindestens eine Zeile gelöscht wurde, Erfolg = true
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return success;
-    }
-
-    public static List<User> serchUser(String token) {
-        List<User> users = null;
-
-        try (Session session = getSession()) {
-            Query<User> query = session.createQuery(
-                    "FROM User WHERE username LIKE :searchTerm", User.class);
-            query.setParameter("searchTerm", "%" + token + "%"); // Wildcards für Teilstring-Suche
-            users = query.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return users;
-    }
-
-    public static User editProfile(User user) {
-        Transaction transaction = null;
-        User updatedUser = null;
-
-        try (Session session = getSession()) {
-            transaction = session.beginTransaction();
-
-            // User aktualisieren
-            user = (User) session.merge(user);
-
-            transaction.commit(); // Änderungen speichern
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback(); // Bei Fehlern Änderungen rückgängig machen
-            }
-            e.printStackTrace();
-        }
-        return user; // Rückgabe des aktualisierten Objekts
-    }
-
-    /**
-     * Get a user by their ID
-     *
-     * @param userId the ID of the user
-     * @return the user object, or null if not found
-     */
-    public static User getUserById(int userId) {
-        User user = null;
-        try (Session session = getSession()) {
-            user = session.get(User.class, userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
     }
 
     public static void main(String[] args) {
         // Neue Session öffnen
-        Session session = DBUtil.getSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
 
         // Neuen User speichern
@@ -347,10 +61,11 @@ public class DBUtil {
         System.out.println("Geladener Benutzer: " + user);
 
         session.close();
+        getSessionFactory().close();
     }
 
     public static User login(String username, String password) {
-        Session session = getSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
         User user = null;
 
@@ -358,9 +73,9 @@ public class DBUtil {
             transaction = session.beginTransaction();
 
             // HQL Query, um den User zu finden
-            Query<User> query = session.createQuery("FROM User WHERE username = :username AND password = :password", User.class);
-            query.setParameter("username", username.trim());
-            query.setParameter("password", password.trim());  // Nur wenn das Passwort nicht gehasht gespeichert wird!
+            Query<User> query = session.createQuery("FROM User WHERE name = :username AND password = :password", User.class);
+            query.setParameter("username", username);
+            query.setParameter("password", password);  // Nur wenn das Passwort nicht gehasht gespeichert wird!
 
             user = query.uniqueResult(); // Falls kein Ergebnis, dann null zurückgeben
 
@@ -372,70 +87,5 @@ public class DBUtil {
             session.close();
         }
         return user;
-    }
-
-    public static User createUser(User user) {
-        Transaction transaction = null;
-        Integer userId = null;
-
-        try (Session session = getSession()) {
-            transaction = session.beginTransaction();
-
-            userId = (Integer) session.save(user); // Speichert den User und gibt die generierte ID zurück
-            transaction.commit();
-
-            user.setUserId(userId); // Setzt die ID für das zurückgegebene Objekt
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback(); // Rollback bei Fehlern
-            }
-            e.printStackTrace();
-            return null; // Falls ein Fehler auftritt, null zurückgeben
-        }
-        return user; // Den gespeicherten User mit ID zurückgeben
-    }
-
-    public static boolean createNews(String title, String text, User author) {
-        News news = new News(title, text, author);
-        Transaction transaction = null;
-        boolean success = false;
-
-        try (Session session = DBUtil.getSession()) {
-            transaction = session.beginTransaction();
-
-            // Speichern
-            session.persist(news);
-            transaction.commit();
-            success = true; // Erfolg
-
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback(); // Rollback bei Fehler
-            e.printStackTrace();
-            success = false;
-        }
-        return success;
-    }
-
-    /**
-     * Gibt alle Antworten zurück, die zu einer bestimmten Frage gehören.
-     *
-     * @param questionId ID der Frage
-     * @return Liste von Answer-Objekten
-     * @throws SQLException falls ein Datenbankfehler auftritt
-     */
-    public static List<Answer> getAnswersByQuestionId(int questionId) {
-        List<Answer> answers = new ArrayList<>();
-
-        try (Session session = getSession()) {
-            String hql = "FROM Answer a WHERE a.question.questionId = :questionId";
-            Query<Answer> query = session.createQuery(hql, Answer.class);
-            query.setParameter("questionId", questionId);
-
-            answers = query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return answers;
     }
 }
