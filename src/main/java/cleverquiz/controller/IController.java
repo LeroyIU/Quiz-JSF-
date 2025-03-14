@@ -4,7 +4,7 @@ import cleverquiz.model.*;
 
 import java.util.List;
 
-public interface IDB {
+public interface IController {
 
     /**
      * Get the latest 15 news
