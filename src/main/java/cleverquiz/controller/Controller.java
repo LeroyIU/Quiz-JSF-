@@ -54,7 +54,7 @@ public class Controller implements IController {
 
     @Override
     public List<User> searchUser(String token) {
-        return List.of();
+        return DBUtil.serchUser(token);
     }
 
     @Override

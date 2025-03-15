@@ -58,4 +58,13 @@ public class ControllerTest extends TestCase {
             System.out.println(friend.toString());
         }
     }
+
+    public void testSearchUser() {
+        IController controller = new Controller();
+        List<User> users = controller.searchUser("na");
+        assertFalse(users.isEmpty());
+        for ( User user : users) {
+            System.out.println(user.toString());
+        }
+    }
 }

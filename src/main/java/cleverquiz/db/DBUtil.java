@@ -183,6 +183,19 @@ public class DBUtil {
         }
         return friends;
     }
+    public static List<User> serchUser(String token) {
+        List<User> users = null;
+
+        try (Session session = getSession()) {
+            Query<User> query = session.createQuery(
+                    "FROM User WHERE username LIKE :searchTerm", User.class);
+            query.setParameter("searchTerm", "%" + token + "%"); // Wildcards für Teilstring-Suche
+            users = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 
 
     public static void main(String[] args) {
