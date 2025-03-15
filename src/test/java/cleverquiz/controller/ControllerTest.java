@@ -49,4 +49,13 @@ public class ControllerTest extends TestCase {
         boolean success = controller.addCategory(CategoryName);
         assertTrue(success);
     }
+
+    public void testGetFriends() {
+        IController controller = new Controller();
+        List<User> friends = controller.getFriends(97);
+        assertFalse(friends.isEmpty());
+        for ( User friend : friends) {
+            System.out.println(friend.toString());
+        }
+    }
 }
