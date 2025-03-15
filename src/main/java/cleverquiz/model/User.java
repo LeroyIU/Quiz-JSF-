@@ -26,7 +26,8 @@ public class User {
     private String field;
     private String aboutme;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)  // Speichert als VARCHAR anstatt ENUM
+    @Column(name = "role")
     private UserRole role;
 
     @ManyToOne
