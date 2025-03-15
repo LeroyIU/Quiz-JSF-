@@ -183,6 +183,30 @@ public class DBUtil {
         }
         return friends;
     }
+
+    public static boolean removeFriend(int owner, int friend) {
+        boolean success = false;
+
+        try (Session session = getSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            String sql = "DELETE FROM Friends WHERE (userid1 = :userId1 AND userid2 = :userId2) " +
+                    "OR (userid1 = :userId2 AND userid2 = :userId1)";
+
+            Query query = session.createNativeQuery(sql);
+            query.setParameter("userId1", owner);
+            query.setParameter("userId2", friend);
+
+            int result = query.executeUpdate();
+            transaction.commit();
+
+            success = result > 0; // Falls mindestens eine Zeile gelöscht wurde, Erfolg = true
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return success;
+    }
+
     public static List<User> serchUser(String token) {
         List<User> users = null;
 

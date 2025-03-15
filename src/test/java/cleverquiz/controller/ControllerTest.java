@@ -59,6 +59,16 @@ public class ControllerTest extends TestCase {
         }
     }
 
+    public void testRemoveFriend() {
+        IController controller = new Controller();
+        controller.deleteFriend(97, 98);
+        List<User> friends = controller.getFriends(97);
+        assertTrue(friends.isEmpty());
+        for ( User friend : friends) {
+            System.out.println(friend.toString());
+        }
+    }
+
     public void testSearchUser() {
         IController controller = new Controller();
         List<User> users = controller.searchUser("na");

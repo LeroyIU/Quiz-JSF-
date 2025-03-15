@@ -49,7 +49,7 @@ public class Controller implements IController {
 
     @Override
     public void deleteFriend(int userId, int friendToDelete) {
-
+        DBUtil.removeFriend(userId, friendToDelete);
     }
 
     @Override
