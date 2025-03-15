@@ -287,4 +287,25 @@ public class DBUtil {
         }
         return user;
     }
+
+    public static User createUser(User user) {
+        Transaction transaction = null;
+        Integer userId = null;
+
+        try (Session session = getSession()) {
+            transaction = session.beginTransaction();
+
+            userId = (Integer) session.save(user); // Speichert den User und gibt die generierte ID zurück
+            transaction.commit();
+
+            user.setUserId(userId); // Setzt die ID für das zurückgegebene Objekt
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback(); // Rollback bei Fehlern
+            }
+            e.printStackTrace();
+            return null; // Falls ein Fehler auftritt, null zurückgeben
+        }
+        return user; // Den gespeicherten User mit ID zurückgeben
+    }
 }

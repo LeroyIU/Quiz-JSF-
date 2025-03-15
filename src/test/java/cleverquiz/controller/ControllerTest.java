@@ -86,4 +86,13 @@ public class ControllerTest extends TestCase {
         User newUser = controller.editProfile(user);
         assertEquals(user, newUser);
     }
+
+    public void testCreateUser() {
+        IController controller = new Controller();
+        String name = "username";
+        String email = "newUser@Email";
+        String password = "1234";
+        User newUser = controller.addUser(name, email, password);
+        assertNotNull(newUser);
+    }
 }
