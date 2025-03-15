@@ -44,7 +44,7 @@ public class Controller implements IController {
 
     @Override
     public List<User> getFriends(int userId) {
-        return List.of();
+        return DBUtil.getFriends(userId);
     }
 
     @Override

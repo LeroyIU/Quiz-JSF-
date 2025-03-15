@@ -167,6 +167,23 @@ public class DBUtil {
         return questions;
     }
 
+    public static List<User> getFriends(int userId) {
+        List<User> friends = null;
+
+        try (Session session = getSession()) {
+            String sql = "SELECT u.* FROM User u " +
+                    "JOIN Friends f ON u.userId = f.userid2 " +
+                    "WHERE f.userid1 = :userId";
+
+            Query<User> query = session.createNativeQuery(sql, User.class);
+            query.setParameter("userId", userId);
+            friends = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return friends;
+    }
+
 
     public static void main(String[] args) {
         // Neue Session öffnen
