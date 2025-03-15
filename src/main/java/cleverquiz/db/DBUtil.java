@@ -40,12 +40,12 @@ public class DBUtil {
         }
     }
 
-    public static SessionFactory getSessionFactory() {
+    private static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
     public static Session getSession() {
-        return sessionFactory.openSession();
+        return getSessionFactory().openSession();
     }
 
     /**
@@ -221,10 +221,30 @@ public class DBUtil {
         return users;
     }
 
+    public static User editProfile(User user) {
+        Transaction transaction = null;
+        User updatedUser = null;
+
+        try (Session session = getSession()) {
+            transaction = session.beginTransaction();
+
+            // User aktualisieren
+            user = (User) session.merge(user);
+
+            transaction.commit(); // Änderungen speichern
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback(); // Bei Fehlern Änderungen rückgängig machen
+            }
+            e.printStackTrace();
+        }
+        return user; // Rückgabe des aktualisierten Objekts
+    }
+
 
     public static void main(String[] args) {
         // Neue Session öffnen
-        Session session = getSessionFactory().openSession();
+        Session session = DBUtil.getSession();
         Transaction transaction = session.beginTransaction();
 
         // Neuen User speichern
@@ -241,11 +261,10 @@ public class DBUtil {
         System.out.println("Geladener Benutzer: " + user);
 
         session.close();
-        getSessionFactory().close();
     }
 
     public static User login(String username, String password) {
-        Session session = getSessionFactory().openSession();
+        Session session = getSession();
         Transaction transaction = null;
         User user = null;
 
