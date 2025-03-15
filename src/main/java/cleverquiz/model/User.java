@@ -120,4 +120,25 @@ public class User {
     public void setLanguage(Language language) {
         this.language = language;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", lastLogin=" + lastLogin +
+                ", xp=" + xp +
+                ", darkmode=" + darkmode +
+                ", lastname='" + lastname + '\'' +
+                ", name='" + name + '\'' +
+                ", plz='" + plz + '\'' +
+                ", ort='" + ort + '\'' +
+                ", field='" + field + '\'' +
+                ", aboutme='" + aboutme + '\'' +
+                ", role=" + role +
+                ", language=" + language +
+                '}';
+    }
 }
