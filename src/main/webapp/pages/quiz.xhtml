@@ -78,19 +78,19 @@
                     <p:column />
                 </p:row>
                 <p:row rendered="#{gameBean.isGameOver()}">
-                  <p:column styleClass="ui-grid-col-3"/>
-                  <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                      <h:outputText value="Game Over!" style="font-size: 24px; color: red;" />
-                  </p:column>
-                  <p:column styleClass="ui-grid-col-3"/>
-                </p:row>
-                <p:row rendered="#{gameBean.isGameOver() and gameBean.currentQuestionIndex == 0}">
-                  <p:column styleClass="ui-grid-col-3"/>
-                  <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                        <h:outputText value="Currently no game is running. Please start a game." style="font-size: 24px; color: red;" />
+                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        <h:outputText value="Game finished!" style="font-size: 24px;" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-3"/>
-                </p:row>
+                  </p:row>
+                  <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                          <h:outputText value="We hope you had fun. You can start a new game at any time." style="font-size: 24px;" />
+                      </p:column>
+                      <p:column styleClass="ui-grid-col-3"/>
+                  </p:row>
             </p:panelGrid>
             <h:messages globalOnly="true" />
             <f:event type="preRenderView" listener="#{gameBean.checkGameOver}" />
