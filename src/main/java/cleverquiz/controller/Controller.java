@@ -39,7 +39,7 @@ public class Controller implements IController {
 
     @Override
     public List<Question> startQuiz(Category category, int amount) {
-        return List.of();
+        return DBUtil.startQuiz(category, amount);
     }
 
     @Override
