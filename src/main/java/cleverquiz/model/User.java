@@ -3,6 +3,7 @@ package cleverquiz.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Entity class representing a user in the system.
@@ -121,6 +122,35 @@ public class User {
     public void setLanguage(Language language) {
         this.language = language;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return Objects.equals(userId, user.userId) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(lastLogin, user.lastLogin) &&
+                Objects.equals(xp, user.xp) &&
+                Objects.equals(darkmode, user.darkmode) &&
+                Objects.equals(lastname, user.lastname) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(plz, user.plz) &&
+                Objects.equals(ort, user.ort) &&
+                Objects.equals(field, user.field) &&
+                Objects.equals(aboutme, user.aboutme) &&
+                role == user.role &&
+                Objects.equals(language, user.language); // Vergleicht `Language`
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, username, email, password, lastLogin, xp, darkmode,
+                lastname, name, plz, ort, field, aboutme, role, language);
+    }
+
 
     @Override
     public String toString() {
