@@ -22,4 +22,56 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "Difficulty")
     private Difficulty difficulty;
+
+    public Integer getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
+    }
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public int getPoints() {
+        return Difficulty.
+    }
 }

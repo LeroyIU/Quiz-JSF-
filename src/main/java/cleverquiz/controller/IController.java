@@ -110,6 +110,5 @@ public interface IController {
      * @param questionId question id
      * @param answers    user answers
      */
-    void updateGame(int questionId, List<UserAnswer> answers);
-
+    void updateGame(User user, Question question, List<UserAnswer> answers);
 }
