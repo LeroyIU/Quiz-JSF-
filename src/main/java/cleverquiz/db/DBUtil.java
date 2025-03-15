@@ -1,9 +1,6 @@
 package cleverquiz.db;
 
-import cleverquiz.model.Badge;
-import cleverquiz.model.Category;
-import cleverquiz.model.News;
-import cleverquiz.model.User;
+import cleverquiz.model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -148,6 +145,27 @@ public class DBUtil {
         return success;
     }
 
+    /**
+     * Start a quiz
+     *
+     * @param category with category
+     * @param amount   with amount of questions
+     * @return list of questions
+     */
+    public static List<Question> startQuiz(Category category, int amount) {
+        List<Question> questions = null;
+
+        try (Session session = getSession()) {
+            Query<Question> query = session.createQuery(
+                    "FROM Question WHERE category.id = :categoryId ORDER BY RAND()", Question.class);
+            query.setParameter("categoryId", category.getCategoryId());
+            query.setMaxResults(amount); // Begrenze die Anzahl der Ergebnisse
+            questions = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return questions;
+    }
 
 
     public static void main(String[] args) {
