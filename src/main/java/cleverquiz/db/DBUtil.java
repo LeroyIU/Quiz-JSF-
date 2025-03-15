@@ -1,5 +1,6 @@
 package cleverquiz.db;
 
+import cleverquiz.model.News;
 import cleverquiz.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +10,7 @@ import org.hibernate.query.Query;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.Properties;
 
 public class DBUtil {
@@ -43,8 +45,20 @@ public class DBUtil {
     }
 
     public static Session getSession() {
-        return getSessionFactory().openSession();
+        return sessionFactory.openSession();
     }
+
+    public static List<News> getLatestNews() {
+        Session session = DBUtil.getSession();
+        Query<News> query = session.createQuery(
+                "FROM News ORDER BY date DESC", News.class);
+        query.setMaxResults(15);
+        List<News> news = query.list();
+        session.close();
+        return news;
+    }
+
+
 
     public static void main(String[] args) {
         // Neue Session öffnen

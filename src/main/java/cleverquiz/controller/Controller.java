@@ -1,5 +1,6 @@
 package cleverquiz.controller;
 
+import cleverquiz.db.DBUtil;
 import cleverquiz.model.*;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public class Controller implements IController {
 
     @Override
     public List<News> getLatestNews() {
-        return List.of();
+        return DBUtil.getLatestNews();
     }
 
     @Override
