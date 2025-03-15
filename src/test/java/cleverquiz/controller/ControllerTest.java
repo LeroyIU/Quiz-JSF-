@@ -42,4 +42,11 @@ public class ControllerTest extends TestCase {
             System.out.println(category);
         }
     }
+
+    public void testAddCategory() {
+        String CategoryName = "Informatik";
+        IController controller = new Controller();
+        boolean success = controller.addCategory(CategoryName);
+        assertTrue(success);
+    }
 }

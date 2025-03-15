@@ -118,6 +118,37 @@ public class DBUtil {
         return categories;
     }
 
+    /**
+     * Add a new category
+     *
+     * @param name with name
+     * @return true, if category could be added, otherwise false
+     */
+    public static boolean addCategory(String name) {
+        Transaction transaction = null;
+        boolean success = false;
+
+        try (Session session = DBUtil.getSession()) {
+            transaction = session.beginTransaction();
+
+            // Neue Kategorie erstellen
+            Category category = new Category();
+            category.setName(name);
+
+            // Speichern
+            session.persist(category);
+            transaction.commit();
+            success = true; // Erfolg
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback(); // Rollback bei Fehler
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+
+
 
     public static void main(String[] args) {
         // Neue Session öffnen
