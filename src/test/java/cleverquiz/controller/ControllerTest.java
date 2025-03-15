@@ -1,6 +1,7 @@
 package cleverquiz.controller;
 
 import cleverquiz.model.Badge;
+import cleverquiz.model.Category;
 import cleverquiz.model.News;
 import cleverquiz.model.User;
 import junit.framework.TestCase;
@@ -31,6 +32,14 @@ public class ControllerTest extends TestCase {
         List<Badge> badges= controller.getUserBadges(100);
         for(Badge badge : badges) {
             System.out.println(badge);
+        }
+    }
+
+    public void testCategories() {
+        IController controller = new Controller();
+        List<Category> categories= controller.getCategories();
+        for(Category category : categories) {
+            System.out.println(category);
         }
     }
 }
