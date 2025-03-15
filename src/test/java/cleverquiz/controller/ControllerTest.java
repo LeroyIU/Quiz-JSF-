@@ -1,9 +1,9 @@
 package cleverquiz.controller;
 
+import cleverquiz.model.Badge;
 import cleverquiz.model.News;
 import cleverquiz.model.User;
 import junit.framework.TestCase;
-
 import java.util.List;
 
 public class ControllerTest extends TestCase {
@@ -23,6 +23,14 @@ public class ControllerTest extends TestCase {
         assertEquals(30, users.size());
         for(User user : users) {
             System.out.println(user);
+        }
+    }
+
+    public void testUserBadges() {
+        IController controller = new Controller();
+        List<Badge> badges= controller.getUserBadges(100);
+        for(Badge badge : badges) {
+            System.out.println(badge);
         }
     }
 }

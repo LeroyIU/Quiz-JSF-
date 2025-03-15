@@ -19,7 +19,7 @@ public class Controller implements IController {
 
     @Override
     public List<Badge> getUserBadges(int userId) {
-        return List.of();
+        return DBUtil.getUserBadges(userId);
     }
 
     @Override

@@ -1,11 +1,13 @@
 package cleverquiz.db;
 
+import cleverquiz.model.Badge;
 import cleverquiz.model.News;
 import cleverquiz.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
@@ -78,7 +80,26 @@ public class DBUtil {
         return user;
     }
 
-
+    /**
+     * Get badges owned by user
+     *
+     * @param userId owner
+     * @return badges owned by user
+     */
+    public static List<Badge> getUserBadges(int userId) {
+        List<Badge> badges = null;
+        try (Session session = getSession()) {
+            String sql = "SELECT b.* FROM Badge b " +
+                    "JOIN User_Badge ub ON b.badgeId = ub.badgeId " +
+                    "WHERE ub.userId = :userId";
+            NativeQuery<Badge> query = session.createNativeQuery(sql, Badge.class);
+            query.setParameter("userId", userId);
+            badges = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return badges;
+    }
 
 
 
