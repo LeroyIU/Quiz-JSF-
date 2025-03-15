@@ -94,8 +94,6 @@ public class GameBean implements Serializable {
         totalTime = 0;
         questionTime = 0;
         currentQuestionIndex = 0;
-        gameId = UUID.randomUUID().toString();
-        System.out.println("gameID: " + gameId);
         loadNextQuestion();
     }
 
@@ -169,17 +167,18 @@ public class GameBean implements Serializable {
         totalTime = 0;
         questionTime = 0;
         questionStartTime = 0;
-        gameId = null;
         System.out.println("Game destroyed.");
 
-        // Redirect to the URL passed as a parameter
+        // Append gameId as a query parameter to the redirect URL
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
+                String redirectWithGameId = redirectUrl + (redirectUrl.contains("?") ? "&" : "?") + "gameId=" + gameId;
+                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectWithGameId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        gameId = null; // Clear gameId after redirect
     }
 
     public void checkGameOver() {
