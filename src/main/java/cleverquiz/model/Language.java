@@ -11,6 +11,8 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer languageId;
+
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     public Integer getLanguageId() {
