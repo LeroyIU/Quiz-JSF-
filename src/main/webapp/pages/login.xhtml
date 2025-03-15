@@ -44,16 +44,17 @@
       <p:column>
         <div class="login-container">
           <h3 class="text-center">Login to Cleverquiz</h3>
-          <h:form id="loginForm">
-            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+          <h:form id="loginForm" style="text-align: left;">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+              columnClasses="ui-grid-col-6,ui-grid-col-6">
               <p:outputLabel for="username" value="Username" />
               <p:inputText id="username" value="#{loginBean.username}" required="true" />
 
               <p:outputLabel for="password" value="Password" />
               <p:password id="password" value="#{loginBean.password}" required="true" />
 
-              <p:commandButton value="Login" styleClass="btn btn-primary btn-block" action="#{loginBean.login}"
-                update="@form:growl" />
+              <p:outputLabel/>
+              <p:commandButton value="Login" action="#{loginBean.login}" update="@form:growl" />
             </p:panelGrid>
             <p:growl id="growl" showDetail="true" life="3000" />
             <h:messages globalOnly="true" />
