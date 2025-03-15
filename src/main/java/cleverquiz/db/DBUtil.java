@@ -48,6 +48,11 @@ public class DBUtil {
         return sessionFactory.openSession();
     }
 
+    /**
+     * Get the latest 15 news
+     *
+     * @return latest 15 news
+     */
     public static List<News> getLatestNews() {
         Session session = DBUtil.getSession();
         Query<News> query = session.createQuery(
