@@ -100,9 +100,9 @@ public interface IController {
      * @param name     with name
      * @param email    with email
      * @param password with password
-     * @return true, if user could be added, otherwise false
+     * @return user, if it could be created, otherwise null
      */
-    boolean addUser(String name, String email, String password);
+    User addUser(String name, String email, String password);
 
     /**
      * Update user game with current answer

@@ -63,8 +63,9 @@ public class Controller implements IController {
     }
 
     @Override
-    public boolean addUser(String name, String email, String password) {
-        return false;
+    public User addUser(String name, String email, String password) {
+        User user = User.create(name, email, password);
+        return DBUtil.createUser(user);
     }
 
     @Override
