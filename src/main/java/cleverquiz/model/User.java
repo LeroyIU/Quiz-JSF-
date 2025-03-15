@@ -27,6 +27,14 @@ public class User {
     private String field;
     private String aboutme;
 
+    public static User create(String name, String email, String password) {
+        User user = new User();
+        user.setUsername(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        return user;
+    }
+
     @Enumerated(EnumType.STRING)  // Speichert als VARCHAR anstatt ENUM
     @Column(name = "role")
     private UserRole role;
