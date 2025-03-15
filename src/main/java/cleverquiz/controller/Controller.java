@@ -29,7 +29,7 @@ public class Controller implements IController {
 
     @Override
     public boolean addCategory(String name) {
-        return false;
+        return DBUtil.addCategory(name);
     }
 
     @Override
