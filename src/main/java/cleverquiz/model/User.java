@@ -71,6 +71,38 @@ public class User {
         return language;
     }
 
+    public Integer getXp() {
+        return xp;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public Boolean getDarkmode() {
+        return darkmode;
+    }
+
+    public String getPlz() {
+        return plz;
+    }
+
+    public String getOrt() {
+        return ort;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getAboutme() {
+        return aboutme;
+    }
+
     public void setDarkmode(Boolean darkmode) {
         this.darkmode = darkmode;
     }

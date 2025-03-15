@@ -69,7 +69,15 @@ public class Controller implements IController {
     }
 
     @Override
-    public void updateGame(int questionId, List<UserAnswer> answers) {
-
+    public void updateGame(User user, Question question, List<UserAnswer> answers) {
+        boolean correct = true;
+        for (UserAnswer userAnswer : answers) {
+            correct &= userAnswer.isCorrect();
+        }
+        int xp = 0;
+        if(correct) xp = question.getDifficulty().getPoints();
+        int userxp = user.getXp();
+        user.setXp(userxp + xp);
+        editProfile(user);
     }
 }
