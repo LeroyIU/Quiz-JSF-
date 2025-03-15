@@ -106,13 +106,18 @@ public class GameBean implements Serializable {
         printAnswers();
         currentQuestionIndex++;
         System.out.println("currentQuestionIndex: " + currentQuestionIndex);
-        System.out.println("questionCount: " + questionCount); // Debug-Ausgabe
+        System.out.println("questionCount: " + questionCount); // Debug output
+
         if (currentQuestionIndex < questionCount) {
             loadNextQuestion();
         } else {
             // End of quiz, show a message
             currentQuestion = null;
         }
+
+        // Reset selectedAnswers and ensure the button is disabled
+        selectedAnswers = new boolean[4];
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:nextButton");
     }
 
     private void loadNextQuestion() {
@@ -181,6 +186,16 @@ public class GameBean implements Serializable {
         if (isGameOver()) {
             destroyGame();
         }
+    }
+
+    public boolean isAnyAnswerSelected() {
+        // Check if at least one checkbox is selected
+        for (boolean answer : selectedAnswers) {
+            if (answer) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class Question {
