@@ -77,4 +77,13 @@ public class ControllerTest extends TestCase {
             System.out.println(user.toString());
         }
     }
+
+    public void testUpdateUser() {
+        IController controller = new Controller();
+        List<User> users = controller.searchUser("na");
+        User user = users.getFirst();
+        user.setName("UpdatedName");
+        User newUser = controller.editProfile(user);
+        assertEquals(user, newUser);
+    }
 }

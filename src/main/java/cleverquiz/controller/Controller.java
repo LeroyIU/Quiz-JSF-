@@ -59,7 +59,7 @@ public class Controller implements IController {
 
     @Override
     public User editProfile(User user) {
-        return null;
+        return DBUtil.editProfile(user);
     }
 
     @Override
