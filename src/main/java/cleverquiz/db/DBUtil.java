@@ -63,6 +63,24 @@ public class DBUtil {
         return news;
     }
 
+    /**
+     * Get 30 best users
+     *
+     * @return 30 best user by xp
+     */
+    public static List<User> getUserRanking() {
+        Session session = DBUtil.getSession();
+        Query<User> query = session.createQuery(
+                "FROM User ORDER BY xp desc", User.class);
+        query.setMaxResults(30);
+        List<User> user = query.list();
+        session.close();
+        return user;
+    }
+
+
+
+
 
 
     public static void main(String[] args) {

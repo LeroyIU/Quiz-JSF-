@@ -14,7 +14,7 @@ public class Controller implements IController {
 
     @Override
     public List<User> getUserRanking() {
-        return List.of();
+        return DBUtil.getUserRanking();
     }
 
     @Override
