@@ -28,4 +28,13 @@ public class News {
     public Date getDate() {
         return date;
     }
+
+    @Override
+    public String toString() {
+        return "News{" +
+                "postId=" + postId +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
