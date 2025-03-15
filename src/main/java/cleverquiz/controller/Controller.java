@@ -24,7 +24,7 @@ public class Controller implements IController {
 
     @Override
     public List<Category> getCategories() {
-        return List.of();
+        return DBUtil.getCategories();
     }
 
     @Override

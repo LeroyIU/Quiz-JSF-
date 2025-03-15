@@ -1,6 +1,7 @@
 package cleverquiz.db;
 
 import cleverquiz.model.Badge;
+import cleverquiz.model.Category;
 import cleverquiz.model.News;
 import cleverquiz.model.User;
 import org.hibernate.Session;
@@ -101,7 +102,21 @@ public class DBUtil {
         return badges;
     }
 
-
+    /**
+     * Get categories
+     *
+     * @return categories
+     */
+    public static List<Category> getCategories() {
+        List<Category> categories = null;
+        try (Session session = DBUtil.getSession()) {
+            Query<Category> query = session.createQuery("FROM Category", Category.class);
+            categories = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
 
 
     public static void main(String[] args) {
