@@ -1,27 +1,43 @@
-<ui:composition template="/templates/layout.xhtml"
-     xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 
-     <ui:define name="content">
-      <div>
-            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid" layout="grid">
-                  <p:card style="width: 100%; background-color: beige;">
-                        <h2 style="text-align: center; color: black;">
-                              <h:outputText value="#{motivationBean.randomMotivation}" />
-                        </h2>
-                  </p:card>
+      <ui:define name="content">
+            <p:panelGrid columns="3" columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5" layout="grid"
+                  styleClass="ui-panelgrid-blank ui-fluid" style="border:0px none; background-color:transparent;">
+                  <p:row>
+                        <p:column styleClass="ui-grid-col-12">
+                              <p:card style="width: 100%; background-color: beige;">
+                                    <h2 style="text-align: center; color: black;">
+                                          <h:outputText value="#{motivationBean.randomMotivation}" />
+                                    </h2>
+                              </p:card>
+                        </p:column>
+                  </p:row>
+                  <p:row>
+                        <p:column styleClass="ui-grid-col-4" />
+                        <p:column styleClass="ui-grid-col-4" style="height: 75px; background-color: beige; padding:0; text-align: center;" >
+                              <h2 style="color: black;" onclick="PF('startGameDialog').show();">
+                                    <h:outputText value="Quiz starten" />
+                              </h2>
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-4" />
+                  </p:row>
             </p:panelGrid>
-            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid" style="margin-bottom: 100px;">
-                  <p:card>
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid"
+                  style="margin-bottom: 100px;">
+                  <p:column>
+                        <h2>Neuigkeiten</h2>
+                        <p:card>
                         <ui:include src="/templates/news.xhtml" />
                   </p:card>
+                  </p:column>
+                  <p:column>
+                        <h2>Rangliste</h2>
                   <p:card>
                         <ui:include src="/templates/ranking.xhtml" />
-                  </p:card>      
+                  </p:card>
+                  </p:column>    
             </p:panelGrid>
-      </div>
       </ui:define>
 </ui:composition>
