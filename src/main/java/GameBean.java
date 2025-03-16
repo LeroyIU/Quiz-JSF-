@@ -85,6 +85,7 @@ public class GameBean implements Serializable {
     }
 
     public void setRedirectUrl(String redirectUrl) {
+        System.out.println("Setting redirectUrl: " + redirectUrl); // Debug statement
         this.redirectUrl = redirectUrl;
     }
 
@@ -212,6 +213,30 @@ public class GameBean implements Serializable {
 
         public List<String> getAnswers() {
             return answers;
+        }
+    }
+
+    public void proceedWithRedirect(String redirectUrl) {
+        System.out.println("proceedWithRedirect called by thread: " + Thread.currentThread().getName());
+        System.out.println("Proceeding with redirect. Redirect URL: " + redirectUrl);
+
+        destroyGame(); // Reuse existing logic to reset the game state
+
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            try {
+                if (!FacesContext.getCurrentInstance().getExternalContext().isResponseCommitted()) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
+                    FacesContext.getCurrentInstance().responseComplete(); // Mark the response as complete
+                    System.out.println("Redirection successful to: " + redirectUrl);
+                } else {
+                    System.err.println("Response already committed. Redirection skipped.");
+                }
+            } catch (Exception e) {
+                System.err.println("Redirection failed: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("Redirect URL is null or empty. No redirection performed.");
         }
     }
 }
