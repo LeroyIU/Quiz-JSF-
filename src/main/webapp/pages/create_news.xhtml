@@ -14,20 +14,20 @@
             style="border:0px none; background-color:transparent;">
             <p:row>
                 <p:column />
-                <p:outputLabel for="title" value="Titel"/>
+                <p:outputLabel for="title" value="#{msg['title.text']}"/>
                 <p:inputText id="title" value="#{createNewsBean.title}" />
                 <p:column />
             </p:row>
             <p:row>
                 <p:column />
-                <p:outputLabel for="description" value="Beschreibung"/>
+                <p:outputLabel for="description" value="#{msg['description.text']}"/>
                 <p:inputTextarea id="description" rows="5" value="#{createNewsBean.description}" />
                 <p:column />
             </p:row>
             <p:row>
                 <p:column />
                 <p:column />
-                <p:commandButton value="Save" action="#{createNewsBean.saveNews}" update="newsForm growl" resetValues="true" styleClass="mr-2 ui-button-secondary" style="width: auto"/>
+                <p:commandButton value="#{msg['save.text']}" action="#{createNewsBean.saveNews}" update="newsForm growl" resetValues="true" styleClass="mr-2 ui-button-secondary" style="width: auto"/>
                 <p:column />
             </p:row>
         </p:panelGrid>

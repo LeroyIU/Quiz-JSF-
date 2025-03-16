@@ -22,32 +22,32 @@
                        styleClass="ui-panelgrid-blank ui-fluid"
                        style="border:0px none; background-color:transparent;">
                     <p:row>
-                      <p:outputLabel for="lastName" value="Last Name"/>
+                      <p:outputLabel for="lastName" value="#{msg['lastname.text']}"/>
                       <p:inputText id="lastName" value="#{profileSettingsBean.lastName}" readonly="#{!profileSettingsBean.editable}"/>
 
-                      <p:outputLabel for="firstName" value="First Name"/>
+                      <p:outputLabel for="firstName" value="#{msg['firstname.text']}"/>
                       <p:inputText id="firstName" value="#{profileSettingsBean.firstName}" readonly="#{!profileSettingsBean.editable}"/>
                     </p:row>
                     <p:row>
-                      <p:outputLabel for="plz" value="PLZ"/>
+                      <p:outputLabel for="plz" value="#{msg['postal.text']}"/>
                       <p:inputText id="plz" value="#{profileSettingsBean.plz}" readonly="#{!profileSettingsBean.editable}"/>
               
-                      <p:outputLabel for="city" value="City"/>
+                      <p:outputLabel for="city" value="#{msg['city.text']}"/>
                       <p:inputText id="city" value="#{profileSettingsBean.city}" readonly="#{!profileSettingsBean.editable}"/>
                     </p:row>
                     <p:row>            
-                      <p:outputLabel for="street" value="Street"/>
+                      <p:outputLabel for="street" value="#{msg['street.text']}"/>
                       <p:inputText id="street" value="#{profileSettingsBean.street}" readonly="#{!profileSettingsBean.editable}"/>
                     
-                      <p:outputLabel for="housenumber" value="Hausnummer"/>
+                      <p:outputLabel for="housenumber" value="#{msg['housenumber.text']}"/>
                       <p:inputText id="housenumber" value="#{profileSettingsBean.housenumber}" readonly="#{!profileSettingsBean.editable}"/>
                     </p:row>
                     </p:panelGrid>
 
                   <p:column styleClass="ui-grid-col-4">
-                    <h5>XP: 12345</h5>
+                    <h5><h:outputText value="#{msg['points.text']}"/></h5>
                     <hr />
-                    <h5>Select Badge:</h5>
+                    <h5><h:outputText value="#{msg['selectbadge.text']}"/></h5>
                     <p:selectOneRadio id="page" layout="pageDirection" value="#{profileSettingsBean.selectedBadge}" disabled="#{!profileSettingsBean.editable}">
                       <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                       <f:selectItem itemLabel="Option2" itemValue="Option2"/>
@@ -60,7 +60,7 @@
               <p:row>
                 <p:column styleClass="ui-grid-col-1" />
                 <p:column styleClass="ui-grid-col-9">
-                    <p:outputLabel for="aboutMe" value="About me"/>
+                    <p:outputLabel for="aboutMe" value="#{msg['aboutme.text']}"/>
                     <p:inputTextarea id="aboutMe" rows="5" value="#{profileSettingsBean.aboutMe}" readonly="#{!profileSettingsBean.editable}"/>
                 </p:column>
                 <p:column styleClass="ui-grid-col-1" />
@@ -69,9 +69,9 @@
               <p:row>
                 <p:column styleClass="ui-grid-col-1" />
                 <p:column styleClass="ui-grid-col-9">
-                  <p:commandButton value="Edit" action="#{profileSettingsBean.edit}" rendered="#{!profileSettingsBean.editable}" styleClass="mr-2 ui-button-secondary" style="width: auto; margin-right: 10px;" update="@form"/>
-                  <p:commandButton value="Save" action="#{profileSettingsBean.save}" rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-secondary" style="width: auto; margin-right: 10px;" update="@form"/>
-                  <p:commandButton value="Cancel" action="#{profileSettingsBean.cancel}" rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-danger" style="width: auto" update="@form"/>
+                  <p:commandButton value="#{msg['edit.text']}" action="#{profileSettingsBean.edit}" rendered="#{!profileSettingsBean.editable}" styleClass="mr-2 ui-button-secondary" style="width: auto; margin-right: 10px;" update="@form"/>
+                  <p:commandButton value="#{msg['save.text']}" action="#{profileSettingsBean.save}" rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-secondary" style="width: auto; margin-right: 10px;" update="@form"/>
+                  <p:commandButton value="#{msg['cancel.text']}" action="#{profileSettingsBean.cancel}" rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-danger" style="width: auto" update="@form"/>
                 </p:column>
                 <p:column styleClass="ui-grid-col-1" />
               </p:row>

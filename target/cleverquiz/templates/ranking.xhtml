@@ -9,13 +9,13 @@
         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
         currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords} Einträgen"
         rows="10" stripedRows="true">
-         <p:column headerText="Position">
+         <p:column headerText="#{msg['position.text']}">
              <h:outputText value="#{ranking.position}" />
          </p:column>
-         <p:column headerText="Username">
+         <p:column headerText="#{msg['username.text']}">
              <h:outputText value="#{ranking.username}" />
          </p:column>
-         <p:column headerText="Points">
+         <p:column headerText="#{msg['points.text']}">
              <h:outputText value="#{ranking.points}" />
          </p:column>
      </p:dataTable>

@@ -18,7 +18,7 @@
                         <p:column styleClass="ui-grid-col-4" />
                         <p:column styleClass="ui-grid-col-4" style="height: 75px; background-color: beige; padding:0; text-align: center;" >
                               <h2 style="color: black;" onclick="PF('startGameDialog').show();">
-                                    <h:outputText value="Quiz starten" />
+                                    <h:outputText value="#{msg['menu_quiz.text']}" />
                               </h2>
                         </p:column>
                         <p:column styleClass="ui-grid-col-4" />
@@ -27,13 +27,13 @@
             <p:panelGrid columns="2" styleClass="ui-panelgrid-blank w-100 ui-fluid" layout="grid"
                   style="margin-bottom: 100px;">
                   <p:column>
-                        <h2>Neuigkeiten</h2>
+                        <h2><h:outputText value="#{msg['news.text']}" /></h2>
                         <p:card>
                         <ui:include src="/templates/news.xhtml" />
                   </p:card>
                   </p:column>
                   <p:column>
-                        <h2>Rangliste</h2>
+                        <h2><h:outputText value="#{msg['ranking.text']}" /></h2>
                   <p:card>
                         <ui:include src="/templates/ranking.xhtml" />
                   </p:card>
