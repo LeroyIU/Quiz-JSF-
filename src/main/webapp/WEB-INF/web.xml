@@ -52,8 +52,5 @@
             <web-resource-name>Public Resources</web-resource-name>
             <url-pattern>/resources/*</url-pattern>
         </web-resource-collection>
-        <auth-constraint>
-            <!-- Remove the role-name constraint to allow public access -->
-        </auth-constraint>
     </security-constraint>
 </web-app>

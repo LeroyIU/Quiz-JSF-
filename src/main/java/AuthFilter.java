@@ -22,6 +22,14 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
+        String requestURI = req.getRequestURI();
+
+        // Allow access to resources directory
+        if (requestURI.startsWith(req.getContextPath() + "/resources/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         SessionBean sessionBean = (SessionBean) req.getSession().getAttribute("sessionBean");
 
         String loginURL = req.getContextPath() + "/pages/login.xhtml";
