@@ -70,8 +70,8 @@
                 </p:row>
                 <p:row>
                     <p:column />
-                    <p:column />
-                    <p:commandButton value="Register" styleClass="ui-button-secondary" action="#{registerBean.save}" update="growl" />
+                    <p:button value="Back to Login" styleClass="ui-button-secondary" outcome="login.xhtml" />
+                    <p:commandButton value="Register" action="#{registerBean.save}" update="growl" />
                     <p:column />
                 </p:row>
             </p:panelGrid>
