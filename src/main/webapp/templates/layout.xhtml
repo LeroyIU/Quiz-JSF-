@@ -89,7 +89,7 @@
                         disabled="#{!gameBean.isGameOver()}" />
                     <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
                     <p:menuitem value="#{msg['menu_friendslist.text']}" onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
-                    <p:submenu label="User" icon="pi pi-fw pi-user" style="margin-right: 10px;">
+                    <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
                         <p:menuitem value="#{msg['menu_username.text']}" />
                         <p:menuitem value="#{msg['menu_profilesettings.text']}" onclick="showWarningPopup('/cleverquiz/pages/profile_settings.xhtml')" />
                         <p:menuitem>
@@ -126,14 +126,12 @@
                     <div class="warning-dialog-content">
                         <h:outputText value="A game is currently running. Do you want to proceed and lose the current game?" />
                         <div class="warning-dialog-buttons">
-                            <p:commandButton 
-                                id="proceedButton" 
-                                value="Proceed" 
-                                action="#{gameBean.proceedWithRedirect(gameBean.redirectUrl)}" 
-                                update="warningForm" 
-                                oncomplete="PF('warningDialog').hide();" 
-                                styleClass="proceed-button" />
-                            <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button" />
+                            <h:inputHidden id="redirectUrl" value="" />
+                            <p:remoteCommand name="destroyGameWithRedirect" action="#{gameBean.destroyGameWithRedirect}" update="warningForm">
+                                <f:param name="redirectUrl" value="" />
+                            </p:remoteCommand>
+                            <p:commandButton id="proceedButton" value="Proceed" onclick="destroyGameWithRedirect([{name: 'redirectUrl', value: document.getElementById('redirectUrl').value}]); PF('warningDialog').hide();" type="button" styleClass="proceed-button ui-button-secondary" />
+                            <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button ui-button-secondary" />
                         </div>
                     </div>
                 </h:form>
@@ -156,7 +154,7 @@
                     </p:row>
                     <p:row>
                         <p:column styleClass="ui-grid-col-12">
-                            <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
+                            <p:commandButton value="Save" styleClass="ui-button-secondary" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
                         </p:column>
                     </p:row>
                     </p:panelGrid>
@@ -190,7 +188,7 @@
                             <p:commandButton value="Start" action="#{gameBean.startGame}" update="startGameForm" 
                             process="@this, categorySelect, questionCountSelect" 
                             oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml?gameID=#{gameBean.gameId}';" 
-                            style="margin-top: 10px;" />
+                            style="margin-top: 10px;" styleClass="ui-button-secondary" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>

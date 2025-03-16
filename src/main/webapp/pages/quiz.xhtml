@@ -86,7 +86,7 @@
                         action="#{gameBean.nextQuestion}" 
                         update="quizForm" 
                         disabled="#{!gameBean.isAnyAnswerSelected()}" 
-                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}" />
+                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}" styleClass="ui-button-secondary" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{gameBean.isGameOver()}">
