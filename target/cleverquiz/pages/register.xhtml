@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:head>
+      <style>
+        .ui-menubar {
+            position: fixed;
+            width: 100%;
+            justify-content: center;
+            display: flex;
+        }
+    </style>
+    <title>Register</title>
+    <link rel="icon" href="/cleverquiz/resources/images/favicon.ico" />
+    </h:head>
+    <body>
+        <h:form id="registerForm">
+            <p:growl id="growl" showDetail="true" />
+            <p:panelGrid columns="2" 
+            layout="grid"
+            styleClass="ui-panelgrid-blank ui-fluid"
+            style="border:0px none; background-color:transparent;"
+            columnClasses="ui-grid-col-3,ui-grid-col-2,ui-grid-col-4,ui-grid-col-3">
+                <p:row style="height: 100px;">
+                    <p:column />
+                    <p:column />
+                    <p:column>
+                        <h1>
+                            <h:outputText value="Register to Cleverquiz" />
+                        </h1>
+                    </p:column>
+                    <p:column />
+                </p:row>    
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="name" value="Name" />
+                    <p:inputText id="name" value="#{registerBean.name}" required="true" />
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="email" value="E-Mail" />
+                    <p:inputText id="email" value="#{registerBean.email}" required="true" validatorMessage="Invalid email format" />
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="password" value="Password" />
+                    <p:password id="password" value="#{registerBean.password}" required="true" />
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="passwordVerification" value="Verify Password" />
+                    <p:password id="passwordVerification" value="#{registerBean.passwordVerification}" required="true" />
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="inviteCode" value="Invite Code" />
+                    <p:inputText id="inviteCode" value="#{registerBean.inviteCode}" required="true" />
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:column />
+                    <p:commandButton value="Register" action="#{registerBean.save}" update="growl" />
+                    <p:column />
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+        <h:form id="footerForm">
+                <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
+                    <p:menuitem value="Impressum" url="/cleverquiz/pages/imprint.xhtml" />
+                    <p:menuitem value="Support" url="mailto:support@cleverquiz.de?subject=Supportanfrage" />
+                    <p:menuitem value="Datenschutzerklärung" url="/cleverquiz/pages/privacy.xhtml"/>
+                </p:menubar>
+            </h:form>
+    </body>
+</html>

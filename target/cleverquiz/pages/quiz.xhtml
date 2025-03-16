@@ -1,0 +1,148 @@
+<ui:composition template="/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form id="quizForm">
+            <p:panelGrid columns="4"
+                         columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
+                         layout="grid"
+                         styleClass="ui-panelgrid-blank ui-fluid"
+                         style="border:0px none; background-color:transparent;">
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-2"/>
+                    <p:column styleClass="ui-grid-col-2">
+                        <h:outputText value="Question #{gameBean.currentQuestionIndex + 1} of #{gameBean.questionCount}" />
+                    </p:column>
+                    <p:column  styleClass="ui-grid-col-8" />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                  <p:column styleClass="ui-grid-col-3"/>
+                  <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        <h:outputText value="#{gameBean.currentQuestion.text}" style="font-weight: bold;" />
+                    </p:column>
+                    <p:column  styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <p:selectBooleanCheckbox 
+                        value="#{gameBean.selectedAnswers[0]}" 
+                        style="float: right; width: 40px; height: 20px;">
+                        <p:ajax update="quizForm:nextButton" />
+                    </p:selectBooleanCheckbox>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[0]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <p:selectBooleanCheckbox 
+                        value="#{gameBean.selectedAnswers[1]}" 
+                        style="float: right; width: 40px; height: 20px;">
+                        <p:ajax update="quizForm:nextButton" />
+                    </p:selectBooleanCheckbox>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[1]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <p:selectBooleanCheckbox 
+                        value="#{gameBean.selectedAnswers[2]}" 
+                        style="float: right; width: 40px; height: 20px;">
+                        <p:ajax update="quizForm:nextButton" />
+                    </p:selectBooleanCheckbox>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[2]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <p:selectBooleanCheckbox 
+                        value="#{gameBean.selectedAnswers[3]}" 
+                        style="float: right; width: 40px; height: 20px;">
+                        <p:ajax update="quizForm:nextButton" />
+                    </p:selectBooleanCheckbox>
+                    <h:outputText value="#{gameBean.currentQuestion.answers[3]}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column />
+                    <p:column />
+                    <p:commandButton 
+                        id="nextButton" 
+                        value="#{gameBean.isAnyAnswerSelected() ? (gameBean.currentQuestionIndex + 1 == gameBean.questionCount ? 'Finish Game' : 'Next') : 'Please select at least one answer'}" 
+                        action="#{gameBean.nextQuestion}" 
+                        update="quizForm" 
+                        disabled="#{!gameBean.isAnyAnswerSelected()}" 
+                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}" />
+                    <p:column />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        <h:outputText value="Game finished!" style="font-size: 24px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3"/>
+                  </p:row>
+                  <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                          <h:outputText value="We hope you had fun. You can start a new game at any time." style="font-size: 24px;" />
+                      </p:column>
+                      <p:column styleClass="ui-grid-col-3"/>
+                  </p:row>
+            </p:panelGrid>
+            <h:messages globalOnly="true" />
+            <f:event type="preRenderView" listener="#{gameBean.checkGameOver}" />
+        </h:form>
+        <script>
+            setInterval(function() {
+                var totalTimeElement = document.getElementById('quizForm:totalTime');
+                var questionTimeElement = document.getElementById('quizForm:questionTime');
+                totalTimeElement.innerText = 'Total Time: ' + "#{gameBean.totalTime}";
+                questionTimeElement.innerText = 'Question Time: ' + "#{gameBean.questionTime}";
+            }, 1000);
+
+            function initializeCheckboxListeners() {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const nextButton = document.getElementById('quizForm:nextButton');
+
+                function updateButtonState() {
+                    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                    nextButton.disabled = !anyChecked; // Explicitly set the disabled attribute
+                    nextButton.style.backgroundColor = anyChecked ? '' : 'grey';
+                    nextButton.style.cursor = anyChecked ? '' : 'Please select an answer';
+                }
+
+                // Initialize button state
+                updateButtonState();
+
+                // Add event listeners to checkboxes
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateButtonState);
+                });
+
+                // Disable the button after it is clicked
+                nextButton.addEventListener('click', function (event) {
+                    if (nextButton.disabled) {
+                        event.preventDefault(); // Prevent form submission if the button is disabled
+                    } else {
+                        nextButton.disabled = true;
+                        nextButton.style.backgroundColor = 'grey';
+                        nextButton.style.cursor = 'Please select an answer';
+                    }
+                });
+            }
+
+            // Initialize listeners on page load
+            document.addEventListener('DOMContentLoaded', initializeCheckboxListeners);
+
+            // Reinitialize listeners after form update
+            document.addEventListener('jsf.ajax.event', function (event) {
+                if (event.status === 'success') {
+                    initializeCheckboxListeners();
+                }
+            });
+        </script>
+    </ui:define>
+</ui:composition>

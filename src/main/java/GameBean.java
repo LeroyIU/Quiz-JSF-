@@ -1,7 +1,6 @@
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -161,24 +160,24 @@ public class GameBean implements Serializable {
     }
 
     public void destroyGameWithRedirect(String redirectUrl) {
+        // Destroy the game session
         currentQuestion = null;
         currentQuestionIndex = 0;
         selectedAnswers = new boolean[4];
         totalTime = 0;
         questionTime = 0;
         questionStartTime = 0;
+        gameId = null;
         System.out.println("Game destroyed.");
-
-        // Append gameId as a query parameter to the redirect URL
+    
+        // Redirect to the provided URL
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             try {
-                String redirectWithGameId = redirectUrl + (redirectUrl.contains("?") ? "&" : "?") + "gameId=" + gameId;
-                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectWithGameId);
+                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        gameId = null; // Clear gameId after redirect
     }
 
     public void checkGameOver() {

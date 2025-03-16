@@ -1,0 +1,81 @@
+<ui:composition template="/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="questionForm">
+            <p:growl id="growl" showDetail="true" />
+            <p:panelGrid columns="4" id="panelGrid"
+                columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
+                layout="grid"
+                styleClass="ui-panelgrid-blank ui-fluid"
+                style="border:0px none; background-color:transparent; padding-bottom: 100px;">
+                <p:row>
+                    <p:column />
+                    <p:column styleClass="ui-grid-col-4">
+                        <div class="field col-12 md:col-4">
+                            <p:outputLabel for="category" value="Kategorie"/>
+                            <p:selectOneMenu id="category" value="#{questionBean.category}">
+                                <f:selectItem itemLabel="Select" noSelectionOption="true"/>
+                                <!-- Add your categories here -->
+                                <f:selectItem itemLabel="Category 1" itemValue="Category 1"/>
+                                <f:selectItem itemLabel="Category 2" itemValue="Category 2"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-4">
+                        <div class="field col-12 md:col-4">
+                            <p:outputLabel for="difficulty" value="Schwierigkeitsgrad"/>
+                            <p:selectOneMenu id="difficulty" value="#{questionBean.difficulty}">
+                                <f:selectItem itemLabel="Select" noSelectionOption="true"/>
+                                <!-- Add your difficulty levels here -->
+                                <f:selectItem itemLabel="Easy" itemValue="Easy"/>
+                                <f:selectItem itemLabel="Medium" itemValue="Medium"/>
+                                <f:selectItem itemLabel="Hard" itemValue="Hard"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </p:column>
+                    <p:column />
+                </p:row>
+                <p:row>
+                    <p:column />
+                    <p:outputLabel for="question" value="Frage:"/>
+                    <p:inputText id="question" value="#{questionBean.question}" />
+                    <p:column />
+                </p:row>
+                <c:forEach var="row" items="#{questionBean.rows}">
+                    <p:row>
+                        <p:column styleClass="ui-grid-col-2" />
+                        <p:column styleClass="ui-grid-col-2">
+                            <p:outputLabel value="Antwort:"/>
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-4">
+                            <p:inputText value="#{row.answer}" />
+                        </p:column>
+                        <p:column styleClass="ui-grid-col-2">
+                            <p:selectBooleanCheckbox value="#{row.correct}" itemLabel="Correct?"/>
+                        </p:column>
+                    </p:row>
+                </c:forEach>
+                <p:row>
+                    <p:column />
+                    <p:commandButton value="Add answer" styleClass="mr-2" style="width: auto" actionListener="#{questionBean.addRow}" update="panelGrid" oncomplete="scrollToBottom()"/>
+                    <p:commandButton value="Delete answer" styleClass="mr-2" style="width: auto; background-color: red; color: white;" actionListener="#{questionBean.removeRow}" update="panelGrid" oncomplete="scrollToTop()"/>
+                    <p:commandButton value="Save" styleClass="mr-2" style="width: auto" action="#{questionBean.saveQuestion}" update="questionForm growl" oncomplete="scrollToTop()"/>
+                    <p:column />
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+        <script>
+            function scrollToBottom() {
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+            function scrollToTop() {
+                window.scrollTo(0, 0);
+            }
+        </script>
+    </ui:define>
+</ui:composition>
