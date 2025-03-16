@@ -63,7 +63,9 @@
             function showWarningPopup(url) {
                 if (!#{gameBean.isGameOver()}) {
                     PF('warningDialog').show();
-                    document.getElementById('redirectUrl').value = url;
+                    // Set the redirect URL in the backend using p:remoteCommand
+                    document.getElementById('warningForm:redirectUrl').value = url;
+                    setRedirectUrl([{name: 'redirectUrl', value: url}]);
                 } else {
                     window.location.href = url;
                 }
@@ -81,7 +83,10 @@
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;" onclick="showWarningPopup('/cleverquiz/index.xhtml')" />
                     <p:menuitem value="#{msg['menu_news.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
                     <p:menuitem value="#{msg['menu_question.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
-                    <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();" />
+                    <p:menuitem 
+                        value="#{msg['menu_quiz.text']}" 
+                        onclick="PF('startGameDialog').show();" 
+                        disabled="#{!gameBean.isGameOver()}" />
                     <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
                     <p:menuitem value="#{msg['menu_friendslist.text']}" onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
                     <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
@@ -116,6 +121,8 @@
             <!-- Warning Dialog -->
             <p:dialog header="Warning" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
                 <h:form id="warningForm">
+                    <h:inputHidden id="redirectUrl" value="#{gameBean.redirectUrl}" />
+                    <p:remoteCommand name="setRedirectUrl" actionListener="#{gameBean.setRedirectUrl}" process="@this" />
                     <div class="warning-dialog-content">
                         <h:outputText value="A game is currently running. Do you want to proceed and lose the current game?" />
                         <div class="warning-dialog-buttons">
