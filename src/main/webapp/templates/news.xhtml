@@ -9,7 +9,7 @@
         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
         currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords} Einträgen"
         rows="5" styleClass="ui-panelgrid-blank w-100">
-         <p:column headerText="Neuigkeiten">
+         <p:column>
              <p:card style="margin-bottom: 10px;">
                  <h2 style="font-weight: bold;">#{news.title}</h2>
                  <h:outputText value="#{news.content}" />

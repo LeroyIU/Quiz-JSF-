@@ -21,7 +21,6 @@
       border-radius: 10px;
       text-align: center;
     }
-
     .login-image {
       max-width: 400px;
       margin: 100px auto;
@@ -54,7 +53,7 @@
               <p:password id="password" value="#{loginBean.password}" required="true" />
 
               <p:outputLabel/>
-              <p:commandButton value="Login" action="#{loginBean.login}" update="@form:growl" />
+              <p:commandButton value="Login" styleClass="ui-button-secondary" action="#{loginBean.login}" update="@form:growl" />
             </p:panelGrid>
             <p:growl id="growl" showDetail="true" life="3000" />
             <h:messages globalOnly="true" />

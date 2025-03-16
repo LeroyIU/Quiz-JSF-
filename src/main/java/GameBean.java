@@ -85,6 +85,7 @@ public class GameBean implements Serializable {
     }
 
     public void setRedirectUrl(String redirectUrl) {
+        System.out.println("Setting redirectUrl: " + redirectUrl); // Debug statement
         this.redirectUrl = redirectUrl;
     }
 
@@ -100,7 +101,7 @@ public class GameBean implements Serializable {
     public void nextQuestion() {
         long currentTime = System.currentTimeMillis();
         questionTime = (currentTime - questionStartTime) / 1000;
-        totalTime += questionTime;
+        totalTime += questionTime; // Add the time for the current question to the total time
         printAnswers();
         currentQuestionIndex++;
         System.out.println("currentQuestionIndex: " + currentQuestionIndex);
@@ -111,6 +112,7 @@ public class GameBean implements Serializable {
         } else {
             // End of quiz, show a message
             currentQuestion = null;
+            System.out.println("Total time taken: " + getFormattedTotalTime()); // Debug output
         }
 
         // Reset selectedAnswers and ensure the button is disabled
@@ -141,6 +143,11 @@ public class GameBean implements Serializable {
     }
 
     public void destroyGame() {
+        if (!isGameActive()) {
+            System.out.println("Game is already destroyed.");
+            return; // Exit if the game is already destroyed
+        }
+
         currentQuestion = null;
         currentQuestionIndex = 0;
         selectedAnswers = new boolean[4];
@@ -149,6 +156,9 @@ public class GameBean implements Serializable {
         questionStartTime = 0;
         gameId = null;
         System.out.println("Game destroyed.");
+
+        // Stop polling explicitly
+        stopPolling();
 
         // Redirect to the URL stored in the redirectUrl property
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
@@ -197,6 +207,28 @@ public class GameBean implements Serializable {
         return false;
     }
 
+    public long getElapsedQuestionTime() {
+        if (currentQuestion == null) {
+            return 0; // Return 0 if no question is active
+        }
+        return (System.currentTimeMillis() - questionStartTime) / 1000;
+    }
+
+    public String getFormattedTotalTime() {
+        long minutes = totalTime / 60;
+        long seconds = totalTime % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    public boolean isGameActive() {
+        return currentQuestion != null; // Game is active if there is a current question
+    }
+
+    public void stopPolling() {
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:poll");
+        System.out.println("Polling stopped.");
+    }
+
     public static class Question {
         private String text;
         private List<String> answers;
@@ -212,6 +244,30 @@ public class GameBean implements Serializable {
 
         public List<String> getAnswers() {
             return answers;
+        }
+    }
+
+    public void proceedWithRedirect(String redirectUrl) {
+        System.out.println("proceedWithRedirect called by thread: " + Thread.currentThread().getName());
+        System.out.println("Proceeding with redirect. Redirect URL: " + redirectUrl);
+
+        destroyGame(); // Reuse existing logic to reset the game state
+
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            try {
+                if (!FacesContext.getCurrentInstance().getExternalContext().isResponseCommitted()) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
+                    FacesContext.getCurrentInstance().responseComplete(); // Mark the response as complete
+                    System.out.println("Redirection successful to: " + redirectUrl);
+                } else {
+                    System.err.println("Response already committed. Redirection skipped.");
+                }
+            } catch (Exception e) {
+                System.err.println("Redirection failed: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("Redirect URL is null or empty. No redirection performed.");
         }
     }
 }

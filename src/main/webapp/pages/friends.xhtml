@@ -34,14 +34,14 @@
                     <h3>Search</h3>
                     <h:panelGroup style="display: flex; align-items: center;">
                         <p:inputText value="#{friendsBean.searchQuery}" placeholder="Search by username" style="margin-right: 10px;" />
-                        <p:commandButton value="Search" action="#{friendsBean.search}" update="searchResults" />
+                        <p:commandButton value="Search" styleClass="ui-button-secondary" action="#{friendsBean.search}" update="searchResults" />
                     </h:panelGroup>
                     <p:dataTable id="searchResults" value="#{friendsBean.searchResults}" var="result">
                         <p:column headerText="Username">
                             <h:outputText value="#{result.username}" />
                         </p:column>
                         <p:column headerText="Actions">
-                            <p:commandButton value="Add" icon="pi pi-plus" styleClass="ui-button-primary" action="#{friendsBean.addFriend(result)}" update="friendsForm"/>
+                            <p:commandButton value="Add" icon="pi pi-plus" styleClass="ui-button-secondary" action="#{friendsBean.addFriend(result)}" update="friendsForm"/>
                         </p:column>
                     </p:dataTable>
                 </p:panelGrid>
