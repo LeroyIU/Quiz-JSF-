@@ -50,7 +50,7 @@
                           <p:password id="password" value="#{loginBean.password}" required="true" />
                       </p:panelGrid>
 
-                      <p:commandButton value="Login" styleClass="btn btn-primary btn-block" action="#{loginBean.login}" update="@form:growl" />
+                      <p:commandButton value="Login" styleClass="ui-button-secondary" action="#{loginBean.login}" update="@form:growl" />
                       <p:growl id="growl" showDetail="true" life="3000" />
                       <h:messages globalOnly="true" />
                       <div style="margin-top: 15px;">

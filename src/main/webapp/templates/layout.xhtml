@@ -117,8 +117,8 @@
                             <p:remoteCommand name="destroyGameWithRedirect" action="#{gameBean.destroyGameWithRedirect}" update="warningForm">
                                 <f:param name="redirectUrl" value="" />
                             </p:remoteCommand>
-                            <p:commandButton id="proceedButton" value="Proceed" onclick="destroyGameWithRedirect([{name: 'redirectUrl', value: document.getElementById('redirectUrl').value}]); PF('warningDialog').hide();" type="button" styleClass="proceed-button" />
-                            <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button" />
+                            <p:commandButton id="proceedButton" value="Proceed" onclick="destroyGameWithRedirect([{name: 'redirectUrl', value: document.getElementById('redirectUrl').value}]); PF('warningDialog').hide();" type="button" styleClass="proceed-button ui-button-secondary" />
+                            <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button ui-button-secondary" />
                         </div>
                     </div>
                 </h:form>
@@ -141,7 +141,7 @@
                     </p:row>
                     <p:row>
                         <p:column styleClass="ui-grid-col-12">
-                            <p:commandButton value="Save" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
+                            <p:commandButton value="Save" styleClass="ui-button-secondary" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
                         </p:column>
                     </p:row>
                     </p:panelGrid>
@@ -175,7 +175,7 @@
                             <p:commandButton value="Start" action="#{gameBean.startGame}" update="startGameForm" 
                             process="@this, categorySelect, questionCountSelect" 
                             oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml?gameID=#{gameBean.gameId}';" 
-                            style="margin-top: 10px;" />
+                            style="margin-top: 10px;" styleClass="ui-button-secondary" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>

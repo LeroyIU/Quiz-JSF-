@@ -52,7 +52,7 @@
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
                     <p:column />
-                    <p:commandButton value="Next" action="#{gameBean.nextQuestion}" update="quizForm" />
+                    <p:commandButton value="Next" styleClass="ui-button-secondary" action="#{gameBean.nextQuestion}" update="quizForm" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{gameBean.isGameOver()}">
