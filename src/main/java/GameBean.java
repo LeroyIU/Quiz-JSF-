@@ -94,8 +94,6 @@ public class GameBean implements Serializable {
         totalTime = 0;
         questionTime = 0;
         currentQuestionIndex = 0;
-        gameId = UUID.randomUUID().toString();
-        System.out.println("gameID: " + gameId);
         loadNextQuestion();
     }
 
@@ -106,13 +104,18 @@ public class GameBean implements Serializable {
         printAnswers();
         currentQuestionIndex++;
         System.out.println("currentQuestionIndex: " + currentQuestionIndex);
-        System.out.println("questionCount: " + questionCount); // Debug-Ausgabe
+        System.out.println("questionCount: " + questionCount); // Debug output
+
         if (currentQuestionIndex < questionCount) {
             loadNextQuestion();
         } else {
             // End of quiz, show a message
             currentQuestion = null;
         }
+
+        // Reset selectedAnswers and ensure the button is disabled
+        selectedAnswers = new boolean[4];
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:nextButton");
     }
 
     private void loadNextQuestion() {
@@ -164,23 +167,34 @@ public class GameBean implements Serializable {
         totalTime = 0;
         questionTime = 0;
         questionStartTime = 0;
-        gameId = null;
         System.out.println("Game destroyed.");
 
-        // Redirect to the URL passed as a parameter
+        // Append gameId as a query parameter to the redirect URL
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
+                String redirectWithGameId = redirectUrl + (redirectUrl.contains("?") ? "&" : "?") + "gameId=" + gameId;
+                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectWithGameId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        gameId = null; // Clear gameId after redirect
     }
 
     public void checkGameOver() {
         if (isGameOver()) {
             destroyGame();
         }
+    }
+
+    public boolean isAnyAnswerSelected() {
+        // Check if at least one checkbox is selected
+        for (boolean answer : selectedAnswers) {
+            if (answer) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class Question {
