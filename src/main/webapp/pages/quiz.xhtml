@@ -16,7 +16,11 @@
                     <p:column styleClass="ui-grid-col-2">
                         <h:outputText value="Question #{gameBean.currentQuestionIndex + 1} of #{gameBean.questionCount}" />
                     </p:column>
-                    <p:column  styleClass="ui-grid-col-8" />
+                    <p:column styleClass="ui-grid-col-4" />
+                    <p:column styleClass="ui-grid-col-2" style="text-align: right;" >
+                        <h:outputText id="elapsedTime" value="Elapsed time: #{gameBean.elapsedQuestionTime} seconds" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-2" />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
                   <p:column styleClass="ui-grid-col-3"/>
@@ -25,6 +29,14 @@
                     </p:column>
                     <p:column  styleClass="ui-grid-col-3" />
                 </p:row>
+                <p:row rendered="#{not gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3"/>
+                </p:row>
+                <p:poll id="poll" interval="1" update="quizForm:elapsedTime" rendered="#{gameBean.isGameActive()}" />
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
                     <p:selectBooleanCheckbox 
@@ -87,13 +99,19 @@
                   <p:row rendered="#{gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-3"/>
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                          <h:outputText value="We hope you had fun. You can start a new game at any time." style="font-size: 24px;" />
+                          <h:outputText value="Total time taken: #{gameBean.formattedTotalTime}" style="font-size: 18px;" />
+                      </p:column>
+                      <p:column styleClass="ui-grid-col-3"/>
+                  </p:row>
+                  <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                          <h:outputText value="We hope you had fun. You can start a new game at any time." style="font-size: 18px;" />
                       </p:column>
                       <p:column styleClass="ui-grid-col-3"/>
                   </p:row>
             </p:panelGrid>
             <h:messages globalOnly="true" />
-            <f:event type="preRenderView" listener="#{gameBean.checkGameOver}" />
         </h:form>
         <script>
             setInterval(function() {
@@ -102,6 +120,25 @@
                 totalTimeElement.innerText = 'Total Time: ' + "#{gameBean.totalTime}";
                 questionTimeElement.innerText = 'Question Time: ' + "#{gameBean.questionTime}";
             }, 1000);
+
+            setInterval(function() {
+                var elapsedTimeElement = document.getElementById('quizForm:elapsedTime');
+                if (elapsedTimeElement) {
+                    fetchElapsedTime();
+                }
+            }, 1000);
+
+            function fetchElapsedTime() {
+                jsf.ajax.request(null, null, {
+                    render: 'quizForm:elapsedTime',
+                    onevent: function(data) {
+                        if (data.status === 'success') {
+                            var elapsedTimeElement = document.getElementById('quizForm:elapsedTime');
+                            elapsedTimeElement.innerText = 'Time for this question: ' + "#{gameBean.elapsedQuestionTime}" + ' seconds';
+                        }
+                    }
+                });
+            }
 
             function initializeCheckboxListeners() {
                 const checkboxes = document.querySelectorAll('input[type="checkbox"]');

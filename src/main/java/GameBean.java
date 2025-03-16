@@ -100,7 +100,7 @@ public class GameBean implements Serializable {
     public void nextQuestion() {
         long currentTime = System.currentTimeMillis();
         questionTime = (currentTime - questionStartTime) / 1000;
-        totalTime += questionTime;
+        totalTime += questionTime; // Add the time for the current question to the total time
         printAnswers();
         currentQuestionIndex++;
         System.out.println("currentQuestionIndex: " + currentQuestionIndex);
@@ -111,6 +111,7 @@ public class GameBean implements Serializable {
         } else {
             // End of quiz, show a message
             currentQuestion = null;
+            System.out.println("Total time taken: " + getFormattedTotalTime()); // Debug output
         }
 
         // Reset selectedAnswers and ensure the button is disabled
@@ -141,6 +142,11 @@ public class GameBean implements Serializable {
     }
 
     public void destroyGame() {
+        if (!isGameActive()) {
+            System.out.println("Game is already destroyed.");
+            return; // Exit if the game is already destroyed
+        }
+
         currentQuestion = null;
         currentQuestionIndex = 0;
         selectedAnswers = new boolean[4];
@@ -149,6 +155,9 @@ public class GameBean implements Serializable {
         questionStartTime = 0;
         gameId = null;
         System.out.println("Game destroyed.");
+
+        // Stop polling explicitly
+        stopPolling();
 
         // Redirect to the URL stored in the redirectUrl property
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
@@ -195,6 +204,28 @@ public class GameBean implements Serializable {
             }
         }
         return false;
+    }
+
+    public long getElapsedQuestionTime() {
+        if (currentQuestion == null) {
+            return 0; // Return 0 if no question is active
+        }
+        return (System.currentTimeMillis() - questionStartTime) / 1000;
+    }
+
+    public String getFormattedTotalTime() {
+        long minutes = totalTime / 60;
+        long seconds = totalTime % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    public boolean isGameActive() {
+        return currentQuestion != null; // Game is active if there is a current question
+    }
+
+    public void stopPolling() {
+        FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:poll");
+        System.out.println("Polling stopped.");
     }
 
     public static class Question {
