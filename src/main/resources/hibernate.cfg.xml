@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">${hibernate.connection.url}</property>
+        <property name="hibernate.connection.username">${hibernate.connection.username}</property>
+        <property name="hibernate.connection.password">${hibernate.connection.password}</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <!-- Entity-Klassen registrieren -->
+        <mapping class="cleverquiz.model.Answer"/>
+         <mapping class="cleverquiz.model.Badge"/>
+        <mapping class="cleverquiz.model.Category"/>
+        <mapping class="cleverquiz.model.Difficulty"/>
+        <mapping class="cleverquiz.model.Event"/>
+        <mapping class="cleverquiz.model.Friends"/>
+        <mapping class="cleverquiz.model.FriendsId"/>
+        <mapping class="cleverquiz.model.Game"/>
+        <mapping class="cleverquiz.model.Language"/>
+        <mapping class="cleverquiz.model.News"/>
+        <mapping class="cleverquiz.model.Question"/>
+        <mapping class="cleverquiz.model.Role"/>
+        <mapping class="cleverquiz.model.User"/>
+        <mapping class="cleverquiz.model.UserAnswer"/>
+        <mapping class="cleverquiz.model.UserBadge"/>
+        <mapping class="cleverquiz.model.UserBadgeId"/>
+        <mapping class="cleverquiz.model.UserRole"/>
+    </session-factory>
+</hibernate-configuration>
