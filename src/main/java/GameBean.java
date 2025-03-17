@@ -7,6 +7,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+import cleverquiz.model.Category;
+
 @ManagedBean
 @SessionScoped
 public class GameBean implements Serializable {
@@ -25,7 +29,12 @@ public class GameBean implements Serializable {
 
     // Initialize categories and other properties
     public GameBean() {
-        categories = Arrays.asList("Category 1", "Category 2", "Category 3");
+        IController controller = new Controller();
+        List<cleverquiz.model.Category> categories = controller.getCategories();
+        for (Category categorie : categories) {
+            this.categories.add(categorie.getName());
+        }
+
         selectedAnswers = new boolean[4];
         currentQuestionIndex = 0;
         questions = Arrays.asList(
