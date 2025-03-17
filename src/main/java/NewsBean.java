@@ -6,6 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import cleverquiz.controller.IController;
+import cleverquiz.controller.Controller;
+
 @ManagedBean
 @ViewScoped
 public class NewsBean implements Serializable {
@@ -13,9 +16,12 @@ public class NewsBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        IController controller = new Controller();
+        List<cleverquiz.model.News> newslist = controller.getLatestNews();
+
         newsList = new ArrayList<>();
-        for (int i = 1; i <= 15; i++) {
-            newsList.add(new News("Title " + i, "This is the content of news item " + i, new Date(), "Author " + i));
+        for (cleverquiz.model.News tmp : newslist) {
+            newsList.add(new News(tmp));
         }
     }
 
@@ -34,6 +40,13 @@ public class NewsBean implements Serializable {
             this.content = content;
             this.date = date;
             this.author = author;
+        }
+
+        public News(cleverquiz.model.News tmp){
+            this.title = "";
+            this.content = tmp.getText();
+            this.date = tmp.getDate();
+            this.author = "";
         }
 
         public String getTitle() {
