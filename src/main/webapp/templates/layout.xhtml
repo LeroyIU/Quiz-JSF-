@@ -86,7 +86,7 @@
                     <p:menuitem 
                         value="#{msg['menu_quiz.text']}" 
                         onclick="PF('startGameDialog').show();" 
-                        disabled="#{!gameBean.isGameOver()}" />
+                        disabled="#{!gameBean.isGameOver()}" style="background-color: #48eddd;"/>
                     <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
                     <p:menuitem value="#{msg['menu_friendslist.text']}" onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
                     <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
