@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import cleverquiz.controller.IController;
+import cleverquiz.controller.Controller;
+
 @ManagedBean
 @ViewScoped
 public class NewsBean implements Serializable {
