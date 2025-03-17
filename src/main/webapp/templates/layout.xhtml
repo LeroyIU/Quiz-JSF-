@@ -104,7 +104,7 @@
                                 <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none" oncomplete="location.reload();" />
                             </p:toggleSwitch>
                         </p:menuitem>
-                        <p:menuitem value="Logout" onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
+                        <p:menuitem value="#{msg['menu_logout.text']}" onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -126,7 +126,7 @@
                     <div class="warning-dialog-content">
                         <h:outputText value="A game is currently running. Do you want to proceed and lose the current game?" />
                         <div class="warning-dialog-buttons">
-                            <h:inputHidden id="redirectUrl" value="" />
+                            <h:inputHidden id="redirectUrlHidden" value="" />
                             <p:remoteCommand name="destroyGameWithRedirect" action="#{gameBean.destroyGameWithRedirect}" update="warningForm">
                                 <f:param name="redirectUrl" value="" />
                             </p:remoteCommand>
@@ -137,7 +137,7 @@
                 </h:form>
             </p:dialog>
             <!-- Dialog for creating a new category -->
-            <p:dialog header="Neue Kategorie anlegen" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
+            <p:dialog header="#{msg['menu_category.text']}" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
                 <h:form id="categoryForm">
                     <p:panelGrid columns="4" id="panelGrid"
                     columnClasses="ui-grid-col-6,ui-grid-col-6"
@@ -146,7 +146,7 @@
                     style="border:0px none; background-color:transparent; min-width: 400px;">
                     <p:row>
                         <p:column>
-                        <h:outputLabel for="categoryName" value="Kategorie:" />
+                        <h:outputLabel for="categoryName" value="#{msg['category.text']}" />
                         </p:column>
                         <p:column>
                             <p:inputText id="categoryName" value="#{categoryBean.categoryName}" />
@@ -154,7 +154,7 @@
                     </p:row>
                     <p:row>
                         <p:column styleClass="ui-grid-col-12">
-                            <p:commandButton value="Save" styleClass="ui-button-secondary" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
+                            <p:commandButton value="#{msg['save.text']}" styleClass="ui-button-secondary" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
                         </p:column>
                     </p:row>
                     </p:panelGrid>
@@ -162,7 +162,7 @@
                 </h:form>
             </p:dialog>
             <!-- Dialog for starting a new game -->
-            <p:dialog header="Spiel starten" widgetVar="startGameDialog" modal="true" closable="true" resizable="false">
+            <p:dialog header="#{msg['menu_quiz.text']}" widgetVar="startGameDialog" modal="true" closable="true" resizable="false">
             <h:form id="startGameForm">
                 <p:panelGrid columns="4" id="panelGrid"
                     columnClasses="ui-grid-col-6,ui-grid-col-6"
@@ -170,13 +170,13 @@
                     styleClass="ui-panelgrid-blank ui-fluid"
                     style="border:0px none; background-color:transparent; min-width: 400px;">
                     <p:row>
-                        <h:outputLabel for="categorySelect" value="Kategorie:" />
+                        <h:outputLabel for="categorySelect" value="#{msg['category.text']}" />
                         <p:selectOneMenu id="categorySelect" value="#{gameBean.selectedCategory}">
                             <f:selectItems value="#{gameBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
                         </p:selectOneMenu>
                     </p:row>
                     <p:row>
-                        <h:outputLabel for="questionCountSelect" value="Anzahl der Fragen:" />
+                        <h:outputLabel for="questionCountSelect" value="#{msg['question_count.text']}" />
                         <p:selectOneMenu id="questionCountSelect" value="#{gameBean.questionCount}">
                             <f:selectItem itemLabel="10" itemValue="10" />
                             <f:selectItem itemLabel="15" itemValue="15" />
@@ -185,7 +185,7 @@
                     </p:row>
                     <p:row>
                         <p:column styleClass="ui-grid-col-12">
-                            <p:commandButton value="Start" action="#{gameBean.startGame}" update="startGameForm" 
+                            <p:commandButton value="#{msg['start.text']}" action="#{gameBean.startGame}" update="startGameForm" 
                             process="@this, categorySelect, questionCountSelect" 
                             oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml?gameID=#{gameBean.gameId}';" 
                             style="margin-top: 10px;" styleClass="ui-button-secondary" />
