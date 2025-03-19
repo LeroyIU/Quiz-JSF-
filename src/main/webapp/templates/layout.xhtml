@@ -101,7 +101,7 @@
                         <p:menuitem>
                             <h:outputLabel for="toggleSwitch" value="Darkmode:" />
                             <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" style="float: right;">
-                                <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none" oncomplete="location.reload();" />
+                                <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none" oncomplete="setTimeout(() => location.reload(), 200);" />
                             </p:toggleSwitch>
                         </p:menuitem>
                         <p:menuitem value="#{msg['menu_logout.text']}" onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
