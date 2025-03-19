@@ -63,14 +63,12 @@
             function showWarningPopup(url) {
                 if (!#{gameBean.isGameOver()}) {
                     PF('warningDialog').show();
-                    // Set the redirect URL in the backend using p:remoteCommand
-                    document.getElementById('warningForm:redirectUrl').value = url;
                     setRedirectUrl([{name: 'redirectUrl', value: url}]);
                 } else {
                     window.location.href = url;
                 }
             }
-      </script>
+        </script>
     </h:head>
     <!-- Workaround um die Hintergrundfarbe für den kompletten Body zu ändern -->
     <!-- Orientiert sich an der Backgroundcolor der verwendeten Themes -->
@@ -121,16 +119,15 @@
             <!-- Warning Dialog -->
             <p:dialog header="Warning" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
                 <h:form id="warningForm">
-                    <h:inputHidden id="redirectUrl" value="#{gameBean.redirectUrl}" />
                     <p:remoteCommand name="setRedirectUrl" actionListener="#{gameBean.setRedirectUrl}" process="@this" />
                     <div class="warning-dialog-content">
                         <h:outputText value="A game is currently running. Do you want to proceed and lose the current game?" />
                         <div class="warning-dialog-buttons">
-                            <h:inputHidden id="redirectUrlHidden" value="" />
-                            <p:remoteCommand name="destroyGameWithRedirect" action="#{gameBean.destroyGameWithRedirect}" update="warningForm">
-                                <f:param name="redirectUrl" value="" />
-                            </p:remoteCommand>
-                            <p:commandButton id="proceedButton" value="Proceed" onclick="destroyGameWithRedirect([{name: 'redirectUrl', value: document.getElementById('redirectUrl').value}]); PF('warningDialog').hide();" type="button" styleClass="proceed-button ui-button-secondary" />
+                            <p:commandButton id="proceedButton" value="Proceed" 
+                                onclick="PF('warningDialog').hide();" 
+                                action="#{gameBean.destroyGameWithRedirect}" 
+                                process="@this" 
+                                styleClass="proceed-button ui-button-secondary" />
                             <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button ui-button-secondary" />
                         </div>
                     </div>
