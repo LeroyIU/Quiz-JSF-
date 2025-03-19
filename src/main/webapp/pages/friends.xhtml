@@ -20,8 +20,8 @@
                         <p:column headerText="#{msg['menu_username.text']}">
                             <h:outputText value="#{friend.username}" />
                         </p:column>
-                        <p:column headerText="#{msg['badge.text']}">
-                            <h:outputText value="#{friend.badge}" />
+                        <p:column headerText="#{msg['points.text']}">
+                            <h:outputText value="#{friend.xp}" />
                         </p:column>
                         <p:column headerText="#{msg['lastseen.text']}">
                             <h:outputText value="#{friend.lastSeen}" />
@@ -55,16 +55,19 @@
                 layout="grid"
                 styleClass="ui-panelgrid-blank ui-fluid"
                 style="border:0px none; background-color:transparent; min-width: 400px;">
-                    <h:outputLabel value="Username:" />
+                    <h:outputLabel value="#{msg['menu_username.text']}" />
                     <h:outputText value="#{friendsBean.selectedFriend.username}" />
 
-                    <h:outputLabel value="Last Seen:" />
+                    <h:outputLabel value="#{msg['lastseen.text']}" />
                     <h:outputText value="#{friendsBean.selectedFriend.lastSeen}" />
 
-                    <h:outputLabel value="XP:" />
+                    <h:outputLabel value="#{msg['points.text']}" />
                     <h:outputText value="#{friendsBean.selectedFriend.xp}" />
 
-                    <h:outputLabel value="About Me:" />
+                    <h:outputLabel value="#{msg['playedGames.text']}" />
+                    <h:outputText value="#{friendsBean.selectedFriend.gamesPlayed}" />
+
+                    <h:outputLabel value="#{msg['aboutme.text']}" />
                     <h:outputText value="#{friendsBean.selectedFriend.aboutMe}" />
                 </p:panelGrid>
             </p:dialog>
