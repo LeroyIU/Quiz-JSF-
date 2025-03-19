@@ -14,11 +14,11 @@
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-2"/>
                     <p:column styleClass="ui-grid-col-2">
-                        <h:outputText value="Question #{gameBean.currentQuestionIndex + 1} of #{gameBean.questionCount}" />
+                        <h:outputText value="#{msg['question.text']} #{gameBean.currentQuestionIndex + 1} #{msg['of.text']} #{gameBean.questionCount}" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-4" />
                     <p:column styleClass="ui-grid-col-2" style="text-align: right;" >
-                        <h:outputText id="elapsedTime" value="Elapsed time: #{gameBean.elapsedQuestionTime} seconds" />
+                        <h:outputText id="elapsedTime" value="#{msg['elapsedTime.text']} #{gameBean.elapsedQuestionTime} #{msg['seconds.text']}" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-2" />
                 </p:row>
@@ -82,31 +82,32 @@
                     <p:column />
                     <p:commandButton 
                         id="nextButton" 
-                        value="#{gameBean.isAnyAnswerSelected() ? (gameBean.currentQuestionIndex + 1 == gameBean.questionCount ? 'Finish Game' : 'Next') : 'Please select at least one answer'}" 
+                        value="#{gameBean.isAnyAnswerSelected() ? (gameBean.currentQuestionIndex + 1 == gameBean.questionCount ? &quot;#{msg['finishGame.text']}&quot; : &quot;#{msg['next.text']}&quot;) : &quot;#{msg['pleaseSelectAnswer.text']}&quot;}" 
                         action="#{gameBean.nextQuestion}" 
                         update="quizForm" 
                         disabled="#{!gameBean.isAnyAnswerSelected()}" 
-                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}" styleClass="ui-button-secondary" />
+                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}" 
+                        styleClass="ui-button-secondary" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-3"/>
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                        <h:outputText value="Game finished!" style="font-size: 24px;" />
+                        <h:outputText value="#{msg['gameFinished.text']}" style="font-size: 24px;" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-3"/>
                   </p:row>
                   <p:row rendered="#{gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-3"/>
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                          <h:outputText value="Total time taken: #{gameBean.formattedTotalTime}" style="font-size: 18px;" />
+                          <h:outputText value="#{msg['totalTimeTaken.text']}: #{gameBean.formattedTotalTime}" style="font-size: 18px;" />
                       </p:column>
                       <p:column styleClass="ui-grid-col-3"/>
                   </p:row>
                   <p:row rendered="#{gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-3"/>
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                          <h:outputText value="We hope you had fun. You can start a new game at any time." style="font-size: 18px;" />
+                          <h:outputText value="#{msg['goodbyeMessage.text']}" style="font-size: 18px;" />
                       </p:column>
                       <p:column styleClass="ui-grid-col-3"/>
                   </p:row>
@@ -148,7 +149,7 @@
                     const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
                     nextButton.disabled = !anyChecked; // Explicitly set the disabled attribute
                     nextButton.style.backgroundColor = anyChecked ? '' : 'grey';
-                    nextButton.style.cursor = anyChecked ? '' : 'Please select an answer';
+                    nextButton.style.cursor = anyChecked ? '' : "#{msg['pleaseSelectAnswer.text']}";
                 }
 
                 // Initialize button state
@@ -166,7 +167,7 @@
                     } else {
                         nextButton.disabled = true;
                         nextButton.style.backgroundColor = 'grey';
-                        nextButton.style.cursor = 'Please select an answer';
+                        nextButton.style.cursor = "#{msg['pleaseSelectAnswer.text']}";
                     }
                 });
             }
