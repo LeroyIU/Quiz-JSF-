@@ -1,46 +1,42 @@
-<ui:composition template="/templates/layout.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
         <h:form id="quizForm">
-            <p:panelGrid columns="4"
-                         columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
-                         layout="grid"
-                         styleClass="ui-panelgrid-blank ui-fluid"
-                         style="border:0px none; background-color:transparent;">
+            <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
+                layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+                style="border:0px none; background-color:transparent;">
                 <p:row rendered="#{not gameBean.isGameOver()}">
-                    <p:column styleClass="ui-grid-col-2"/>
+                    <p:column styleClass="ui-grid-col-2" />
                     <p:column styleClass="ui-grid-col-2">
-                        <h:outputText value="#{msg['question.text']} #{gameBean.currentQuestionIndex + 1} #{msg['of.text']} #{gameBean.questionCount}" />
+                        <h:outputText
+                            value="#{msg['question.text']} #{gameBean.currentQuestionIndex + 1} #{msg['of.text']} #{gameBean.questionCount}" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-4" />
-                    <p:column styleClass="ui-grid-col-2" style="text-align: right;" >
-                        <h:outputText id="elapsedTime" value="#{msg['elapsedTime.text']} #{gameBean.elapsedQuestionTime} #{msg['seconds.text']}" />
+                    <p:column styleClass="ui-grid-col-2" style="text-align: right;">
+                        <h:outputText id="elapsedTime"
+                            value="#{msg['elapsedTime.text']} #{gameBean.elapsedQuestionTime} #{msg['seconds.text']}" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-2" />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
-                  <p:column styleClass="ui-grid-col-3"/>
-                  <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                    <p:column styleClass="ui-grid-col-3" />
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
                         <h:outputText value="#{gameBean.currentQuestion.text}" style="font-weight: bold;" />
                     </p:column>
-                    <p:column  styleClass="ui-grid-col-3" />
+                    <p:column styleClass="ui-grid-col-3" />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
-                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                        
+
                     </p:column>
-                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-3" />
                 </p:row>
                 <p:poll id="poll" interval="1" update="quizForm:elapsedTime" rendered="#{gameBean.isGameActive()}" />
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
-                    <p:selectBooleanCheckbox 
-                        value="#{gameBean.selectedAnswers[0]}" 
+                    <p:selectBooleanCheckbox value="#{gameBean.selectedAnswers[0]}"
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
@@ -49,8 +45,7 @@
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
-                    <p:selectBooleanCheckbox 
-                        value="#{gameBean.selectedAnswers[1]}" 
+                    <p:selectBooleanCheckbox value="#{gameBean.selectedAnswers[1]}"
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
@@ -59,8 +54,7 @@
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
-                    <p:selectBooleanCheckbox 
-                        value="#{gameBean.selectedAnswers[2]}" 
+                    <p:selectBooleanCheckbox value="#{gameBean.selectedAnswers[2]}"
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
@@ -69,8 +63,7 @@
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
-                    <p:selectBooleanCheckbox 
-                        value="#{gameBean.selectedAnswers[3]}" 
+                    <p:selectBooleanCheckbox value="#{gameBean.selectedAnswers[3]}"
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
@@ -80,49 +73,47 @@
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column />
                     <p:column />
-                    <p:commandButton 
-                        id="nextButton" 
-                        value="#{gameBean.getNextButtonLabel()}" 
-                        action="#{gameBean.nextQuestion}" 
-                        update="quizForm" 
-                        disabled="#{!gameBean.isAnyAnswerSelected()}" 
-                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}" 
+                    <p:commandButton id="nextButton" value="#{gameBean.getNextButtonLabel()}"
+                        action="#{gameBean.nextQuestion}" update="quizForm"
+                        disabled="#{!gameBean.isAnyAnswerSelected()}"
+                        style="#{!gameBean.isAnyAnswerSelected() ? 'background-color: grey; cursor: not-allowed;' : ''}"
                         styleClass="ui-button-secondary" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{gameBean.isGameOver()}">
-                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
                         <h:outputText value="#{msg['gameFinished.text']}" style="font-size: 24px;" />
                     </p:column>
-                    <p:column styleClass="ui-grid-col-3"/>
-                  </p:row>
-                  <p:row rendered="#{gameBean.isGameOver()}">
-                    <p:column styleClass="ui-grid-col-3"/>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                          <h:outputText value="#{msg['totalTimeTaken.text']}: #{gameBean.formattedTotalTime}" style="font-size: 18px;" />
-                      </p:column>
-                      <p:column styleClass="ui-grid-col-3"/>
-                  </p:row>
-                  <p:row rendered="#{gameBean.isGameOver()}">
-                    <p:column styleClass="ui-grid-col-3"/>
+                        <h:outputText value="#{msg['totalTimeTaken.text']}: #{gameBean.formattedTotalTime}"
+                            style="font-size: 18px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                          <h:outputText value="#{msg['goodbyeMessage.text']}" style="font-size: 18px;" />
-                      </p:column>
-                      <p:column styleClass="ui-grid-col-3"/>
-                  </p:row>
+                        <h:outputText value="#{msg['goodbyeMessage.text']}" style="font-size: 18px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
             </p:panelGrid>
             <h:messages globalOnly="true" />
         </h:form>
         <script>
-            setInterval(function() {
+            setInterval(function () {
                 var totalTimeElement = document.getElementById('quizForm:totalTime');
                 var questionTimeElement = document.getElementById('quizForm:questionTime');
                 totalTimeElement.innerText = 'Total Time: ' + "#{gameBean.totalTime}";
                 questionTimeElement.innerText = 'Question Time: ' + "#{gameBean.questionTime}";
             }, 1000);
 
-            setInterval(function() {
+            setInterval(function () {
                 var elapsedTimeElement = document.getElementById('quizForm:elapsedTime');
                 if (elapsedTimeElement) {
                     fetchElapsedTime();
@@ -132,7 +123,7 @@
             function fetchElapsedTime() {
                 jsf.ajax.request(null, null, {
                     render: 'quizForm:elapsedTime',
-                    onevent: function(data) {
+                    onevent: function (data) {
                         if (data.status === 'success') {
                             var elapsedTimeElement = document.getElementById('quizForm:elapsedTime');
                             elapsedTimeElement.innerText = 'Time for this question: ' + "#{gameBean.elapsedQuestionTime}" + ' seconds';

@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -17,8 +18,6 @@ public class RankingBean implements Serializable {
     public void init() {
         IController controller = new Controller();
         List<cleverquiz.model.User> rankinglist = controller.getUserRanking();
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!Size: " + rankinglist.size());
 
         // Entferne die Überschreibung von rankinglist
         for (int i = 0; i < rankinglist.size(); i++) {

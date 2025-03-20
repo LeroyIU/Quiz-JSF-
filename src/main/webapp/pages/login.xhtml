@@ -25,7 +25,8 @@
   <link rel="icon" href="/cleverquiz/resources/images/favicon.ico" />
 </h:head>
 
-<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+<body
+  style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0;">
   <!-- Login Form -->
   <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
     style="border:0px none; background-color:transparent;" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
@@ -46,8 +47,9 @@
               <p:outputLabel for="password" value="Password" />
               <p:password id="password" value="#{loginBean.password}" required="true" />
 
-              <p:outputLabel/>
-              <p:commandButton value="Login" styleClass="ui-button-secondary" action="#{loginBean.login}" update="@form:growl" />
+              <p:outputLabel />
+              <p:commandButton value="Login" styleClass="ui-button-secondary" action="#{loginBean.login}"
+                update="@form:growl" />
             </p:panelGrid>
             <p:growl id="growl" showDetail="true" life="3000" />
             <h:messages globalOnly="true" />

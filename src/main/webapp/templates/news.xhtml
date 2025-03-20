@@ -1,21 +1,18 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:p="http://primefaces.org/ui">
-     
-     <p:dataTable value="#{newsBean.newsList}" var="news"
-        paginator="true" paginatorPosition="bottom"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <p:dataTable value="#{newsBean.newsList}" var="news" paginator="true" paginatorPosition="bottom"
         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-        currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords} Einträgen"
-        rows="5" styleClass="ui-panelgrid-blank w-100">
-         <p:column>
-             <p:card style="margin-bottom: 10px;">
-                 <h2 style="font-weight: bold;">#{news.title}</h2>
-                 <h:outputText value="#{news.content}" />
-                 <h:outputText value="#{news.date}" style="float: right; font-size: small;" />
-                 <h:outputText value="by #{news.author}" style="float: right; font-size: small; margin-right: 10px;" />
-             </p:card>
-         </p:column>
-     </p:dataTable>
+        currentPageReportTemplate="{startRecord}-{endRecord} von {totalRecords} Einträgen" rows="5"
+        styleClass="ui-panelgrid-blank w-100">
+        <p:column>
+            <p:card style="margin-bottom: 10px;">
+                <h2 style="font-weight: bold;">#{news.title}</h2>
+                <h:outputText value="#{news.content}" />
+                <h:outputText value="#{news.date}" style="float: right; font-size: small;" />
+                <h:outputText value="by #{news.author}" style="float: right; font-size: small; margin-right: 10px;" />
+            </p:card>
+        </p:column>
+    </p:dataTable>
 </ui:composition>
