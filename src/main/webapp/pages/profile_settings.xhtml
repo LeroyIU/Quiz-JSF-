@@ -45,10 +45,10 @@
                     </p:panelGrid>
 
                   <p:column styleClass="ui-grid-col-4">
-                    <h5><h:outputText value="#{msg['points.text']}"/></h5>
-                    <h5><h:outputText value="#{msg['playedGames.text']}"/></h5>
+                    <h5><h:outputText value="#{msg['points.text']}"/>:</h5>
+                    <h5><h:outputText value="#{msg['playedGames.text']}"/>:</h5>
                     <hr />
-                    <h5><h:outputText value="#{msg['selectbadge.text']}"/></h5>
+                    <h5><h:outputText value="#{msg['selectbadge.text']}"/>:</h5>
                     <p:selectOneRadio id="page" layout="pageDirection" value="#{profileSettingsBean.selectedBadge}" disabled="#{!profileSettingsBean.editable}">
                       <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                       <f:selectItem itemLabel="Option2" itemValue="Option2"/>
