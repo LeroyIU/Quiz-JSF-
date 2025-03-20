@@ -1,10 +1,11 @@
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -18,9 +19,9 @@ public class FriendsBean implements Serializable {
         friends = new ArrayList<>();
         searchResults = new ArrayList<>();
         // Add test data
-        friends.add(new Friend("user1", "Badge1", "2025-03-08", "About user1", 100));
-        friends.add(new Friend("user2", "Badge2", "2025-03-07", "About user2", 200));
-        friends.add(new Friend("user3", "Badge3", "2025-03-06", "About user3", 300));
+        friends.add(new Friend("user1", "Badge1", "2025-03-08", "About user1", 100, 10));
+        friends.add(new Friend("user2", "Badge2", "2025-03-07", "About user2", 200, 20));
+        friends.add(new Friend("user3", "Badge3", "2025-03-06", "About user3", 300, 30));
     }
 
     public List<Friend> getFriends() {
@@ -73,13 +74,15 @@ public class FriendsBean implements Serializable {
         private String lastSeen;
         private String aboutMe;
         private int xp;
+        private int gamesPlayed;
 
-        public Friend(String username, String badge, String lastSeen, String aboutMe, int xp) {
+        public Friend(String username, String badge, String lastSeen, String aboutMe, int xp, int gamesPlayed) {
             this.username = username;
             this.badge = badge;
             this.lastSeen = lastSeen;
             this.aboutMe = aboutMe;
             this.xp = xp;
+            this.gamesPlayed = gamesPlayed;
         }
 
         public String getUsername() {
@@ -100,6 +103,14 @@ public class FriendsBean implements Serializable {
 
         public int getXp() {
             return xp;
+        }
+
+        public int getGamesPlayed() {
+            return gamesPlayed;
+        }
+
+        public void setGamesPlayed(int gamesPlayed) {
+            this.gamesPlayed = gamesPlayed;
         }
     }
 }

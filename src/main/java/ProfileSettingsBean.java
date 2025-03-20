@@ -3,6 +3,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.PrimeFaces;
 
 @ManagedBean
@@ -11,10 +12,10 @@ public class ProfileSettingsBean {
     private boolean editable = false;
     private String lastName;
     private String firstName;
-    private String plz;
-    private String city;
-    private String street;
-    private String housenumber;
+    private String favoriteColor;
+    private String favoriteCategory;
+    private String favoriteMusicGenre;
+    private String favoriteFood;
     private String aboutMe;
     private String selectedBadge;
 
@@ -54,10 +55,10 @@ public class ProfileSettingsBean {
     public void populateTestData() {
         this.lastName = "Doe";
         this.firstName = "John";
-        this.plz = "12345";
-        this.city = "Musterstadt";
-        this.street = "Main Street";
-        this.housenumber = "1a";
+        this.favoriteColor = "Blue";
+        this.favoriteCategory = "Technology";
+        this.favoriteMusicGenre = "Rock";
+        this.favoriteFood = "Pizza";
         this.aboutMe = "This is a test user.";
         this.selectedBadge = "Option1";
     }
@@ -65,10 +66,10 @@ public class ProfileSettingsBean {
     public void printData() {
         System.out.println("Last Name: " + lastName);
         System.out.println("First Name: " + firstName);
-        System.out.println("PLZ: " + plz);
-        System.out.println("City: " + city);
-        System.out.println("Street: " + street);
-        System.out.println("Housenumber: " + housenumber);
+        System.out.println("Favorite Color: " + favoriteColor);
+        System.out.println("Favorite Category: " + favoriteCategory);
+        System.out.println("Favorite Music Genre: " + favoriteMusicGenre);
+        System.out.println("Favorite Food: " + favoriteFood);
         System.out.println("About Me: " + aboutMe);
         System.out.println("Selected Badge: " + selectedBadge);
     }
@@ -90,36 +91,36 @@ public class ProfileSettingsBean {
         this.firstName = firstName;
     }
 
-    public String getPlz() {
-        return plz;
+    public String getFavoriteColor() {
+        return favoriteColor;
     }
 
-    public void setPlz(String plz) {
-        this.plz = plz;
+    public void setFavoriteColor(String favoriteColor) {
+        this.favoriteColor = favoriteColor;
     }
 
-    public String getCity() {
-        return city;
+    public String getFavoriteCategory() {
+        return favoriteCategory;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setFavoriteCategory(String favoriteCategory) {
+        this.favoriteCategory = favoriteCategory;
     }
 
-    public String getStreet() {
-        return street;
+    public String getFavoriteMusicGenre() {
+        return favoriteMusicGenre;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setFavoriteMusicGenre(String favoriteMusicGenre) {
+        this.favoriteMusicGenre = favoriteMusicGenre;
     }
 
-    public String getHousenumber() {
-        return housenumber;
+    public String getFavoriteFood() {
+        return favoriteFood;
     }
 
-    public void setHousenumber(String housenumber) {
-        this.housenumber = housenumber;
+    public void setFavoriteFood(String favoriteFood) {
+        this.favoriteFood = favoriteFood;
     }
 
     public String getAboutMe() {

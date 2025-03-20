@@ -72,6 +72,6 @@ public class Question {
     }
 
     public int getPoints() {
-        return Difficulty.
+        return 0;
     }
 }

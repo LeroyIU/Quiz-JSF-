@@ -1,11 +1,12 @@
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
+import java.util.ResourceBundle;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 @ManagedBean
 @SessionScoped
@@ -25,7 +26,14 @@ public class GameBean implements Serializable {
 
     // Initialize categories and other properties
     public GameBean() {
-        categories = Arrays.asList("Category 1", "Category 2", "Category 3");
+        /*IController controller = new Controller();
+        List<cleverquiz.model.Category> categories = controller.getCategories();
+        for (Category categorie : categories) {
+            this.categories.add(categorie.getName());
+        }
+
+        */
+
         selectedAnswers = new boolean[4];
         currentQuestionIndex = 0;
         questions = Arrays.asList(
@@ -84,9 +92,12 @@ public class GameBean implements Serializable {
         return redirectUrl;
     }
 
-    public void setRedirectUrl(String redirectUrl) {
-        System.out.println("Setting redirectUrl: " + redirectUrl); // Debug statement
+    public void setRedirectUrl(ActionEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String redirectUrl = context.getExternalContext().getRequestParameterMap().get("redirectUrl");
+        System.out.println("setRedirectUrl called with: " + redirectUrl); // Debug statement
         this.redirectUrl = redirectUrl;
+        System.out.println("Redirect URL successfully set to: " + this.redirectUrl); // Debug statement
     }
 
     public void startGame() {
@@ -170,23 +181,24 @@ public class GameBean implements Serializable {
         }
     }
 
-    public void destroyGameWithRedirect(String redirectUrl) {
+    public void destroyGameWithRedirect() {
+        System.out.println("Destroying game and redirecting to: " + redirectUrl); // Debug statement
+
         currentQuestion = null;
         currentQuestionIndex = 0;
         selectedAnswers = new boolean[4];
         totalTime = 0;
         questionTime = 0;
         questionStartTime = 0;
-        System.out.println("Game destroyed.");
 
-        // Append gameId as a query parameter to the redirect URL
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             try {
-                String redirectWithGameId = redirectUrl + (redirectUrl.contains("?") ? "&" : "?") + "gameId=" + gameId;
-                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectWithGameId);
+                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            System.err.println("Redirect URL is null or empty. No redirection performed.");
         }
         gameId = null; // Clear gameId after redirect
     }
@@ -269,5 +281,16 @@ public class GameBean implements Serializable {
         } else {
             System.err.println("Redirect URL is null or empty. No redirection performed.");
         }
+    }
+
+    public String getNextButtonLabel() {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        if (!isAnyAnswerSelected()) {
+            return bundle.getString("pleaseSelectAnswer.text");
+        }
+        if (currentQuestionIndex + 1 == questionCount) {
+            return bundle.getString("finishGame.text");
+        }
+        return bundle.getString("next.text");
     }
 }

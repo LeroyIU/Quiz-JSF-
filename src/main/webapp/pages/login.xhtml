@@ -21,11 +21,6 @@
       border-radius: 10px;
       text-align: center;
     }
-    .login-image {
-      max-width: 400px;
-      margin: 100px auto;
-      padding: 20px;
-    }
   </style>
   <title>Login</title>
   <link rel="icon" href="/cleverquiz/resources/images/favicon.ico" />
@@ -35,8 +30,8 @@
   <!-- Login Form -->
   <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
     style="border:0px none; background-color:transparent;" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
-    <p:row>
-      <p:column>
+    <p:row style="display: flex; align-items: center;">
+      <p:column style="text-align: right;">
         <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%;"
           class="login-image" />
       </p:column>
@@ -64,7 +59,7 @@
           </h:form>
         </div>
       </p:column>
-      <p:column>
+      <p:column style="text-align: left;">
         <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%;"
           class="login-image" />
       </p:column>

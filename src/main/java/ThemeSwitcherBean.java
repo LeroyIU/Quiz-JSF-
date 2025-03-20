@@ -1,6 +1,8 @@
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import java.io.Serializable;
+import javax.faces.event.AjaxBehaviorEvent;
 
 @ManagedBean
 @SessionScoped
@@ -14,6 +16,11 @@ public class ThemeSwitcherBean implements Serializable {
 
     public void setDarkTheme(boolean darkTheme) {
         this.darkTheme = darkTheme;
+    }
+
+    public void setDarkTheme(AjaxBehaviorEvent event) {
+        // Logic to toggle the theme based on the event, if needed
+        this.darkTheme = !this.darkTheme;
     }
 
     public String getTheme() {
