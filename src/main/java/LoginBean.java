@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -31,6 +32,11 @@ public class LoginBean {
 
     // Method to handle login
     public void login() {
+        if (!isValidInput(username) || !isValidInput(password)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid input detected."));
+            return;
+        }
+
         // Print the username and password to the console
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
@@ -52,5 +58,13 @@ public class LoginBean {
             // Show error message
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Failed", "Invalid username or password"));
         }
+    }
+
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        return Pattern.matches(regex, input);
     }
 }

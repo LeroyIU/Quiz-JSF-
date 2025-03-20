@@ -1,3 +1,5 @@
+import java.util.regex.Pattern;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -37,7 +39,17 @@ public class ProfileSettingsBean {
     }
 
     public void save() {
-        // Save logic here
+        // Validate inputs
+        if (!isValidInput(lastName) || !isValidInput(firstName) || !isValidInput(favoriteColor) ||
+            !isValidInput(favoriteCategory) || !isValidInput(favoriteMusicGenre) || !isValidInput(favoriteFood) ||
+            !isValidInput(aboutMe)) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid input detected.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            PrimeFaces.current().ajax().update("growl");
+            return;
+        }
+
+        // Save logic here (use parameterized queries in actual database interaction)
         this.editable = false;
         printData();
 
@@ -45,6 +57,15 @@ public class ProfileSettingsBean {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Profile settings saved successfully.");
         FacesContext.getCurrentInstance().addMessage(null, message);
         PrimeFaces.current().ajax().update("growl");
+    }
+
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        // Allow only alphanumeric characters, spaces, and basic punctuation
+        String regex = "^[a-zA-Z0-9\\s.,!?'-]*$";
+        return Pattern.matches(regex, input);
     }
 
     public void cancel() {

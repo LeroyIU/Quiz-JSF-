@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -49,6 +50,11 @@ public class FriendsBean implements Serializable {
     }
 
     public void search() {
+        if (!isValidInput(searchQuery)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid search query."));
+            return;
+        }
+
         searchResults.clear();
         for (Friend friend : friends) {
             if (friend.getUsername().contains(searchQuery)) {
@@ -66,6 +72,14 @@ public class FriendsBean implements Serializable {
     public void addFriend(Friend friend) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Added", "Adding friend: " + friend.getUsername()));
         System.out.println("User added: " + friend.getUsername());
+    }
+
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        return Pattern.matches(regex, input);
     }
 
     public static class Friend {
