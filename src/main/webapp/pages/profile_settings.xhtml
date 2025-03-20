@@ -13,31 +13,38 @@
           <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4" layout="grid"
             styleClass="ui-panelgrid-blank ui-fluid" style="border:0px none; background-color:transparent;">
             <p:row>
-              <p:outputLabel for="lastName" value="#{msg['lastname.text']}" />
+              <p:outputLabel for="lastName" value="#{msg['lastname.text']}:" />
               <p:inputText id="lastName" value="#{profileSettingsBean.lastName}"
                 readonly="#{!profileSettingsBean.editable}" />
 
-              <p:outputLabel for="firstName" value="#{msg['firstname.text']}" />
+              <p:outputLabel for="firstName" value="#{msg['firstname.text']}:" />
               <p:inputText id="firstName" value="#{profileSettingsBean.firstName}"
                 readonly="#{!profileSettingsBean.editable}" />
             </p:row>
             <p:row>
-              <p:outputLabel for="favoriteColor" value="#{msg['favoritecolor.text']}" />
+              <p:outputLabel for="favoriteColor" value="#{msg['favoritecolor.text']}:" />
               <p:inputText id="favoriteColor" value="#{profileSettingsBean.favoriteColor}"
                 readonly="#{!profileSettingsBean.editable}" />
 
-              <p:outputLabel for="favoriteCategory" value="#{msg['favoritecategory.text']}" />
+              <p:outputLabel for="favoriteCategory" value="#{msg['favoritecategory.text']}:" />
               <p:inputText id="favoriteCategory" value="#{profileSettingsBean.favoriteCategory}"
                 readonly="#{!profileSettingsBean.editable}" />
             </p:row>
             <p:row>
-              <p:outputLabel for="favoriteMusicGenre" value="#{msg['favoritemusicgenre.text']}" />
+              <p:outputLabel for="favoriteMusicGenre" value="#{msg['favoritemusicgenre.text']}:" />
               <p:inputText id="favoriteMusicGenre" value="#{profileSettingsBean.favoriteMusicGenre}"
                 readonly="#{!profileSettingsBean.editable}" />
 
-              <p:outputLabel for="favoriteFood" value="#{msg['favoritefood.text']}" />
+              <p:outputLabel for="favoriteFood" value="#{msg['favoritefood.text']}:" />
               <p:inputText id="favoriteFood" value="#{profileSettingsBean.favoriteFood}"
                 readonly="#{!profileSettingsBean.editable}" />
+            </p:row>
+            <p:row>
+              <p:column styleClass="ui-grid-col-12">
+                <p:outputLabel for="aboutMe" value="#{msg['aboutme.text']}:" />
+                <p:inputTextarea id="aboutMe" rows="3" value="#{profileSettingsBean.aboutMe}"
+                  readonly="#{!profileSettingsBean.editable}" style="margin-top: 10px;" />
+              </p:column>
             </p:row>
           </p:panelGrid>
 
@@ -60,16 +67,6 @@
             </p:selectOneRadio>
           </p:column>
           <p:column />
-        </p:row>
-
-        <p:row>
-          <p:column styleClass="ui-grid-col-1" />
-          <p:column styleClass="ui-grid-col-9">
-            <p:outputLabel for="aboutMe" value="#{msg['aboutme.text']}" />
-            <p:inputTextarea id="aboutMe" rows="5" value="#{profileSettingsBean.aboutMe}"
-              readonly="#{!profileSettingsBean.editable}" />
-          </p:column>
-          <p:column styleClass="ui-grid-col-1" />
         </p:row>
 
         <p:row>
