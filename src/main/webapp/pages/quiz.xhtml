@@ -82,7 +82,7 @@
                     <p:column />
                     <p:commandButton 
                         id="nextButton" 
-                        value="#{gameBean.isAnyAnswerSelected() ? (gameBean.currentQuestionIndex + 1 == gameBean.questionCount ? &quot;#{msg['finishGame.text']}&quot; : &quot;#{msg['next.text']}&quot;) : &quot;#{msg['pleaseSelectAnswer.text']}&quot;}" 
+                        value="#{gameBean.getNextButtonLabel()}" 
                         action="#{gameBean.nextQuestion}" 
                         update="quizForm" 
                         disabled="#{!gameBean.isAnyAnswerSelected()}" 

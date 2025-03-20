@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -280,5 +281,16 @@ public class GameBean implements Serializable {
         } else {
             System.err.println("Redirect URL is null or empty. No redirection performed.");
         }
+    }
+
+    public String getNextButtonLabel() {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        if (!isAnyAnswerSelected()) {
+            return bundle.getString("pleaseSelectAnswer.text");
+        }
+        if (currentQuestionIndex + 1 == questionCount) {
+            return bundle.getString("finishGame.text");
+        }
+        return bundle.getString("next.text");
     }
 }
