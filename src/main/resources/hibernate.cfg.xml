@@ -19,11 +19,8 @@
         <mapping class="cleverquiz.model.Event"/>
         <mapping class="cleverquiz.model.Friends"/>
         <mapping class="cleverquiz.model.FriendsId"/>
-        <mapping class="cleverquiz.model.Game"/>
-        <mapping class="cleverquiz.model.Language"/>
         <mapping class="cleverquiz.model.News"/>
         <mapping class="cleverquiz.model.Question"/>
-        <mapping class="cleverquiz.model.Role"/>
         <mapping class="cleverquiz.model.User"/>
         <mapping class="cleverquiz.model.UserAnswer"/>
         <mapping class="cleverquiz.model.UserBadge"/>
