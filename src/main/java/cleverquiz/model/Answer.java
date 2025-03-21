@@ -15,6 +15,9 @@ public class Answer {
 
     private String text;
     private Boolean correctness;
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
 
     public Boolean getCorrectness() {
         return correctness;
@@ -38,5 +41,13 @@ public class Answer {
 
     public void setAnswerId(Integer answerId) {
         this.answerId = answerId;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }

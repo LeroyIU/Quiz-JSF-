@@ -111,4 +111,6 @@ public interface IController {
      * @param answers    user answers
      */
     void updateGame(User user, Question question, List<UserAnswer> answers);
+
+    User login(String username, String password);
 }

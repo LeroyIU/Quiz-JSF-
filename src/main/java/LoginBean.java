@@ -5,6 +5,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
 
 @ManagedBean
 @RequestScoped
@@ -41,7 +43,27 @@ public class LoginBean {
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
 
-        // Simulate login validation
+
+        IController controller = new Controller();
+        cleverquiz.model.User user = controller.login(username, password);
+        if(user != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+            sessionBean.setLoggedIn(true);
+            // Redirect to the home page
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Show error message
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Failed", "Invalid username or password"));
+        }
+       
+
+
+        // Simulate login validation for default user
         if ("user".equals(username) && "123".equals(password)) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);

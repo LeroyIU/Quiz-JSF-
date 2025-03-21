@@ -9,7 +9,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
-import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 
@@ -145,6 +145,50 @@ public class DBUtil {
         return success;
     }
 
+    public static boolean createQuestion(Difficulty difficulty, String questionText, List<Answer> answers) {
+        //validator
+        int correct = 0;
+        for (Answer answer : answers) {
+            if(answer.getCorrectness()) correct++;
+        }
+        if(answers.size() < 4 || correct < 1) return false;
+
+        //transaction
+        Transaction transaction = null;
+        boolean success = false;
+
+        try (Session session = getSession()) {
+            transaction = session.beginTransaction();
+
+            // Neue Frage anlegen
+            Question question = new Question();
+            question.setText(questionText);
+            question.setDifficulty(difficulty);
+            question.setDate(LocalDate.now());
+
+            // Frage speichern, damit sie eine ID bekommt
+            session.persist(question);
+
+            // Antworten verknüpfen und speichern
+            for (Answer answer : answers) {
+                answer.setQuestion(question); // Foreign Key setzen
+                session.persist(answer);
+            }
+
+            transaction.commit();
+            success = true;
+
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+
     /**
      * Start a quiz
      *
@@ -272,9 +316,9 @@ public class DBUtil {
             transaction = session.beginTransaction();
 
             // HQL Query, um den User zu finden
-            Query<User> query = session.createQuery("FROM User WHERE name = :username AND password = :password", User.class);
-            query.setParameter("username", username);
-            query.setParameter("password", password);  // Nur wenn das Passwort nicht gehasht gespeichert wird!
+            Query<User> query = session.createQuery("FROM User WHERE username = :username AND password = :password", User.class);
+            query.setParameter("username", username.trim());
+            query.setParameter("password", password.trim());  // Nur wenn das Passwort nicht gehasht gespeichert wird!
 
             user = query.uniqueResult(); // Falls kein Ergebnis, dann null zurückgeben
 

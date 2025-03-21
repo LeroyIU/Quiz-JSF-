@@ -1,12 +1,16 @@
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
-
+import java.util.UUID;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 import javax.faces.event.ActionEvent;
+
 
 @ManagedBean
 @SessionScoped
@@ -26,14 +30,13 @@ public class GameBean implements Serializable {
 
     // Initialize categories and other properties
     public GameBean() {
-        /*IController controller = new Controller();
-        List<cleverquiz.model.Category> categories = controller.getCategories();
-        for (Category categorie : categories) {
-            this.categories.add(categorie.getName());
+
+        IController controller = new Controller();
+        List<cleverquiz.model.Category> tmp = controller.getCategories();
+        categories = new ArrayList<>();
+        for (cleverquiz.model.Category c : tmp) {
+            categories.add(c.getName());
         }
-
-        */
-
         selectedAnswers = new boolean[4];
         currentQuestionIndex = 0;
         questions = Arrays.asList(

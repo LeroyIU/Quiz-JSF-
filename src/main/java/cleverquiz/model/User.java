@@ -2,7 +2,7 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -17,14 +17,16 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private Date lastLogin;
+    private boolean admin;
+    private LocalDateTime lastLogin;
     private Integer xp;
-    private Boolean darkmode;
+    private int gameCount;
     private String lastname;
+    private String favColour;
+    private String favCategory;
+    private String favMusic;
+    private String favFood;
     private String name;
-    private String plz;
-    private String ort;
-    private String field;
     private String aboutme;
 
     public static User create(String name, String email, String password) {
@@ -32,165 +34,142 @@ public class User {
         user.setUsername(name);
         user.setEmail(email);
         user.setPassword(password);
+        user.setXp(0);
+        user.setLastLogin(LocalDateTime.now());
         return user;
     }
 
-    @Enumerated(EnumType.STRING)  // Speichert als VARCHAR anstatt ENUM
-    @Column(name = "role")
-    private UserRole role;
-
-    @ManyToOne
-    @JoinColumn(name = "Language_ID")
-    private Language language;
-
     public Integer getUserId() {
         return userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public Integer getXp() {
-        return xp;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Date getLastLogin() {
-        return lastLogin;
-    }
-
-    public Boolean getDarkmode() {
-        return darkmode;
-    }
-
-    public String getPlz() {
-        return plz;
-    }
-
-    public String getOrt() {
-        return ort;
-    }
-
-    public String getField() {
-        return field;
-    }
-
-    public String getAboutme() {
-        return aboutme;
-    }
-
-    public void setDarkmode(Boolean darkmode) {
-        this.darkmode = darkmode;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setLastLogin(Date lastLogin) {
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public Integer getXp() {
+        return xp;
     }
 
     public void setXp(Integer xp) {
         this.xp = xp;
     }
 
+    public int getGameCount() {
+        return gameCount;
+    }
+
+    public void setGameCount(int gameCount) {
+        this.gameCount = gameCount;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getFavColour() {
+        return favColour;
+    }
+
+    public void setFavColour(String favColour) {
+        this.favColour = favColour;
+    }
+
+    public String getFavCategory() {
+        return favCategory;
+    }
+
+    public void setFavCategory(String favCategory) {
+        this.favCategory = favCategory;
+    }
+
+    public String getFavMusic() {
+        return favMusic;
+    }
+
+    public void setFavMusic(String favMusic) {
+        this.favMusic = favMusic;
+    }
+
+    public String getFavFood() {
+        return favFood;
+    }
+
+    public void setFavFood(String favFood) {
+        this.favFood = favFood;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setPlz(String plz) {
-        this.plz = plz;
-    }
-
-    public void setOrt(String ort) {
-        this.ort = ort;
-    }
-
-    public void setField(String field) {
-        this.field = field;
+    public String getAboutme() {
+        return aboutme;
     }
 
     public void setAboutme(String aboutme) {
         this.aboutme = aboutme;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
-
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        User user = (User) obj;
-        return Objects.equals(userId, user.userId) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(lastLogin, user.lastLogin) &&
-                Objects.equals(xp, user.xp) &&
-                Objects.equals(darkmode, user.darkmode) &&
-                Objects.equals(lastname, user.lastname) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(plz, user.plz) &&
-                Objects.equals(ort, user.ort) &&
-                Objects.equals(field, user.field) &&
-                Objects.equals(aboutme, user.aboutme) &&
-                role == user.role &&
-                Objects.equals(language, user.language); // Vergleicht `Language`
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return admin == user.admin && gameCount == user.gameCount && Objects.equals(userId, user.userId) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(lastLogin, user.lastLogin) && Objects.equals(xp, user.xp) && Objects.equals(lastname, user.lastname) && Objects.equals(favColour, user.favColour) && Objects.equals(favCategory, user.favCategory) && Objects.equals(favMusic, user.favMusic) && Objects.equals(favFood, user.favFood) && Objects.equals(name, user.name) && Objects.equals(aboutme, user.aboutme);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, email, password, lastLogin, xp, darkmode,
-                lastname, name, plz, ort, field, aboutme, role, language);
+        return Objects.hash(userId, username, email, password, admin, lastLogin, xp, gameCount, lastname, favColour, favCategory, favMusic, favFood, name, aboutme);
     }
-
 
     @Override
     public String toString() {
@@ -199,17 +178,17 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", admin=" + admin +
                 ", lastLogin=" + lastLogin +
                 ", xp=" + xp +
-                ", darkmode=" + darkmode +
+                ", gameCount=" + gameCount +
                 ", lastname='" + lastname + '\'' +
+                ", favColour='" + favColour + '\'' +
+                ", favCategory='" + favCategory + '\'' +
+                ", favMusic='" + favMusic + '\'' +
+                ", favFood='" + favFood + '\'' +
                 ", name='" + name + '\'' +
-                ", plz='" + plz + '\'' +
-                ", ort='" + ort + '\'' +
-                ", field='" + field + '\'' +
                 ", aboutme='" + aboutme + '\'' +
-                ", role=" + role +
-                ", language=" + language +
                 '}';
     }
 }

@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+import cleverquiz.model.Difficulty;
 import java.util.regex.Pattern;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -78,6 +80,17 @@ public class QuestionBean implements Serializable {
     public void saveQuestion() {
         if (isFormValid()) {
             answers.addAll(rows);
+            IController controller = new Controller();
+            List <cleverquiz.model.Answer> tmp = new ArrayList<>();
+            for (Answer a : answers) {
+                cleverquiz.model.Answer answer = new cleverquiz.model.Answer();
+                answer.setText(a.getAnswer());
+                answer.setCorrectness(a.isCorrect());
+                tmp.add(answer);
+            }
+
+            controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Question saved successfully"));
             // ToDo: Remove print
             printQuestionDetails();

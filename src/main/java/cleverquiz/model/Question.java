@@ -2,7 +2,7 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Entity class representing a question.
@@ -13,15 +13,17 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer questionId;
-
     private Integer createdBy;
+    @Enumerated(EnumType.STRING) // Oder ORDINAL
+    @Column(nullable = false)
+    private Difficulty difficulty;
     private Boolean approved;
     private Integer rating;
-    private Date date;
-
     @ManyToOne
-    @JoinColumn(name = "Difficulty")
-    private Difficulty difficulty;
+    @JoinColumn(name = "Category")
+    private Category category;
+    private LocalDate date;
+    private String text;
 
     public Integer getQuestionId() {
         return questionId;
@@ -37,6 +39,14 @@ public class Question {
 
     public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Boolean getApproved() {
@@ -55,23 +65,40 @@ public class Question {
         this.rating = rating;
     }
 
-    public Date getDate() {
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Difficulty getDifficulty() {
-        return difficulty;
+    public String getText() {
+        return text;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public int getPoints() {
-        return 0;
+    @Override
+    public String toString() {
+        return "Question{" +
+                "questionId=" + questionId +
+                ", createdBy=" + createdBy +
+                ", difficulty=" + difficulty +
+                ", approved=" + approved +
+                ", rating=" + rating +
+                ", category=" + category +
+                ", date=" + date +
+                '}';
     }
 }

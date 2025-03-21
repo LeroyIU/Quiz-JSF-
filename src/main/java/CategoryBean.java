@@ -1,14 +1,13 @@
 import java.io.Serializable;
 import java.util.regex.Pattern;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-
+import javax.swing.Icon;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
-import java.io.Serializable;
+
 
 @ManagedBean
 @ViewScoped
@@ -33,23 +32,16 @@ public class CategoryBean implements Serializable {
         if (categoryName == null || categoryName.trim().isEmpty()) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Category name cannot be empty"));
         } else {
-
             IController controller = new Controller();
             boolean success = controller.addCategory(categoryName);
-
-            if (success) {
+            if(success) {
                 // Add a success message to the FacesContext
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Category saved: " + categoryName));
-            }
-            else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Category could not be saved!"));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Category saved: " + categoryName));
+            } else {
+                // Add an error message to the FacesContext
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Category could not be saved"));
             }
 
-            // ToDo: Remove print
-            // Print out the content of the input field
-            System.out.println("Category: " + categoryName);
-
-            // Reset the input field
             categoryName = null;
         }
     }

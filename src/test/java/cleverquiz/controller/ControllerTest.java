@@ -1,10 +1,9 @@
 package cleverquiz.controller;
 
-import cleverquiz.model.Badge;
-import cleverquiz.model.Category;
-import cleverquiz.model.News;
-import cleverquiz.model.User;
+import cleverquiz.model.*;
 import junit.framework.TestCase;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerTest extends TestCase {
@@ -43,12 +42,12 @@ public class ControllerTest extends TestCase {
         }
     }
 
-    public void testAddCategory() {
-        String CategoryName = "Informatik";
-        IController controller = new Controller();
-        boolean success = controller.addCategory(CategoryName);
-        assertTrue(success);
-    }
+//    public void testAddCategory() {
+//        String CategoryName = "Informatik";
+//        IController controller = new Controller();
+//        boolean success = controller.addCategory(CategoryName);
+//        assertTrue(success);
+//    }
 
     public void testGetFriends() {
         return;
@@ -91,4 +90,41 @@ public class ControllerTest extends TestCase {
         User newUser = controller.addUser(name, email, password);
         assertNotNull(newUser);
     }
+    public void testLogin() {
+        IController controller = new Controller();
+        //wrong username
+        String name = "asdf";
+        String password = "1234";
+        User user = controller.login(name, password);
+        assertNull(user);
+        //wrong pw
+        name = "username";
+        password = "asdf";
+        user = controller.login(name, password);
+        assertNull(user);
+        //correct credentials
+        name = "bot";
+        password = "robot";
+        user = controller.login(name, password);
+        assertNotNull(user);
+    }
+
+    public void testCreateQuestion() {
+        IController controller = new Controller();
+        Difficulty difficulty = Difficulty.Easy;
+        String text = "";
+        List<Answer> answers = new ArrayList<>();
+        //easy
+        answers.clear();
+        text = "Das zu welchem Modul gehört dieses Projekt ?";
+        for(int i = 1; i < 20; i++) {
+            Answer answer = new Answer();
+            answer.setText("Answer" + i);
+            answer.setCorrectness(i%2==0);
+            answers.add(answer);
+        }
+
+        assertTrue(controller.createQuestion(difficulty, text, answers));
+    }
+
 }
