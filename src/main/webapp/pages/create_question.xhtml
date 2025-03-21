@@ -14,7 +14,7 @@
                     <p:column styleClass="ui-grid-col-4">
                         <div class="field col-12 md:col-4">
                             <p:outputLabel for="category" value="#{msg['category.text']}" />
-                            <p:selectOneMenu id="category" value="#{questionBean.category}">
+                            <p:selectOneMenu id="category" value="#{questionBean.category}" style="margin-top: 10px;">
                                 <f:selectItem itemLabel="#{msg['select.text']}" noSelectionOption="true" />
                                 <!-- Add your categories here -->
                                 <f:selectItem itemLabel="Category 1" itemValue="Category 1" />
@@ -25,7 +25,8 @@
                     <p:column styleClass="ui-grid-col-4">
                         <div class="field col-12 md:col-4">
                             <p:outputLabel for="difficulty" value="#{msg['schwierigkeitsgrad.text']}" />
-                            <p:selectOneMenu id="difficulty" value="#{questionBean.difficulty}">
+                            <p:selectOneMenu id="difficulty" value="#{questionBean.difficulty}"
+                                style="margin-top: 10px;">
                                 <f:selectItem itemLabel="#{msg['select.text']}" noSelectionOption="true" />
                                 <!-- Add your difficulty levels here -->
                                 <f:selectItem itemLabel="#{msg['easy.text']}" itemValue="Easy" />
@@ -58,16 +59,18 @@
                 </c:forEach>
                 <p:row>
                     <p:column styleClass="ui-grid-col-2" />
-                    <p:column styleClass="ui-grid-col-6" >
-                        <p:commandButton value="#{msg['addanswer.text']}" styleClass="mr-2 ui-button-secondary" style="width: auto; margin-right: 10px;"
-                            actionListener="#{questionBean.addRow}" update="panelGrid" oncomplete="scrollToBottom()" />
+                    <p:column styleClass="ui-grid-col-6">
+                        <p:commandButton value="#{msg['addanswer.text']}" styleClass="mr-2 ui-button-secondary"
+                            style="width: auto; margin-right: 10px;" actionListener="#{questionBean.addRow}"
+                            update="panelGrid" oncomplete="scrollToBottom()" />
                         <p:commandButton value="#{msg['deleteanswer.text']}" styleClass="mr-2 ui-button-danger"
                             style="width: auto; margin-right: 10px;" actionListener="#{questionBean.removeRow}"
                             update="panelGrid" oncomplete="scrollToTop()" />
                     </p:column>
-                    <p:column styleClass="ui-grid-col-2" >
-                        <p:commandButton value="#{msg['save.text']}" styleClass="mr-2 ui-button-secondary" style="width: auto;"
-                        action="#{questionBean.saveQuestion}" update="questionForm growl" oncomplete="scrollToTop()" />
+                    <p:column styleClass="ui-grid-col-2">
+                        <p:commandButton value="#{msg['save.text']}" styleClass="mr-2 ui-button-secondary"
+                            style="width: auto;" action="#{questionBean.saveQuestion}" update="questionForm growl"
+                            oncomplete="scrollToTop()" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-2" />
                 </p:row>

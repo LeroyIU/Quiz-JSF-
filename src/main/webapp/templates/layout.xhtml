@@ -1,149 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui"
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
     xmlns:pe="http://primefaces.org/ui/extensions">
 
-    <h:head>
-        <!-- ToDo: title muss noch dynamsich werden -->
-        <title>Home</title>
-        <link rel="icon" href="/cleverquiz/resources/images/favicon.ico" />
-        <style>
-            .ui-menubar {
-                position: fixed;
-                width: 100%;
-                justify-content: center;
-                display: flex;
-            }
-            .warning-dialog-content {
-                text-align: center;
-                padding: 20px;
-            }
-            .warning-dialog-buttons {
-                display: flex;
-                justify-content: space-around;
-                margin-top: 20px;
-            }
-            .proceed-button {
-                background-color: red;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                cursor: pointer;
-            }
-            .stay-button {
-                background-color: gray;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                cursor: pointer;
-            }
-          .login-container {
-                max-width: 400px;
-                margin: 100px auto;
-                padding: 20px;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-            }
-            .login-image {
-                max-width: 400px;
-                margin: 100px auto;
-                padding: 20px;
-            }
-        </style>
-        <script>
-            function toggleDarkMode() {
-                document.body.classList.toggle('dark-mode');
-            }
+<h:head>
+    <!-- ToDo: title muss noch dynamsich werden -->
+    <title>Home</title>
+    <link rel="icon" href="/cleverquiz/resources/images/favicon.ico" />
+    <style>
+        .ui-menubar {
+            position: fixed;
+            width: 100%;
+            justify-content: center;
+            display: flex;
+        }
 
-            function showWarningPopup(url) {
-                if (!#{gameBean.isGameOver()}) {
-                    PF('warningDialog').show();
-                    setRedirectUrl([{name: 'redirectUrl', value: url}]);
-                } else {
-                    window.location.href = url;
-                }
+        .warning-dialog-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .warning-dialog-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+        function showWarningPopup(url) {
+            if (!#{ gameBean.isGameOver() }) {
+                PF('warningDialog').show();
+                setRedirectUrl([{ name: 'redirectUrl', value: url }]);
+            } else {
+                window.location.href = url;
             }
-        </script>
-    </h:head>
-    <!-- Workaround um die Hintergrundfarbe für den kompletten Body zu ändern -->
-    <!-- Orientiert sich an der Backgroundcolor der verwendeten Themes -->
-    <h:body style="margin: 0; background-color: #{themeSwitcherBean.backgroundColor};">
-        <f:view locale="#{languageBean.language}">
-            <f:loadBundle basename="messages" var="msg" />
-            <p:growl id="growl" showDetail="true" />
-            <h:form id="mainForm">
-                <p:menubar style="display: flex; justify-content: center; top: 0; left: 0; z-index: 999;">
-                    <p:menuitem icon="pi pi-home" style="margin-left: 10px;" onclick="showWarningPopup('/cleverquiz/index.xhtml')" />
-                    <p:menuitem value="#{msg['menu_news.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
-                    <p:menuitem value="#{msg['menu_question.text']}" onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
-                    <p:menuitem 
-                        value="#{msg['menu_quiz.text']}" 
-                        onclick="PF('startGameDialog').show();" 
-                        disabled="#{!gameBean.isGameOver()}" style="background-color: #48eddd;"/>
-                    <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
-                    <p:menuitem value="#{msg['menu_friendslist.text']}" onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
-                    <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
-                        <p:menuitem value="#{msg['menu_username.text']}" />
-                        <p:menuitem value="#{msg['menu_profilesettings.text']}" onclick="showWarningPopup('/cleverquiz/pages/profile_settings.xhtml')" />
-                        <p:menuitem>
-                            <h:outputLabel for="languageToggleSwitch" value="English:" />
-                            <p:toggleSwitch id="languageToggleSwitch" value="#{languageBean.english}" style="float: right;">
-                                <p:ajax listener="#{languageBean.setEnglish}" update="@none" oncomplete="location.reload();" />
-                            </p:toggleSwitch>
-                        </p:menuitem>
-                        <p:menuitem>
-                            <h:outputLabel for="toggleSwitch" value="Darkmode:" />
-                            <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" style="float: right;">
-                                <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none" oncomplete="setTimeout(() => location.reload(), 200);" />
-                            </p:toggleSwitch>
-                        </p:menuitem>
-                        <p:menuitem value="#{msg['menu_logout.text']}" onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-            <div class="layout-content" style="padding-top: 70px;">
-                <ui:insert name="content" />
-            </div>
-            <h:form id="footerForm">
-                <p:menubar style="position: fixed; bottom: 0; left: 0; right: 0; padding: 10px; display: flex; justify-content: center;">
-                    <p:menuitem value="#{msg['menu_imprint.text']}" onclick="showWarningPopup('/cleverquiz/pages/imprint.xhtml')" />
-                    <p:menuitem value="Support (E-Mail)" onclick="showWarningPopup('mailto:support@cleverquiz.de?subject=Supportanfrage')" />
-                    <p:menuitem value="#{msg['menu_privacy.text']}" onclick="showWarningPopup('/cleverquiz/pages/privacy.xhtml')" />
-                </p:menubar>
-            </h:form>
-            <!-- Warning Dialog -->
-            <p:dialog header="Warning" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
-                <h:form id="warningForm">
-                    <p:remoteCommand name="setRedirectUrl" actionListener="#{gameBean.setRedirectUrl}" process="@this" />
-                    <div class="warning-dialog-content">
-                        <h:outputText value="A game is currently running. Do you want to proceed and lose the current game?" />
-                        <div class="warning-dialog-buttons">
-                            <p:commandButton id="proceedButton" value="Proceed" 
-                                onclick="PF('warningDialog').hide();" 
-                                action="#{gameBean.destroyGameWithRedirect}" 
-                                process="@this" 
-                                styleClass="proceed-button ui-button-secondary" />
-                            <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button" styleClass="stay-button ui-button-secondary" />
-                        </div>
+        }
+    </script>
+</h:head>
+<!-- Workaround um die Hintergrundfarbe für den kompletten Body zu ändern -->
+<!-- Orientiert sich an der Backgroundcolor der verwendeten Themes -->
+<h:body style="margin: 0; background-color: #{themeSwitcherBean.backgroundColor};">
+    <f:view locale="#{languageBean.language}">
+        <f:loadBundle basename="messages" var="msg" />
+        <p:growl id="growl" showDetail="true" />
+        <h:form id="mainForm">
+            <p:menubar style="display: flex; justify-content: center; top: 0; left: 0; z-index: 999;">
+                <p:menuitem icon="pi pi-home" style="margin-left: 10px;"
+                    onclick="showWarningPopup('/cleverquiz/index.xhtml')" />
+                <p:menuitem value="#{msg['menu_news.text']}"
+                    onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
+                <p:menuitem value="#{msg['menu_question.text']}"
+                    onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
+                <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();"
+                    disabled="#{!gameBean.isGameOver()}" style="background-color: #48eddd;" />
+                <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
+                <p:menuitem value="#{msg['menu_friendslist.text']}"
+                    onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
+                <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
+                    <p:menuitem value="#{msg['menu_username.text']}" />
+                    <p:menuitem value="#{msg['menu_profilesettings.text']}"
+                        onclick="showWarningPopup('/cleverquiz/pages/profile_settings.xhtml')" />
+                    <p:menuitem>
+                        <h:outputLabel for="languageToggleSwitch" value="English:" />
+                        <p:toggleSwitch id="languageToggleSwitch" value="#{languageBean.english}" style="float: right;">
+                            <p:ajax listener="#{languageBean.setEnglish}" update="@none"
+                                oncomplete="location.reload();" />
+                        </p:toggleSwitch>
+                    </p:menuitem>
+                    <p:menuitem>
+                        <h:outputLabel for="toggleSwitch" value="Darkmode:" />
+                        <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" style="float: right;">
+                            <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none"
+                                oncomplete="setTimeout(() => location.reload(), 200);" />
+                        </p:toggleSwitch>
+                    </p:menuitem>
+                    <p:menuitem value="#{msg['menu_logout.text']}"
+                        onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        <div class="layout-content" style="padding-top: 70px;">
+            <ui:insert name="content" />
+        </div>
+        <h:form id="footerForm">
+            <p:menubar
+                style="position: fixed; bottom: 0; left: 0; right: 0; padding: 10px; display: flex; justify-content: center;">
+                <p:menuitem value="#{msg['menu_imprint.text']}"
+                    onclick="showWarningPopup('/cleverquiz/pages/imprint.xhtml')" />
+                <p:menuitem value="Support"
+                    onclick="showWarningPopup('mailto:support@cleverquiz.de?subject=Supportanfrage')" />
+                <p:menuitem value="#{msg['menu_privacy.text']}"
+                    onclick="showWarningPopup('/cleverquiz/pages/privacy.xhtml')" />
+            </p:menubar>
+        </h:form>
+        <!-- Warning Dialog -->
+        <p:dialog header="Warning" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
+            <h:form id="warningForm">
+                <p:remoteCommand name="setRedirectUrl" actionListener="#{gameBean.setRedirectUrl}" process="@this" />
+                <div class="warning-dialog-content">
+                    <h:outputText
+                        value="A game is currently running. Do you want to proceed and lose the current game?" />
+                    <div class="warning-dialog-buttons">
+                        <p:commandButton id="proceedButton" value="Proceed" onclick="PF('warningDialog').hide();"
+                            action="#{gameBean.destroyGameWithRedirect}" process="@this"
+                            styleClass="proceed-button ui-button-secondary" />
+                        <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button"
+                            styleClass="stay-button ui-button-secondary" />
                     </div>
-                </h:form>
-            </p:dialog>
-            <!-- Dialog for creating a new category -->
-            <p:dialog header="#{msg['menu_category.text']}" widgetVar="categoryDialog" modal="true" closable="true" resizable="false">
-                <h:form id="categoryForm">
-                    <p:panelGrid columns="4" id="panelGrid"
-                    columnClasses="ui-grid-col-6,ui-grid-col-6"
-                    layout="grid"
+                </div>
+            </h:form>
+        </p:dialog>
+        <!-- Dialog for creating a new category -->
+        <p:dialog header="#{msg['menu_category.text']}" widgetVar="categoryDialog" modal="true" closable="true"
+            resizable="false">
+            <h:form id="categoryForm">
+                <p:panelGrid columns="4" id="panelGrid" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid"
                     styleClass="ui-panelgrid-blank ui-fluid"
                     style="border:0px none; background-color:transparent; min-width: 400px;">
                     <p:row>
                         <p:column>
-                        <h:outputLabel for="categoryName" value="#{msg['category.text']}" />
+                            <h:outputLabel for="categoryName" value="#{msg['category.text']}" />
                         </p:column>
                         <p:column>
                             <p:inputText id="categoryName" value="#{categoryBean.categoryName}" />
@@ -151,25 +132,26 @@
                     </p:row>
                     <p:row>
                         <p:column styleClass="ui-grid-col-12">
-                            <p:commandButton value="#{msg['save.text']}" styleClass="ui-button-secondary" action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
+                            <p:commandButton value="#{msg['save.text']}" styleClass="ui-button-secondary"
+                                action="#{categoryBean.saveCategory}" update=":growl, categoryForm" />
                         </p:column>
                     </p:row>
-                    </p:panelGrid>
-                    
-                </h:form>
-            </p:dialog>
-            <!-- Dialog for starting a new game -->
-            <p:dialog header="#{msg['menu_quiz.text']}" widgetVar="startGameDialog" modal="true" closable="true" resizable="false">
+                </p:panelGrid>
+
+            </h:form>
+        </p:dialog>
+        <!-- Dialog for starting a new game -->
+        <p:dialog header="#{msg['menu_quiz.text']}" widgetVar="startGameDialog" modal="true" closable="true"
+            resizable="false">
             <h:form id="startGameForm">
-                <p:panelGrid columns="4" id="panelGrid"
-                    columnClasses="ui-grid-col-6,ui-grid-col-6"
-                    layout="grid"
+                <p:panelGrid columns="4" id="panelGrid" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid"
                     styleClass="ui-panelgrid-blank ui-fluid"
                     style="border:0px none; background-color:transparent; min-width: 400px;">
                     <p:row>
                         <h:outputLabel for="categorySelect" value="#{msg['category.text']}" />
                         <p:selectOneMenu id="categorySelect" value="#{gameBean.selectedCategory}">
-                            <f:selectItems value="#{gameBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
+                            <f:selectItems value="#{gameBean.categories}" var="category" itemLabel="#{category}"
+                                itemValue="#{category}" />
                         </p:selectOneMenu>
                     </p:row>
                     <p:row>
@@ -182,15 +164,16 @@
                     </p:row>
                     <p:row>
                         <p:column styleClass="ui-grid-col-12">
-                            <p:commandButton value="#{msg['start.text']}" action="#{gameBean.startGame}" update="startGameForm" 
-                            process="@this, categorySelect, questionCountSelect" 
-                            oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml?gameID=#{gameBean.gameId}';" 
-                            style="margin-top: 10px;" styleClass="ui-button-secondary" />
+                            <p:commandButton value="#{msg['start.text']}" action="#{gameBean.startGame}"
+                                update="startGameForm" process="@this, categorySelect, questionCountSelect"
+                                oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml?gameID=#{gameBean.gameId}';"
+                                style="margin-top: 10px;" styleClass="ui-button-secondary" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
-        </f:view>
-    </h:body>
+    </f:view>
+</h:body>
+
 </html>

@@ -1,4 +1,5 @@
-package com.example;
+import java.io.Serializable;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -7,7 +8,6 @@ import javax.faces.context.FacesContext;
 
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
-
 import java.io.Serializable;
 
 @ManagedBean
@@ -24,6 +24,11 @@ public class CategoryBean implements Serializable {
     }
 
     public void saveCategory() {
+        if (!isValidInput(categoryName)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid category name."));
+            return;
+        }
+
         FacesContext context = FacesContext.getCurrentInstance();
         if (categoryName == null || categoryName.trim().isEmpty()) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Category name cannot be empty"));
@@ -47,5 +52,13 @@ public class CategoryBean implements Serializable {
             // Reset the input field
             categoryName = null;
         }
+    }
+
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        return Pattern.matches(regex, input);
     }
 }
