@@ -62,7 +62,7 @@
                 <p:menuitem value="#{msg['menu_friendslist.text']}"
                     onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
                 <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
-                    <p:menuitem value="#{msg['menu_username.text']}" />
+                    <p:menuitem value="#{sessionBean.username}" disabled="true"/>
                     <p:menuitem value="#{msg['menu_profilesettings.text']}"
                         onclick="showWarningPopup('/cleverquiz/pages/profile_settings.xhtml')" />
                     <p:menuitem>

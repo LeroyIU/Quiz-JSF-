@@ -50,6 +50,7 @@ public class LoginBean {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
             sessionBean.setLoggedIn(true);
+            sessionBean.setUsername(user.getUsername());
             // Redirect to the home page
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
@@ -68,6 +69,7 @@ public class LoginBean {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
             sessionBean.setLoggedIn(true);
+            sessionBean.setUsername(username);
             System.out.println("User login successful!");
 
             // Redirect to the home page

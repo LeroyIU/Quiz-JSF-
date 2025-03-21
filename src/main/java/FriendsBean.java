@@ -19,7 +19,7 @@ public class FriendsBean implements Serializable {
     private List<Friend> searchResults;
     private String searchQuery;
     private Friend selectedFriend;
-
+    private static int gamesPlayed;
     public FriendsBean() {
         friends = new ArrayList<>();
         searchResults = new ArrayList<>();
@@ -107,10 +107,6 @@ public class FriendsBean implements Serializable {
             return username;
         }
 
-        public String getBadge() {
-            return badge;
-        }
-
         public String getLastSeen() {
             return lastSeen;
         }
@@ -129,10 +125,6 @@ public class FriendsBean implements Serializable {
 
         public int getGamesPlayed() {
             return gamesPlayed;
-        }
-
-        public void setGamesPlayed(int gamesPlayed) {
-            this.gamesPlayed = gamesPlayed;
         }
     }
 }
