@@ -34,7 +34,7 @@ public class Controller implements IController {
 
     @Override
     public boolean createQuestion(Difficulty difficulty, String question, List<Answer> answers) {
-        return false;
+        return DBUtil.createQuestion(difficulty, question, answers);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Controller implements IController {
             correct &= userAnswer.isCorrect();
         }
         int xp = 0;
-        if(correct) xp = question.getDifficulty().getPoints();
+        if(correct) xp = question.getDifficulty().getValue();
         int userxp = user.getXp();
         user.setXp(userxp + xp);
         editProfile(user);
