@@ -2,7 +2,7 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Entity class representing a question.
@@ -14,15 +14,16 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer questionId;
     private Integer createdBy;
-    @ManyToOne
-    @JoinColumn(name = "Difficulty")
+    @Enumerated(EnumType.STRING) // Oder ORDINAL
+    @Column(nullable = false)
     private Difficulty difficulty;
     private Boolean approved;
     private Integer rating;
     @ManyToOne
     @JoinColumn(name = "Category")
     private Category category;
-    private Date date;
+    private LocalDate date;
+    private String text;
 
     public Integer getQuestionId() {
         return questionId;
@@ -72,12 +73,20 @@ public class Question {
         this.category = category;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
