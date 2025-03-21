@@ -13,15 +13,16 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer questionId;
-
     private Integer createdBy;
-    private Boolean approved;
-    private Integer rating;
-    private Date date;
-
     @ManyToOne
     @JoinColumn(name = "Difficulty")
     private Difficulty difficulty;
+    private Boolean approved;
+    private Integer rating;
+    @ManyToOne
+    @JoinColumn(name = "Category")
+    private Category category;
+    private Date date;
 
     public Integer getQuestionId() {
         return questionId;
@@ -37,6 +38,14 @@ public class Question {
 
     public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Boolean getApproved() {
@@ -55,6 +64,14 @@ public class Question {
         this.rating = rating;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -63,15 +80,16 @@ public class Question {
         this.date = date;
     }
 
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public int getPoints() {
-        return 0;
+    @Override
+    public String toString() {
+        return "Question{" +
+                "questionId=" + questionId +
+                ", createdBy=" + createdBy +
+                ", difficulty=" + difficulty +
+                ", approved=" + approved +
+                ", rating=" + rating +
+                ", category=" + category +
+                ", date=" + date +
+                '}';
     }
 }
