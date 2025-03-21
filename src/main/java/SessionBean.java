@@ -9,6 +9,15 @@ import javax.faces.context.FacesContext;
 public class SessionBean {
 
     private boolean loggedIn;
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     // Getters and setters
     public boolean isLoggedIn() {
@@ -22,6 +31,7 @@ public class SessionBean {
     // Method to handle logout
     public void logout() {
         loggedIn = false;
+        username = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().invalidateSession();
         try {
