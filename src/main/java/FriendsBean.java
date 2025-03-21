@@ -22,10 +22,6 @@ public class FriendsBean implements Serializable {
     public FriendsBean() {
         friends = new ArrayList<>();
         searchResults = new ArrayList<>();
-        // Add test data
-        friends.add(new Friend("user1", "Badge1", "2025-03-08", "About user1", 100));
-        friends.add(new Friend("user2", "Badge2", "2025-03-07", "About user2", 200));
-        friends.add(new Friend("user3", "Badge3", "2025-03-06", "About user3", 300));
     }
 
     public List<Friend> getFriends() {
@@ -59,15 +55,23 @@ public class FriendsBean implements Serializable {
         for (cleverquiz.model.User user : tmpList) {
             searchResults.add(new Friend(user.getUsername()));
         }
+        tmpList = controller.getFriends(175);
+        friends.clear();
+        for (cleverquiz.model.User user : tmpList) {
+            friends.add(new Friend(user.getUsername(),user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId()));
+        }
     }
 
     public void deleteFriend(Friend friend) {
-        friends.remove(friend);
+        IController controller = new Controller();
+        controller.deleteFriend(175, friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Deleted", "Removed friend: " + friend.getUsername()));
         System.out.println("User deleted: " + friend.getUsername());
     }
 
     public void addFriend(Friend friend) {
+        IController controller = new Controller();
+     //   controller.addFriend(175, friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Added", "Adding friend: " + friend.getUsername()));
         System.out.println("User added: " + friend.getUsername());
     }
@@ -78,16 +82,17 @@ public class FriendsBean implements Serializable {
         private String lastSeen;
         private String aboutMe;
         private int xp;
+        private int userid;
 
-        public Friend(String username, String badge, String lastSeen, String aboutMe, int xp) {
+        public Friend(String username, String lastSeen, String aboutMe, int xp, int id) {
             this.username = username;
-            this.badge = badge;
             this.lastSeen = lastSeen;
             this.aboutMe = aboutMe;
             this.xp = xp;
+            this.userid = id;
         }
         public Friend(String username) {
-            this(username,"","","",0);
+            this(username,"","",0,0);
         }
 
         public String getUsername() {
@@ -108,6 +113,9 @@ public class FriendsBean implements Serializable {
 
         public int getXp() {
             return xp;
+        }
+        public int getUserId() {
+            return userid;
         }
     }
 }
