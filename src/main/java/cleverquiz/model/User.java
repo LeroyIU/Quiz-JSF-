@@ -2,7 +2,7 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -18,7 +18,7 @@ public class User {
     private String email;
     private String password;
     private boolean admin;
-    private Date lastLogin;
+    private LocalDateTime lastLogin;
     private Integer xp;
     private int gameCount;
     private String lastname;
@@ -34,6 +34,8 @@ public class User {
         user.setUsername(name);
         user.setEmail(email);
         user.setPassword(password);
+        user.setXp(0);
+        user.setLastLogin(LocalDateTime.now());
         return user;
     }
 
@@ -77,11 +79,11 @@ public class User {
         this.admin = admin;
     }
 
-    public Date getLastLogin() {
+    public LocalDateTime getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(Date lastLogin) {
+    public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
     }
 
