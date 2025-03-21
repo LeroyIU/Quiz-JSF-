@@ -1,10 +1,9 @@
 package cleverquiz.controller;
 
-import cleverquiz.model.Badge;
-import cleverquiz.model.Category;
-import cleverquiz.model.News;
-import cleverquiz.model.User;
+import cleverquiz.model.*;
 import junit.framework.TestCase;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerTest extends TestCase {
@@ -108,6 +107,24 @@ public class ControllerTest extends TestCase {
         password = "robot";
         user = controller.login(name, password);
         assertNotNull(user);
+    }
+
+    public void testCreateQuestion() {
+        IController controller = new Controller();
+        Difficulty difficulty = Difficulty.Easy;
+        String text = "";
+        List<Answer> answers = new ArrayList<>();
+        //easy
+        answers.clear();
+        text = "Das zu welchem Modul gehört dieses Projekt ?";
+        for(int i = 1; i < 20; i++) {
+            Answer answer = new Answer();
+            answer.setText("Answer" + i);
+            answer.setCorrectness(i%2==0);
+            answers.add(answer);
+        }
+
+        assertTrue(controller.createQuestion(difficulty, text, answers));
     }
 
 }

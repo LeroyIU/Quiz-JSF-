@@ -9,6 +9,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 
@@ -143,6 +144,50 @@ public class DBUtil {
         }
         return success;
     }
+
+    public static boolean createQuestion(Difficulty difficulty, String questionText, List<Answer> answers) {
+        //validator
+        int correct = 0;
+        for (Answer answer : answers) {
+            if(answer.getCorrectness()) correct++;
+        }
+        if(answers.size() < 4 || correct < 1) return false;
+
+        //transaction
+        Transaction transaction = null;
+        boolean success = false;
+
+        try (Session session = getSession()) {
+            transaction = session.beginTransaction();
+
+            // Neue Frage anlegen
+            Question question = new Question();
+            question.setText(questionText);
+            question.setDifficulty(difficulty);
+            question.setDate(LocalDate.now());
+
+            // Frage speichern, damit sie eine ID bekommt
+            session.persist(question);
+
+            // Antworten verknüpfen und speichern
+            for (Answer answer : answers) {
+                answer.setQuestion(question); // Foreign Key setzen
+                session.persist(answer);
+            }
+
+            transaction.commit();
+            success = true;
+
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
 
     /**
      * Start a quiz
