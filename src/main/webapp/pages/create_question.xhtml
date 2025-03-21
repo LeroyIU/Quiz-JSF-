@@ -16,9 +16,7 @@
                             <p:outputLabel for="category" value="#{msg['category.text']}" />
                             <p:selectOneMenu id="category" value="#{questionBean.category}">
                                 <f:selectItem itemLabel="#{msg['select.text']}" noSelectionOption="true" />
-                                <!-- Add your categories here -->
-                                <f:selectItem itemLabel="Category 1" itemValue="Category 1" />
-                                <f:selectItem itemLabel="Category 2" itemValue="Category 2" />
+                                <f:selectItems value="#{gameBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
                             </p:selectOneMenu>
                         </div>
                     </p:column>
