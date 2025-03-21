@@ -3,6 +3,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
 
 @ManagedBean
 @ViewScoped

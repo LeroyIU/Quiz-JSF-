@@ -60,20 +60,26 @@ public class RegisterBean {
     public void save() {
         IController Controller = new Controller();
         FacesContext context = FacesContext.getCurrentInstance();
-
+        
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordVerification.isEmpty() || inviteCode.isEmpty()) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "All fields are required."));
             return;
         }
-
+        // Überprüfung des Passworts
         if (!password.equals(passwordVerification)) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match."));
             return;
         }
-
+        // Überprüfung der E-Mail-Adresse
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid email format."));
             return;
+        }
+
+           // Überprüfung des Invite Codes
+        if (!inviteCode.equals("9021830")) {
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid invite code."));
+        return;
         }
         
         cleverquiz.model.User newUser = Controller.addUser(name, email, password);
