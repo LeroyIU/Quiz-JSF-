@@ -17,6 +17,8 @@ public class News {
     private String title;
     private String text;
     private Date date;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User author;
 
     public Integer getPostId() {
