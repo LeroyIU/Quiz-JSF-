@@ -1,11 +1,10 @@
 import java.io.IOException;
-import java.util.regex.Pattern;
-import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
 
@@ -62,31 +61,25 @@ public class RegisterBean {
     public void save() {
         IController Controller = new Controller();
         FacesContext context = FacesContext.getCurrentInstance();
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", context.getViewRoot().getLocale());
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordVerification.isEmpty() || inviteCode.isEmpty()) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("allFieldsRequired.text")));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "All fields are required."));
             return;
         }
-        // Password verification
+
         if (!password.equals(passwordVerification)) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("passwordsDoNotMatch.text")));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match."));
             return;
         }
-        // Email format verification
+
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidEmailFormat.text")));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid email format."));
             return;
         }
-
-        if (!inviteCode.equals("9021830")) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidInviteCode.text")));
-            return;
-        }
-
+        
         cleverquiz.model.User newUser = Controller.addUser(name, email, password);
         if (newUser == null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("userCreationFailed.text")));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User could not be created."));
             return;
         }
         System.out.println("Name: " + name);
@@ -94,23 +87,9 @@ public class RegisterBean {
         System.out.println("Invite Code: " + inviteCode);
 
         try {
-            cleverquiz.model.User user = Controller.login(name, password);
-            SessionBean sessionBean = context.getApplication().evaluateExpressionGet(context, "#{sessionBean}", SessionBean.class);
-            sessionBean.setLoggedIn(true);
-            sessionBean.setUsername(user.getUsername());
-            sessionBean.setUserid(user.getUserId());
-            System.out.println("User login successful!");
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
+            context.getExternalContext().redirect("index.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean isValidInput(String input) {
-        if (input == null || input.isEmpty()) {
-            return true; // Allow empty fields
-        }
-        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
-        return Pattern.matches(regex, input);
     }
 }

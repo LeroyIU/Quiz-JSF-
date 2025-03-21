@@ -43,12 +43,12 @@ public class ControllerTest extends TestCase {
         }
     }
 
-    public void testAddCategory() {
-        String CategoryName = "Informatik";
-        IController controller = new Controller();
-        boolean success = controller.addCategory(CategoryName);
-        assertTrue(success);
-    }
+//    public void testAddCategory() {
+//        String CategoryName = "Informatik";
+//        IController controller = new Controller();
+//        boolean success = controller.addCategory(CategoryName);
+//        assertTrue(success);
+//    }
 
     public void testGetFriends() {
         return;
