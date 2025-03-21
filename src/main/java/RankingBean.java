@@ -1,20 +1,30 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+
 @ManagedBean
 @ViewScoped
 public class RankingBean implements Serializable {
-    private List<Ranking> rankingList;
+    private List<Ranking> rankingList = new ArrayList<>(); // Initialisierung hinzugefügt
 
     @PostConstruct
     public void init() {
-        rankingList = new ArrayList<>();
-        for (int i = 1; i <= 30; i++) {
-            rankingList.add(new Ranking(i, "User " + i, i * 10));
+        IController controller = new Controller();
+        List<cleverquiz.model.User> rankinglist = controller.getUserRanking();
+
+        // Entferne die Überschreibung von rankinglist
+        for (int i = 0; i < rankinglist.size(); i++) {
+            cleverquiz.model.User user = rankinglist.get(i);
+            Ranking ranking = new Ranking(i + 1, user.getUsername(), user.getXp()); // Position beginnt bei 1
+            System.out.println(ranking);
+            rankingList.add(ranking); // Füge die Daten zur initialisierten Liste hinzu
         }
     }
 

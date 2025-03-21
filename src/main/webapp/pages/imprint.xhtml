@@ -1,10 +1,73 @@
-<ui:composition template="/templates/layout.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
-    <ui:define name="content">
-      Impressum
-    </ui:define>
+<ui:composition template="/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+  <ui:define name="content">
+    <h1>Impressum</h1>
+    <p><strong>Dieses Impressum dient einer Projektarbeit der IU - Internationalen Hochschule. 
+      Die Daten des Unternehmens sind fiktiv und haben keinen Bezug zur Realität. 
+      Die Vertreter bilden das Projektteam. 
+      Die Seite wird nach Abschluss der Projektarbeit abgeschalten und ist nicht für den Produktivbetrieb gedacht.</strong></p>
+    <!-- Zwei Spalten Layout -->
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <!-- Spalte 1: Angaben gemäß § 5 TMG -->
+      <div style="flex: 1; min-width: 300px;">
+        <p><strong>Angaben gemäß § 5 TMG</strong></p>
+        <p>
+          Cleverquiz Spieleland GmbH<br />
+          Cleverquizallee 1<br />
+          80331 München<br />
+          Deutschland
+        </p>
+        <p><strong>Vertreten durch:</strong></p>
+        <p>
+          Sebastian Falkinger<br />
+          Leroy Osagie<br />
+          Michael Landinger<br />
+          Christian Tröndle
+        </p>
+        <p><strong>Kontakt:</strong></p>
+        <p>
+          Telefon: 1111 00000<br />
+          E-Mail: info@cleverquiz.de<br />
+          Website: <a href="https://cleverquiz.com" target="_blank">Cleverquiz.com</a>
+        </p>
+      </div>
+
+      <!-- Spalte 2: Verantwortlich für den Inhalt -->
+      <div style="flex: 1; min-width: 300px;">
+        <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</strong></p>
+        <p>
+          Cleverquiz Spieleland GmbH<br />
+          Cleverquizallee 1<br />
+          80331 München<br />
+          Deutschland
+        </p>
+        <p><strong>Vertreten durch:</strong></p>
+        <p>
+          Sebastian Falkinger<br />
+          Leroy Osagie<br />
+          Michael Landinger<br />
+          Christian Tröndle
+        </p>
+      </div>
+    </div>
+
+    <h2>Rechtliche Hinweise</h2>
+    <p>
+      Die Cleverquiz Spieleland GmbH (im Folgenden "Cleverquiz" genannt) ist bemüht, ihr Webangebot stets aktuell und inhaltlich richtig sowie vollständig anzubieten. Dennoch ist auch bei sorgfältigster Bearbeitung der Informationen nicht völlig auszuschließen, dass Fehler auftreten.
+    </p>
+    <h3>Inhalt des Online-Angebots</h3>
+    <p>
+      Cleverquiz übernimmt keinerlei Gewähr für Aktualität, inhaltliche Richtigkeit, Vollständigkeit oder Qualität der in ihrem Internetangebot bereitgestellten Informationen. Haftungsansprüche gegen Cleverquiz, die sich auf Schäden materieller oder ideeller Art beziehen, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern von Seiten der Cleverquiz ein nachweislich vorsätzliches oder grob fahrlässiges Verschulden nicht vorliegt. Alle Angebote sind freibleibend und unverbindlich. Cleverquiz behält sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.
+    </p>
+    <h3>Copyright und Kennzeichenrecht</h3>
+    <p>Cleverquiz ist bestrebt, in allen Fragen die Urheberrechte der verwendeten Grafiken, Tondokumente, Videosequenzen und Texte zu beachten, von ihr selbst erstellte Objekte zu nutzen oder auf lizenzfreie Grafiken, Tondokumente, Videosequenzen und Texte zurückzugreifen. Alle innerhalb des Internetangebotes genannten und ggf. durch Dritte geschützten Marken- und Warenzeichen unterliegen uneingeschränkt den Bestimmungen des jeweils gültigen Kennzeichenrechts und den Besitzrechten der jeweiligen eingetragenen Eigentümer. Allein aufgrund der bloßen Nennung ist nicht der Schluss zu ziehen, dass Markenzeichen nicht durch Rechte Dritter geschützt sind! Das Copyright für veröffentlichte, von Cleverquiz selbst erstellte oder beauftragte Objekte verbleibt allein bei Cleverquiz und den beauftragen Unternehmen. Eine Vervielfältigung oder Verwendung solcher Grafiken, Tondokumente, Videosequenzen und Texte in anderen elektronischen oder gedruckten Publikationen ist ohne ausdrückliche Genehmigung von Cleverquiz und der beteiligten Unternehmen nicht gestattet. Das Layout der Homepage, die verwendeten Grafiken und Bilder, die Sammlung sowie einzelnen Beiträge sind urheberrechtlich geschützt.</p>
+    <h3>Rechtswirksamkeit dieses Haftungsausschlusses</h3>
+    <p>Dieser Haftungsausschluss ist als Teil des Internetangebotes zu betrachten, von dem aus auf diese Seite verwiesen wurde. Sofern Teile oder einzelne Formulierungen dieses Textes der geltenden Rechtslage nicht mehr oder nicht mehr vollständig entsprechen, bleiben die übrigen Teile des Dokumentes in ihrem Sinn und ihrer Gültigkeit davon unberührt.</p>
+    <h3>Streitschlichtung</h3>
+    <p>Die EU-Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr.
+
+      Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+    <div style="height: 80px;"></div>
+  </ui:define>
 </ui:composition>

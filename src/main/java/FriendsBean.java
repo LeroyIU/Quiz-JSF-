@@ -1,14 +1,15 @@
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.swing.Icon;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
-
 
 
 @ManagedBean
@@ -76,14 +77,21 @@ public class FriendsBean implements Serializable {
         System.out.println("User added: " + friend.getUsername());
     }
 
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        return Pattern.matches(regex, input);
+    }
+
     public static class Friend {
         private String username;
-        private String badge;
         private String lastSeen;
         private String aboutMe;
         private int xp;
         private int userid;
-
+      
         public Friend(String username, String lastSeen, String aboutMe, int xp, int id) {
             this.username = username;
             this.lastSeen = lastSeen;
@@ -114,8 +122,17 @@ public class FriendsBean implements Serializable {
         public int getXp() {
             return xp;
         }
+
         public int getUserId() {
             return userid;
+        }
+
+        public int getGamesPlayed() {
+            return gamesPlayed;
+        }
+
+        public void setGamesPlayed(int gamesPlayed) {
+            this.gamesPlayed = gamesPlayed;
         }
     }
 }

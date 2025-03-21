@@ -1,7 +1,3 @@
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,6 +6,11 @@ import java.util.Set;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
 import cleverquiz.model.Difficulty;
+import java.util.regex.Pattern;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
@@ -103,13 +104,13 @@ public class QuestionBean implements Serializable {
     }
 
     private boolean isFormValid() {
-        if (question == null || question.isEmpty() || category == null || category.isEmpty() || difficulty == null || difficulty.isEmpty()) {
+        if (!isValidInput(question) || !isValidInput(category) || !isValidInput(difficulty)) {
             return false;
         }
         boolean atLeastOneCorrect = false;
         Set<String> uniqueAnswers = new HashSet<>();
         for (Answer answer : rows) {
-            if (answer.getAnswer() == null || answer.getAnswer().isEmpty()) {
+            if (!isValidInput(answer.getAnswer())) {
                 return false;
             }
             if (!uniqueAnswers.add(answer.getAnswer())) {
@@ -120,6 +121,14 @@ public class QuestionBean implements Serializable {
             }
         }
         return atLeastOneCorrect;
+    }
+
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        return Pattern.matches(regex, input);
     }
 
     private void printQuestionDetails() {

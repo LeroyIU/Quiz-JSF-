@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -60,7 +61,7 @@ public class RegisterBean {
     public void save() {
         IController Controller = new Controller();
         FacesContext context = FacesContext.getCurrentInstance();
-        
+
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordVerification.isEmpty() || inviteCode.isEmpty()) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "All fields are required."));
             return;
@@ -96,5 +97,13 @@ public class RegisterBean {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isValidInput(String input) {
+        if (input == null || input.isEmpty()) {
+            return true; // Allow empty fields
+        }
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        return Pattern.matches(regex, input);
     }
 }
