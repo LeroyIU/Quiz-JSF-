@@ -2,9 +2,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.swing.Icon;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+
+
 
 @ManagedBean
 @ViewScoped
@@ -48,11 +53,11 @@ public class FriendsBean implements Serializable {
     }
 
     public void search() {
+        IController controller = new Controller();
+        List<cleverquiz.model.User> tmpList = controller.searchUser(searchQuery);
         searchResults.clear();
-        for (Friend friend : friends) {
-            if (friend.getUsername().contains(searchQuery)) {
-                searchResults.add(friend);
-            }
+        for (cleverquiz.model.User user : tmpList) {
+            searchResults.add(new Friend(user.getUsername()));
         }
     }
 
@@ -80,6 +85,9 @@ public class FriendsBean implements Serializable {
             this.lastSeen = lastSeen;
             this.aboutMe = aboutMe;
             this.xp = xp;
+        }
+        public Friend(String username) {
+            this(username,"","","",0);
         }
 
         public String getUsername() {
