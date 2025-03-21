@@ -92,4 +92,23 @@ public class ControllerTest extends TestCase {
         User newUser = controller.addUser(name, email, password);
         assertNotNull(newUser);
     }
+    public void testLogin() {
+        IController controller = new Controller();
+        //wrong username
+        String name = "asdf";
+        String password = "1234";
+        User user = controller.login(name, password);
+        assertNull(user);
+        //wrong pw
+        name = "username";
+        password = "asdf";
+        user = controller.login(name, password);
+        assertNull(user);
+        //correct credentials
+        name = "bot";
+        password = "robot";
+        user = controller.login(name, password);
+        assertNotNull(user);
+    }
+
 }

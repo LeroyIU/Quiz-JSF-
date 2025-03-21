@@ -69,6 +69,11 @@ public class Controller implements IController {
     }
 
     @Override
+    public User login(String username, String password) {
+        return DBUtil.login(username, password);
+    }
+
+    @Override
     public void updateGame(User user, Question question, List<UserAnswer> answers) {
         boolean correct = true;
         for (UserAnswer userAnswer : answers) {

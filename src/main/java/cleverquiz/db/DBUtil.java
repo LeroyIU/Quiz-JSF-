@@ -9,7 +9,6 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
@@ -272,9 +271,9 @@ public class DBUtil {
             transaction = session.beginTransaction();
 
             // HQL Query, um den User zu finden
-            Query<User> query = session.createQuery("FROM User WHERE name = :username AND password = :password", User.class);
-            query.setParameter("username", username);
-            query.setParameter("password", password);  // Nur wenn das Passwort nicht gehasht gespeichert wird!
+            Query<User> query = session.createQuery("FROM User WHERE username = :username AND password = :password", User.class);
+            query.setParameter("username", username.trim());
+            query.setParameter("password", password.trim());  // Nur wenn das Passwort nicht gehasht gespeichert wird!
 
             user = query.uniqueResult(); // Falls kein Ergebnis, dann null zurückgeben
 
