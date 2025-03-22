@@ -28,51 +28,54 @@
 <body
   style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0;">
   <!-- Login Form -->
-  <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
-    style="border:0px none; background-color:transparent;" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
-    <p:row style="display: flex; align-items: center;">
-      <p:column style="text-align: right;">
-        <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%;"
-          class="login-image" />
-      </p:column>
-      <p:column>
-        <div class="login-container">
-          <h3 class="text-center">Login to Cleverquiz</h3>
-          <h:form id="loginForm" style="text-align: left;">
-            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
-              columnClasses="ui-grid-col-6,ui-grid-col-6">
-              <p:outputLabel for="username" value="Username" />
-              <p:inputText id="username" value="#{loginBean.username}" required="true" />
+  <f:view locale="#{languageBean.language}">
+    <f:loadBundle basename="messages" var="msg" />
+    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+      style="border:0px none; background-color:transparent;" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4">
+      <p:row style="display: flex; align-items: center;">
+        <p:column style="text-align: right;">
+          <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%;"
+            class="login-image" />
+        </p:column>
+        <p:column>
+          <div class="login-container">
+            <h3 class="text-center"><h:outputText value="#{msg['loginTitle.text']}" /></h3>
+            <h:form id="loginForm" style="text-align: left;">
+              <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+                columnClasses="ui-grid-col-6,ui-grid-col-6">
+                <p:outputLabel for="username" value="#{msg['username.text']}" />
+                <p:inputText id="username" value="#{loginBean.username}" required="true" />
 
-              <p:outputLabel for="password" value="Password" />
-              <p:password id="password" value="#{loginBean.password}" required="true" />
+                <p:outputLabel for="password" value="#{msg['password.text']}" />
+                <p:password id="password" value="#{loginBean.password}" required="true" />
 
-              <p:outputLabel />
-              <p:commandButton value="Login" styleClass="ui-button-secondary" action="#{loginBean.login}"
-                update="@form:growl" />
-            </p:panelGrid>
-            <p:growl id="growl" showDetail="true" life="3000" />
-            <h:messages globalOnly="true" />
-            <div style="margin-top: 15px;">
-              <h:outputText value="Don't have an account? " />
-              <a href="/cleverquiz/pages/register.xhtml">Register here</a>
-            </div>
-          </h:form>
-        </div>
-      </p:column>
-      <p:column style="text-align: left;">
-        <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%;"
-          class="login-image" />
-      </p:column>
-    </p:row>
-  </p:panelGrid>
-  <h:form id="footerForm">
-    <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
-      <p:menuitem value="Impressum" url="/cleverquiz/pages/imprint.xhtml" />
-      <p:menuitem value="Support" url="mailto:support@cleverquiz.com?subject=Supportanfrage" />
-      <p:menuitem value="Datenschutzerklärung" url="/cleverquiz/pages/privacy.xhtml" />
-    </p:menubar>
-  </h:form>
+                <p:outputLabel />
+                <p:commandButton value="#{msg['login.text']}" styleClass="ui-button-secondary" action="#{loginBean.login}"
+                  update="@form:growl" />
+              </p:panelGrid>
+              <p:growl id="growl" showDetail="true" life="3000" />
+              <h:messages globalOnly="true" />
+              <div style="margin-top: 15px;">
+                <h:outputText value="#{msg['noAccount.text']}" />
+                <a href="/cleverquiz/pages/register.xhtml">#{msg['registerHere.text']}</a>
+              </div>
+            </h:form>
+          </div>
+        </p:column>
+        <p:column style="text-align: left;">
+          <h:graphicImage value="/resources/images/Cleverquiz_Transparent.jpg" alt="Cleverquiz" style="width: 100%;"
+            class="login-image" />
+        </p:column>
+      </p:row>
+    </p:panelGrid>
+    <h:form id="footerForm">
+      <p:menubar style="bottom: 0; left: 0; right: 0; padding: 10px;">
+        <p:menuitem value="Impressum" url="/cleverquiz/pages/imprint.xhtml" />
+        <p:menuitem value="Support" url="mailto:support@cleverquiz.com?subject=Supportanfrage" />
+        <p:menuitem value="Datenschutzerklärung" url="/cleverquiz/pages/privacy.xhtml" />
+      </p:menubar>
+    </h:form>
+  </f:view>
 </body>
 
 </html>
