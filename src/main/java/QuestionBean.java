@@ -11,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import java.util.ResourceBundle;
 
 @ManagedBean
 @SessionScoped
@@ -78,6 +79,7 @@ public class QuestionBean implements Serializable {
     }
 
     public void saveQuestion() {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         if (isFormValid()) {
             answers.addAll(rows);
             IController controller = new Controller();
@@ -91,7 +93,7 @@ public class QuestionBean implements Serializable {
 
             controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Question saved successfully"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("questionSaved.text")));
             // ToDo: Remove print
             printQuestionDetails();
 
@@ -99,7 +101,7 @@ public class QuestionBean implements Serializable {
 
             resetForm();
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "All fields are required, answers must be unique, and at least one answer must be marked as correct"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidQuestionForm.text")));
         }
     }
 
