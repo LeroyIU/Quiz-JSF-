@@ -10,6 +10,7 @@ import javax.swing.Icon;
 import java.io.Serializable;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
+import java.util.ResourceBundle;
 
 
 @ManagedBean
@@ -66,14 +67,16 @@ public class FriendsBean implements Serializable {
     public void deleteFriend(Friend friend) {
         IController controller = new Controller();
         controller.deleteFriend(175, friend.getUserId());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Deleted", "Removed friend: " + friend.getUsername()));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("friendDeleted.text"), bundle.getString("removedFriend.text") + ": " + friend.getUsername()));
         System.out.println("User deleted: " + friend.getUsername());
     }
 
     public void addFriend(Friend friend) {
         IController controller = new Controller();
-     //   controller.addFriend(175, friend.getUserId());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Added", "Adding friend: " + friend.getUsername()));
+        // controller.addFriend(175, friend.getUserId());
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("friendAdded.text"), bundle.getString("addingFriend.text") + ": " + friend.getUsername()));
         System.out.println("User added: " + friend.getUsername());
     }
 

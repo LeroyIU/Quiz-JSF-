@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.regex.Pattern;
+import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,23 +24,22 @@ public class CategoryBean implements Serializable {
     }
 
     public void saveCategory() {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         if (!isValidInput(categoryName)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid category name."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidCategoryName.text")));
             return;
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Category name cannot be empty"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("emptyCategoryName.text")));
         } else {
             IController controller = new Controller();
             boolean success = controller.addCategory(categoryName);
-            if(success) {
-                // Add a success message to the FacesContext
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Category saved: " + categoryName));
+            if (success) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("categorySaved.text") + ": " + categoryName));
             } else {
-                // Add an error message to the FacesContext
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Category could not be saved"));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("categorySaveFailed.text")));
             }
 
             categoryName = null;
