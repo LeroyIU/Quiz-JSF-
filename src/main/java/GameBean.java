@@ -11,6 +11,7 @@ import cleverquiz.model.Category;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.faces.event.ActionEvent;
+import java.util.Collections;
 
 
 @ManagedBean
@@ -29,6 +30,7 @@ public class GameBean implements Serializable {
     private String redirectUrl;
     private List<Category> categoryObjects; // Store the actual Category objects
     private int correctAnswersCount; // Counter for correct answers
+    private List<Integer> ratings; // Store ratings for each question
 
     // Initialize categories and other properties
     public GameBean() {
@@ -115,6 +117,8 @@ public class GameBean implements Serializable {
         } else {
             System.err.println("Error: Selected category not found!");
         }
+
+        ratings = new ArrayList<>(Collections.nCopies(questionCount, 0)); // Initialize ratings with 0
 
         loadNextQuestion();
     }
@@ -323,5 +327,20 @@ public class GameBean implements Serializable {
                 correctAnswersCount++;
             }
         }
+    }
+
+    public List<Integer> getRatings() {
+        return ratings;
+    }
+
+    public void setRating(int questionIndex, int rating) {
+        if (questionIndex >= 0 && questionIndex < ratings.size()) {
+            ratings.set(questionIndex, rating);
+            System.out.println("Rating for question " + questionIndex + " set to: " + rating);
+        }
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
     }
 }
