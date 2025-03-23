@@ -85,4 +85,9 @@ public class Controller implements IController {
         user.setXp(userxp + xp);
         editProfile(user);
     }
+
+    @Override
+    public User getUserById(int userId) {
+        return DBUtil.getUserById(userId);
+    }
 }

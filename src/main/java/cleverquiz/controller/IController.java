@@ -113,4 +113,12 @@ public interface IController {
     void updateGame(User user, Question question, List<UserAnswer> answers);
 
     User login(String username, String password);
+
+    /**
+     * Get a user by their ID
+     *
+     * @param userId the ID of the user
+     * @return the user object, or null if not found
+     */
+    User getUserById(int userId);
 }

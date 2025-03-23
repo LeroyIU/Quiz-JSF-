@@ -1,15 +1,19 @@
 import java.util.regex.Pattern;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.PrimeFaces;
+import java.util.List;
+
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+import cleverquiz.model.Badge;
+import cleverquiz.model.User;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ProfileSettingsBean {
     private boolean editable = false;
     private String lastName;
@@ -20,10 +24,14 @@ public class ProfileSettingsBean {
     private String favoriteFood;
     private String aboutMe;
     private String selectedBadge;
+    private int gamesPlayed;
+    private int xp;
+    private List<Badge> userBadges;
 
     @PostConstruct
     public void init() {
-        populateTestData();
+        populateUserData();
+        loadUserBadges();
     }
 
     public boolean isEditable() {
@@ -48,15 +56,44 @@ public class ProfileSettingsBean {
             PrimeFaces.current().ajax().update("growl");
             return;
         }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+        IController controller = new Controller();
 
-        // Save logic here (use parameterized queries in actual database interaction)
+        // Update user data
+            User user = controller.getUserById(sessionBean.getUserid());
+            System.out.println("User-ID: " + sessionBean.getUserid());
+            if (user != null) {
+                user.setLastname(lastName);
+                user.setName(firstName);
+                user.setFavColour(favoriteColor);
+                user.setFavCategory(favoriteCategory);
+                user.setFavMusic(favoriteMusicGenre);
+                user.setFavFood(favoriteFood);
+                user.setAboutme(aboutMe);
+
+                try {
+                    // Save updated user using the controller
+                    controller.editProfile(user);
+
+                    // Add success message
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Profile settings saved successfully.");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    PrimeFaces.current().ajax().update("growl");
+                } catch (Exception e) {
+                    // Add error message
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Failed to save profile settings.");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    PrimeFaces.current().ajax().update("growl");
+                    e.printStackTrace();
+                }
+            } else {
+                // Add error message if user is not found
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User not found.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                PrimeFaces.current().ajax().update("growl");
+            }
         this.editable = false;
-        printData();
-
-        // Add growl message
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Profile settings saved successfully.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        PrimeFaces.current().ajax().update("growl");
     }
 
     private boolean isValidInput(String input) {
@@ -69,19 +106,41 @@ public class ProfileSettingsBean {
     }
 
     public void cancel() {
-        // Cancel logic here
         this.editable = false;
+        populateUserData();
     }
 
-    public void populateTestData() {
-        this.lastName = "Doe";
-        this.firstName = "John";
-        this.favoriteColor = "Blue";
-        this.favoriteCategory = "Technology";
-        this.favoriteMusicGenre = "Rock";
-        this.favoriteFood = "Pizza";
-        this.aboutMe = "This is a test user.";
-        this.selectedBadge = "Option1";
+    public void populateUserData() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+        IController controller = new Controller();
+        if (sessionBean != null && controller != null) {
+            User user = controller.getUserById(sessionBean.getUserid());
+            if (user != null) {
+                this.lastName = user.getLastname();
+                this.firstName = user.getName();
+                this.favoriteColor = user.getFavColour();
+                this.favoriteCategory = user.getFavCategory();
+                this.favoriteMusicGenre = user.getFavMusic();
+                this.favoriteFood = user.getFavFood();
+                this.aboutMe = user.getAboutme();
+                this.gamesPlayed = user.getGameCount();
+                this.xp = user.getXp();
+            }
+        }
+    }
+
+    public void loadUserBadges() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+        IController controller = new Controller();
+        if (sessionBean != null && controller != null) {
+            userBadges = controller.getUserBadges(sessionBean.getUserid());
+        }
+    }
+
+    public List<Badge> getUserBadges() {
+        return userBadges;
     }
 
     public void printData() {
@@ -158,5 +217,21 @@ public class ProfileSettingsBean {
 
     public void setSelectedBadge(String selectedBadge) {
         this.selectedBadge = selectedBadge;
+    }
+
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
     }
 }
