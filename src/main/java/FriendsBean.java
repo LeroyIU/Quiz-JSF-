@@ -24,6 +24,18 @@ public class FriendsBean implements Serializable {
     public FriendsBean() {
         friends = new ArrayList<>();
         searchResults = new ArrayList<>();
+        populateFriendsList(); // Populate the friends list during initialization
+    }
+
+    private void populateFriendsList() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+        IController controller = new Controller();
+        List<cleverquiz.model.User> tmpList = controller.getFriends(sessionBean.getUserid());
+        friends.clear();
+        for (cleverquiz.model.User user : tmpList) {
+            friends.add(new Friend(user.getUsername(), user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId()));
+        }
     }
 
     public List<Friend> getFriends() {
@@ -51,18 +63,24 @@ public class FriendsBean implements Serializable {
     }
 
     public void search() {
+        populateFriendsList(); // Ensure the friends list is up-to-date
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
+
+        // Create a set of usernames from the friends list
+        List<String> friendUsernames = new ArrayList<>();
+        for (Friend friend : friends) {
+            friendUsernames.add(friend.getUsername());
+        }
+
+        // Filter search results
         List<cleverquiz.model.User> tmpList = controller.searchUser(searchQuery);
         searchResults.clear();
         for (cleverquiz.model.User user : tmpList) {
-            searchResults.add(new Friend(user.getUsername()));
-        }
-        tmpList = controller.getFriends(sessionBean.getUserid());
-        friends.clear();
-        for (cleverquiz.model.User user : tmpList) {
-            friends.add(new Friend(user.getUsername(),user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId()));
+            if (!user.getUsername().equals(sessionBean.getUsername()) && !friendUsernames.contains(user.getUsername())) { // Exclude current user and friends
+                searchResults.add(new Friend(user.getUsername()));
+            }
         }
     }
 
