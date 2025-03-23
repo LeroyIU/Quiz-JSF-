@@ -10,6 +10,7 @@ import javax.swing.Icon;
 import java.io.Serializable;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
+import java.util.ResourceBundle;
 
 
 @ManagedBean
@@ -71,6 +72,7 @@ public class FriendsBean implements Serializable {
         IController controller = new Controller();
         controller.deleteFriend(sessionBean.getUserid(), friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Deleted", "Removed friend: " + friend.getUsername()));
+
         System.out.println("User deleted: " + friend.getUsername());
     }
 
@@ -78,8 +80,8 @@ public class FriendsBean implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-        //controller.addFriend(sessionBean.getUserid(), friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Added", "Adding friend: " + friend.getUsername()));
+
         System.out.println("User added: " + friend.getUsername());
     }
 

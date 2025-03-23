@@ -1,4 +1,5 @@
 import java.util.regex.Pattern;
+import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -47,11 +48,12 @@ public class ProfileSettingsBean {
     }
 
     public void save() {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         // Validate inputs
         if (!isValidInput(lastName) || !isValidInput(firstName) || !isValidInput(favoriteColor) ||
             !isValidInput(favoriteCategory) || !isValidInput(favoriteMusicGenre) || !isValidInput(favoriteFood) ||
             !isValidInput(aboutMe)) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid input detected.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidInput.text"));
             FacesContext.getCurrentInstance().addMessage(null, message);
             PrimeFaces.current().ajax().update("growl");
             return;
@@ -94,6 +96,10 @@ public class ProfileSettingsBean {
                 PrimeFaces.current().ajax().update("growl");
             }
         this.editable = false;
+        printData();
+        // Add growl message
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("profileSaved.text"));
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     private boolean isValidInput(String input) {
