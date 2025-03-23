@@ -28,9 +28,9 @@ public class GameBean implements Serializable {
     private long questionStartTime;
     private List<Question> questions;
     private String redirectUrl;
-    private List<Category> categoryObjects; // Store the actual Category objects
-    private int correctAnswersCount; // Counter for correct answers
-    private List<Integer> ratings; // Store ratings for each question
+    private List<Category> categoryObjects;
+    private int correctAnswersCount;
+    private List<Boolean> ratings;
 
     // Initialize categories and other properties
     public GameBean() {
@@ -118,7 +118,7 @@ public class GameBean implements Serializable {
             System.err.println("Error: Selected category not found!");
         }
 
-        ratings = new ArrayList<>(Collections.nCopies(questionCount, 0)); // Initialize ratings with 0
+        ratings = new ArrayList<>(Collections.nCopies(questionCount, null)); // Initialize ratings with null
 
         loadNextQuestion();
     }
@@ -329,14 +329,14 @@ public class GameBean implements Serializable {
         }
     }
 
-    public List<Integer> getRatings() {
+    public List<Boolean> getRatings() {
         return ratings;
     }
 
-    public void setRating(int questionIndex, int rating) {
+    public void setRating(int questionIndex, boolean isThumbsUp) {
         if (questionIndex >= 0 && questionIndex < ratings.size()) {
-            ratings.set(questionIndex, rating);
-            System.out.println("Rating for question " + questionIndex + " set to: " + rating);
+            ratings.set(questionIndex, isThumbsUp);
+            System.out.println("Rating for question " + questionIndex + " set to: " + (isThumbsUp ? "Thumbs Up" : "Thumbs Down"));
         }
     }
 

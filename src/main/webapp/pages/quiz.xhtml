@@ -98,7 +98,7 @@
                 <p:row rendered="#{gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
-                        <h:outputText value="#{msg['correctAnswers.text']}: #{gameBean.correctAnswersCount} / #{gameBean.questionCount} " style="font-size: 18px;" />
+                        <h:outputText value="#{msg['correctAnswers.text']}: #{gameBean.correctAnswersCount} / #{gameBean.questionCount}" style="font-size: 18px;" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-3" />
                 </p:row>
@@ -106,18 +106,6 @@
                     <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
                         <h:outputText value="#{msg['goodbyeMessage.text']}" style="font-size: 18px;" />
-                    </p:column>
-                    <p:column styleClass="ui-grid-col-3" />
-                </p:row>
-                <p:row rendered="#{gameBean.isGameOver()}">
-                    <p:column styleClass="ui-grid-col-3" />
-                    <p:column styleClass="ui-grid-col-6">
-                        <h:outputText value="#{msg['rateQuestions.text']}" style="font-size: 18px; font-weight: bold;" />
-                        <ui:repeat value="#{gameBean.questions}" var="question" varStatus="status">
-                            <h:outputText value="#{status.index + 1}. #{question.text}" style="display: block; margin-top: 10px;" />
-                            <p:rating value="#{gameBean.ratings[status.index]}" stars="5" cancel="false"
-                                onchange="PF('ratingWidget#{status.index}').ajax()" />
-                        </ui:repeat>
                     </p:column>
                     <p:column styleClass="ui-grid-col-3" />
                 </p:row>
