@@ -98,6 +98,13 @@
                 <p:row rendered="#{gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        <h:outputText value="#{msg['correctAnswers.text']}: #{gameBean.correctAnswersCount} / #{gameBean.questionCount} " style="font-size: 18px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3" />
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
                         <h:outputText value="#{msg['goodbyeMessage.text']}" style="font-size: 18px;" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-3" />
