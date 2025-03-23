@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.regex.Pattern;
+import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -61,31 +62,31 @@ public class RegisterBean {
     public void save() {
         IController Controller = new Controller();
         FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", context.getViewRoot().getLocale());
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordVerification.isEmpty() || inviteCode.isEmpty()) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "All fields are required."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("allFieldsRequired.text")));
             return;
         }
-        // Überprüfung des Passworts
+        // Password verification
         if (!password.equals(passwordVerification)) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("passwordsDoNotMatch.text")));
             return;
         }
-        // Überprüfung der E-Mail-Adresse
+        // Email format verification
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid email format."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidEmailFormat.text")));
+            return;
+        }
+        // Invite code verification
+        if (!inviteCode.equals("9021830")) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidInviteCode.text")));
             return;
         }
 
-           // Überprüfung des Invite Codes
-        if (!inviteCode.equals("9021830")) {
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid invite code."));
-        return;
-        }
-        
         cleverquiz.model.User newUser = Controller.addUser(name, email, password);
         if (newUser == null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "User could not be created."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("userCreationFailed.text")));
             return;
         }
         System.out.println("Name: " + name);
