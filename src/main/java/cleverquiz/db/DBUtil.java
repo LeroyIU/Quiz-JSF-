@@ -285,6 +285,21 @@ public class DBUtil {
         return user; // Rückgabe des aktualisierten Objekts
     }
 
+    /**
+     * Get a user by their ID
+     *
+     * @param userId the ID of the user
+     * @return the user object, or null if not found
+     */
+    public static User getUserById(int userId) {
+        User user = null;
+        try (Session session = getSession()) {
+            user = session.get(User.class, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 
     public static void main(String[] args) {
         // Neue Session öffnen

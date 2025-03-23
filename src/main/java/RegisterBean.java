@@ -78,7 +78,7 @@ public class RegisterBean {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidEmailFormat.text")));
             return;
         }
-        // Invite code verification
+
         if (!inviteCode.equals("9021830")) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidInviteCode.text")));
             return;
@@ -94,7 +94,13 @@ public class RegisterBean {
         System.out.println("Invite Code: " + inviteCode);
 
         try {
-            context.getExternalContext().redirect("index.xhtml");
+            cleverquiz.model.User user = Controller.login(name, password);
+            SessionBean sessionBean = context.getApplication().evaluateExpressionGet(context, "#{sessionBean}", SessionBean.class);
+            sessionBean.setLoggedIn(true);
+            sessionBean.setUsername(user.getUsername());
+            sessionBean.setUserid(user.getUserId());
+            System.out.println("User login successful!");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
