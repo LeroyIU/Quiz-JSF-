@@ -2,7 +2,7 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 import java.util.List;
@@ -13,7 +13,7 @@ import cleverquiz.model.Badge;
 import cleverquiz.model.User;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ProfileSettingsBean {
     private boolean editable = false;
     private String lastName;
