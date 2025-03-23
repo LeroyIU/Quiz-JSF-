@@ -3,7 +3,7 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
-    xmlns:pe="http://primefaces.org/ui/extensions">
+    xmlns:pe="http://primefaces.org/ui/extensions" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
     <!-- ToDo: title muss noch dynamsich werden -->
@@ -50,38 +50,42 @@
         <p:growl id="growl" showDetail="true" />
         <h:form id="mainForm">
             <p:menubar style="display: flex; justify-content: center; top: 0; left: 0; z-index: 999;">
-                <p:menuitem icon="pi pi-home" style="margin-left: 10px;"
-                    onclick="showWarningPopup('/cleverquiz/index.xhtml')" />
-                <p:menuitem value="#{msg['menu_news.text']}"
-                    onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
-                <p:menuitem value="#{msg['menu_question.text']}"
-                    onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
-                <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();"
-                    disabled="#{!gameBean.isGameOver()}" style="background-color: #48eddd;" />
-                <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
-                <p:menuitem value="#{msg['menu_friendslist.text']}"
-                    onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
-                <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
-                    <p:menuitem value="#{sessionBean.username}" disabled="true"/>
-                    <p:menuitem value="#{msg['menu_profilesettings.text']}"
-                        onclick="showWarningPopup('/cleverquiz/pages/profile_settings.xhtml')" />
-                    <p:menuitem>
-                        <h:outputLabel for="languageToggleSwitch" value="English:" />
-                        <p:toggleSwitch id="languageToggleSwitch" value="#{languageBean.english}" style="float: right;">
-                            <p:ajax listener="#{languageBean.setEnglish}" update="@none"
-                                oncomplete="location.reload();" />
-                        </p:toggleSwitch>
-                    </p:menuitem>
-                    <p:menuitem>
-                        <h:outputLabel for="toggleSwitch" value="Darkmode:" />
-                        <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" style="float: right;">
-                            <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none"
-                                oncomplete="setTimeout(() => location.reload(), 200);" />
-                        </p:toggleSwitch>
-                    </p:menuitem>
-                    <p:menuitem value="#{msg['menu_logout.text']}"
-                        onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
-                </p:submenu>
+                <p:menuitem value="Login" rendered="#{!sessionBean.loggedIn}" 
+                    onclick="window.location.href='/cleverquiz/pages/login.xhtml'" />
+                <c:if test="#{sessionBean.loggedIn}">
+                    <p:menuitem icon="pi pi-home" style="margin-left: 10px;"
+                        onclick="showWarningPopup('/cleverquiz/index.xhtml')" />
+                    <p:menuitem value="#{msg['menu_news.text']}"
+                        onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
+                    <p:menuitem value="#{msg['menu_question.text']}"
+                        onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
+                    <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();"
+                        disabled="#{!gameBean.isGameOver()}" style="background-color: #48eddd;" />
+                    <p:menuitem value="#{msg['menu_category.text']}" onclick="PF('categoryDialog').show();" />
+                    <p:menuitem value="#{msg['menu_friendslist.text']}"
+                        onclick="showWarningPopup('/cleverquiz/pages/friends.xhtml')" />
+                    <p:submenu icon="pi pi-fw pi-user" style="margin-right: 10px;">
+                        <p:menuitem value="#{sessionBean.username}" disabled="true"/>
+                        <p:menuitem value="#{msg['menu_profilesettings.text']}"
+                            onclick="showWarningPopup('/cleverquiz/pages/profile_settings.xhtml')" />
+                        <p:menuitem>
+                            <h:outputLabel for="languageToggleSwitch" value="English:" />
+                            <p:toggleSwitch id="languageToggleSwitch" value="#{languageBean.english}" style="float: right;">
+                                <p:ajax listener="#{languageBean.setEnglish}" update="@none"
+                                    oncomplete="location.reload();" />
+                            </p:toggleSwitch>
+                        </p:menuitem>
+                        <p:menuitem>
+                            <h:outputLabel for="toggleSwitch" value="Darkmode:" />
+                            <p:toggleSwitch id="toggleSwitch" value="#{themeSwitcherBean.darkTheme}" style="float: right;">
+                                <p:ajax listener="#{themeSwitcherBean.setDarkTheme}" update="@none"
+                                    oncomplete="setTimeout(() => location.reload(), 200);" />
+                            </p:toggleSwitch>
+                        </p:menuitem>
+                        <p:menuitem value="#{msg['menu_logout.text']}"
+                            onclick="showWarningPopup('/cleverquiz/pages/logout.xhtml')" />
+                    </p:submenu>
+                </c:if>
             </p:menubar>
         </h:form>
         <div class="layout-content" style="padding-top: 70px;">
