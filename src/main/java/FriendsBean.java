@@ -50,13 +50,15 @@ public class FriendsBean implements Serializable {
     }
 
     public void search() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
         List<cleverquiz.model.User> tmpList = controller.searchUser(searchQuery);
         searchResults.clear();
         for (cleverquiz.model.User user : tmpList) {
             searchResults.add(new Friend(user.getUsername()));
         }
-        tmpList = controller.getFriends(175);
+        tmpList = controller.getFriends(sessionBean.getUserid());
         friends.clear();
         for (cleverquiz.model.User user : tmpList) {
             friends.add(new Friend(user.getUsername(),user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId()));
@@ -64,15 +66,19 @@ public class FriendsBean implements Serializable {
     }
 
     public void deleteFriend(Friend friend) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-        controller.deleteFriend(175, friend.getUserId());
+        controller.deleteFriend(sessionBean.getUserid(), friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Deleted", "Removed friend: " + friend.getUsername()));
         System.out.println("User deleted: " + friend.getUsername());
     }
 
     public void addFriend(Friend friend) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-     //   controller.addFriend(175, friend.getUserId());
+        //controller.addFriend(sessionBean.getUserid(), friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Added", "Adding friend: " + friend.getUsername()));
         System.out.println("User added: " + friend.getUsername());
     }

@@ -93,9 +93,11 @@ public class RegisterBean {
         System.out.println("Invite Code: " + inviteCode);
 
         try {
+            cleverquiz.model.User user = Controller.login(name, password);
             SessionBean sessionBean = context.getApplication().evaluateExpressionGet(context, "#{sessionBean}", SessionBean.class);
             sessionBean.setLoggedIn(true);
-            sessionBean.setUsername(this.name);
+            sessionBean.setUsername(user.getUsername());
+            sessionBean.setUserid(user.getUserId());
             System.out.println("User login successful!");
             FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
         } catch (IOException e) {
