@@ -60,7 +60,7 @@ public interface IController {
      * @param amount   with amount of questions
      * @return list of questions
      */
-    List<Question> startQuiz(Category category, int amount);
+    List<Game> startQuiz(Category category, int amount);
 
     /**
      * Get friends
@@ -121,6 +121,15 @@ public interface IController {
     void updateGame(User user, Question question, List<UserAnswer> answers);
 
     /**
+     * Sign in user
+     *
+     * @param username username to sign in
+     * @param password password to authorize
+     * @return user, if user found with credentials, otherwise null
+     */
+    User login(String username, String password);
+
+    /**
      * Create new news post
      *
      * @param title    title of post
@@ -129,14 +138,4 @@ public interface IController {
      * @return true, if news post could be inserted into database, otherwise false
      */
     boolean createNews(String title, String text, User author);
-
-    User login(String username, String password);
-
-    /**
-     * Get a user by their ID
-     *
-     * @param userId the ID of the user
-     * @return the user object, or null if not found
-     */
-    User getUserById(int userId);
 }

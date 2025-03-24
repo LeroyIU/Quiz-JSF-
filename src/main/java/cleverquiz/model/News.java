@@ -17,7 +17,6 @@ public class News {
 
     private String title;
     private String text;
-
     private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -60,7 +59,6 @@ public class News {
     public LocalDateTime getDate() {
         return date;
     }
-
 
     public void setDate(LocalDateTime date) {
         this.date = date;

@@ -9,7 +9,6 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,9 +150,9 @@ public class DBUtil {
         //validator
         int correct = 0;
         for (Answer answer : answers) {
-            if(answer.getCorrectness()) correct++;
+            if (answer.getCorrectness()) correct++;
         }
-        if(answers.size() < 4 || correct < 1) return false;
+        if (answers.size() < 4 || correct < 1) return false;
 
         //transaction
         Transaction transaction = null;
@@ -199,14 +198,44 @@ public class DBUtil {
      * @return list of questions
      */
     public static List<Question> startQuiz(Category category, int amount) {
+        List<Game> games = new ArrayList<>();
         List<Question> questions = null;
-
+        List<Answer> answers = null;
         try (Session session = getSession()) {
+            //questions
             Query<Question> query = session.createQuery(
                     "FROM Question WHERE category.id = :categoryId ORDER BY RAND()", Question.class);
             query.setParameter("categoryId", category.getCategoryId());
             query.setMaxResults(amount); // Begrenze die Anzahl der Ergebnisse
             questions = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return questions;
+    }
+
+    /**
+     * Get amount of questions for given category
+     *
+     * @param category category to take questions from
+     * @param amount   amount of questions
+     * @return list of questions. Size of list will be limited to database entries for given category
+     */
+    public static List<Question> getQuestions(Category category, int amount) {
+        List<Question> questions = null;
+        try (Session session = getSession()) {
+            //questions
+            Query<Question> query = session.createQuery(
+                    "FROM Question WHERE category.id = :categoryId ORDER BY RAND()", Question.class);
+            query.setParameter("categoryId", category.getCategoryId());
+            query.setMaxResults(amount); // Begrenze die Anzahl der Ergebnisse
+            questions = query.list();
+
+            //answers
+            for (Question question : questions) {
+                Game game = new Game();
+                game.setQuestion(question);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -312,21 +341,6 @@ public class DBUtil {
         return user; // Rückgabe des aktualisierten Objekts
     }
 
-    /**
-     * Get a user by their ID
-     *
-     * @param userId the ID of the user
-     * @return the user object, or null if not found
-     */
-    public static User getUserById(int userId) {
-        User user = null;
-        try (Session session = getSession()) {
-            user = session.get(User.class, userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
 
     public static void main(String[] args) {
         // Neue Session öffnen
@@ -421,7 +435,6 @@ public class DBUtil {
      *
      * @param questionId ID der Frage
      * @return Liste von Answer-Objekten
-     * @throws SQLException falls ein Datenbankfehler auftritt
      */
     public static List<Answer> getAnswersByQuestionId(int questionId) {
         List<Answer> answers = new ArrayList<>();
