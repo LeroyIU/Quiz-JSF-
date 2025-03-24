@@ -60,7 +60,7 @@ public interface IController {
      * @param amount   with amount of questions
      * @return list of questions
      */
-    List<Question> startQuiz(Category category, int amount);
+    List<Game> startQuiz(Category category, int amount);
 
     /**
      * Get friends

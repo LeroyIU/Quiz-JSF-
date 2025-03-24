@@ -26,6 +26,10 @@ public class Category {
         this.name = name;
     }
 
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
