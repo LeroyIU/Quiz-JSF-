@@ -40,9 +40,9 @@ public class CreateNewsBean implements Serializable {
         if (title != null && !title.isEmpty() && description != null && !description.isEmpty()) {
             // Simulate saving the news
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "News saved successfully"));
+            IController controller = new Controller();
+            controller.createNews(title, description, null);
             
-            //ToDo: Remove
-            System.out.println("News saved: " + this.title + " - " + this.description);
             resetForm();
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Title and Description are required"));
