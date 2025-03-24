@@ -63,8 +63,8 @@ public class ProfileSettingsBean {
         IController controller = new Controller();
 
         // Update user data
-            User user = controller.getUserById(sessionBean.getUserid());
-            System.out.println("User-ID: " + sessionBean.getUserid());
+            User user = sessionBean.getUser();
+            System.out.println("User-ID: " + sessionBean.getUser());
             if (user != null) {
                 user.setLastname(lastName);
                 user.setName(firstName);
@@ -121,7 +121,7 @@ public class ProfileSettingsBean {
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
         if (sessionBean != null && controller != null) {
-            User user = controller.getUserById(sessionBean.getUserid());
+            User user = sessionBean.getUser();
             if (user != null) {
                 this.lastName = user.getLastname();
                 this.firstName = user.getName();
@@ -141,7 +141,7 @@ public class ProfileSettingsBean {
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
         if (sessionBean != null && controller != null) {
-            userBadges = controller.getUserBadges(sessionBean.getUserid());
+            userBadges = controller.getUserBadges(sessionBean.getUser().getUserId());
         }
     }
 

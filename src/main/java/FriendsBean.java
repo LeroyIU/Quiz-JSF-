@@ -31,7 +31,7 @@ public class FriendsBean implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-        List<cleverquiz.model.User> tmpList = controller.getFriends(sessionBean.getUserid());
+        List<cleverquiz.model.User> tmpList = controller.getFriends(sessionBean.getUser().getUserId());
         friends.clear();
         for (cleverquiz.model.User user : tmpList) {
             friends.add(new Friend(user.getUsername(), user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId()));
@@ -88,7 +88,7 @@ public class FriendsBean implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-        controller.deleteFriend(sessionBean.getUserid(), friend.getUserId());
+        controller.deleteFriend(sessionBean.getUser().getUserId(), friend.getUserId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Deleted", "Removed friend: " + friend.getUsername()));
 
         System.out.println("User deleted: " + friend.getUsername());
