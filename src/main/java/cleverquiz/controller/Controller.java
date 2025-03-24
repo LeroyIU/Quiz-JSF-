@@ -3,7 +3,11 @@ package cleverquiz.controller;
 import cleverquiz.db.DBUtil;
 import cleverquiz.model.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Controller implements IController {
 
@@ -38,8 +42,17 @@ public class Controller implements IController {
     }
 
     @Override
-    public List<Question> startQuiz(Category category, int amount) {
-        return DBUtil.startQuiz(category, amount);
+    public List<Game> startQuiz(Category category, int amount) {
+        List<Game> games = new ArrayList<>();
+        List<Question> questions = DBUtil.getQuestions(category, amount);
+        for(Question question : questions) {
+            Game game = new Game();
+            game.setQuestion(question);
+            List<Answer> answers = selectRandomAnswers(DBUtil.getAnswersByQuestionId(question.getQuestionId()));
+            game.setAnswers(answers);
+            games.add(game);
+        }
+        return games;
     }
 
     @Override
@@ -94,5 +107,37 @@ public class Controller implements IController {
     @Override
     public boolean createNews(String title, String text, User author) {
         return DBUtil.createNews(title, text, author);
+    }
+
+    public List<Answer> selectRandomAnswers(List<Answer> allAnswers) {
+        // Shuffle die gesamte Liste
+        Collections.shuffle(allAnswers);
+
+        // Teile in korrekt und falsch auf
+        List<Answer> correct = allAnswers.stream()
+                .filter(a -> Boolean.TRUE.equals(a.getCorrectness()))
+                .collect(Collectors.toList());
+
+        List<Answer> incorrect = allAnswers.stream()
+                .filter(a -> !Boolean.TRUE.equals(a.getCorrectness()))
+                .collect(Collectors.toList());
+
+        Random rand = new Random();
+        int correctCount = Math.min(correct.size(), rand.nextInt(4) + 1); // 1 bis 4 richtige
+
+        // Hole korrekt Antworten
+        List<Answer> selected = new ArrayList<>();
+        Collections.shuffle(correct);
+        selected.addAll(correct.subList(0, correctCount));
+
+        // Ergänze mit falschen Antworten bis insgesamt 4
+        Collections.shuffle(incorrect);
+        int remaining = 4 - selected.size();
+        selected.addAll(incorrect.subList(0, Math.min(remaining, incorrect.size())));
+
+        // Noch mal mischen für Zufallsreihenfolge
+        Collections.shuffle(selected);
+
+        return selected;
     }
 }

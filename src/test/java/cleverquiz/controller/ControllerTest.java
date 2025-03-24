@@ -146,4 +146,13 @@ public class ControllerTest extends TestCase {
         assertTrue(success);
     }
 
+    public void testStartQuiz() {
+        IController controller = new Controller();
+        Category cat = new Category();
+        cat.setName("Geography");
+        cat.setCategoryId(3);
+        List<Game> games = controller.startQuiz(cat, 5 );
+        assertNotNull(games);
+        assertFalse(games.isEmpty());
+    }
 }
