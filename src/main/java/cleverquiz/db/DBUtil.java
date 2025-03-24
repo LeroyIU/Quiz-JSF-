@@ -230,6 +230,31 @@ public class DBUtil {
         return friends;
     }
 
+    public static boolean addFriend(int userId1, int userId2) {
+        boolean success = false;
+
+        try (Session session = getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            // Optional: userId1 < userId2, um doppelte Einträge in beide Richtungen zu vermeiden
+            int u1 = Math.min(userId1, userId2);
+            int u2 = Math.max(userId1, userId2);
+
+            String sql = "INSERT INTO Friends (userId1, userId2) VALUES (:u1, :u2)";
+            Query query = session.createNativeQuery(sql);
+            query.setParameter("u1", u1);
+            query.setParameter("u2", u2);
+            query.executeUpdate();
+
+            tx.commit();
+            success = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
     public static boolean removeFriend(int owner, int friend) {
         boolean success = false;
 
