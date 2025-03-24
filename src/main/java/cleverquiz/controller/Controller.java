@@ -94,6 +94,8 @@ public class Controller implements IController {
     public boolean createNews(String title, String text, User author) {
         return DBUtil.createNews(title, text, author);
 
+    }
+
     public User getUserById(int userId) {
         return DBUtil.getUserById(userId);
     }

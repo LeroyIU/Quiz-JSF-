@@ -61,13 +61,8 @@ public class News {
         return date;
     }
 
+
     public void setDate(LocalDateTime date) {
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
         this.date = date;
     }
 
