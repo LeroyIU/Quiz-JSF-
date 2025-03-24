@@ -154,8 +154,5 @@ public class FriendsBean implements Serializable {
             return gamesPlayed;
         }
 
-        public int getGamesPlayed() {
-            return gamesPlayed;
-        }
     }
 }
