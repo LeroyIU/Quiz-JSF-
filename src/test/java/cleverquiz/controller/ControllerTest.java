@@ -145,5 +145,4 @@ public class ControllerTest extends TestCase {
         boolean success = controller.addFriend(97, 98);
         assertTrue(success);
     }
-
 }

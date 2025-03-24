@@ -17,6 +17,7 @@ public class News {
 
     private String title;
     private String text;
+
     private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -61,6 +62,12 @@ public class News {
     }
 
     public void setDate(LocalDateTime date) {
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 

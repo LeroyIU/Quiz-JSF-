@@ -10,49 +10,58 @@
                 style="border:0px none; background-color:transparent; padding-bottom: 100px;">
                 <p:column />
                 <p:panelGrid columns="1">
-                    <h2>
-                        <h:outputText value="#{msg['friend.text']}" />
-                    </h2>
-                    <p:dataTable value="#{friendsBean.friends}" var="friend" selectionMode="single"
-                        selection="#{friendsBean.selectedFriend}" rowKey="#{friend.username}">
-                        <p:ajax event="rowSelect" update=":friendsForm:friendDialog"
-                            oncomplete="PF('friendDialog').show()" />
-                        <p:column headerText="#{msg['menu_username.text']}">
-                            <h:outputText value="#{friend.username}" />
+                    <p:row>
+                        <p:column>
+                            <h2 style="font-weight: bold;">
+                                <h:outputText value="#{msg['friend.text']}" />
+                            </h2>
+                            <p:dataTable value="#{friendsBean.friends}" var="friend" selectionMode="single"
+                                selection="#{friendsBean.selectedFriend}" rowKey="#{friend.username}" style="margin-top: 10px;">
+                                <p:ajax event="rowSelect" update=":friendsForm:friendDialog"
+                                    oncomplete="PF('friendDialog').show()" />
+                                <p:column headerText="#{msg['menu_username.text']}">
+                                    <h:outputText value="#{friend.username}" />
+                                </p:column>
+                                <p:column headerText="#{msg['points.text']}">
+                                    <h:outputText value="#{friend.xp}" />
+                                </p:column>
+                                <p:column headerText="#{msg['lastseen.text']}">
+                                    <h:outputText value="#{friend.lastSeen}" />
+                                </p:column>
+                                <p:column headerText="#{msg['action.text']}">
+                                    <p:commandButton value="#{msg['delete.text']}" icon="pi pi-times"
+                                        styleClass="ui-button-danger" action="#{friendsBean.deleteFriend(friend)}"
+                                        update="friendsForm" />
+                                </p:column>
+                            </p:dataTable>
                         </p:column>
-                        <p:column headerText="#{msg['points.text']}">
-                            <h:outputText value="#{friend.xp}" />
-                        </p:column>
-                        <p:column headerText="#{msg['lastseen.text']}">
-                            <h:outputText value="#{friend.lastSeen}" />
-                        </p:column>
-                        <p:column headerText="#{msg['action.text']}">
-                            <p:commandButton value="#{msg['delete.text']}" icon="pi pi-times"
-                                styleClass="ui-button-danger" action="#{friendsBean.deleteFriend(friend)}"
-                                update="friendsForm" />
-                        </p:column>
-                    </p:dataTable>
+                    </p:row>
                 </p:panelGrid>
                 <p:panelGrid columns="1">
-                    <h2>
-                        <h:outputText value="#{msg['search.text']}" />
-                    </h2>
-                    <h:panelGroup style="display: flex; align-items: center;">
-                        <p:inputText value="#{friendsBean.searchQuery}" placeholder="#{msg['searchbyusername.text']}"
-                            style="margin-right: 10px;" />
-                        <p:commandButton value="#{msg['search.text']}" styleClass="ui-button-secondary"
-                            action="#{friendsBean.search}" update="searchResults" />
-                    </h:panelGroup>
-                    <p:dataTable id="searchResults" value="#{friendsBean.searchResults}" var="result">
-                        <p:column headerText="#{msg['menu_username.text']}">
-                            <h:outputText value="#{result.username}" />
+                    <p:row>
+                        <p:column>
+                            <h2 style="font-weight: bold;">
+                                <h:outputText value="#{msg['search.text']}" />
+                            </h2>
+                            <h:panelGroup style="display: flex; align-items: center;">
+                                <p:inputText value="#{friendsBean.searchQuery}"
+                                    placeholder="#{msg['searchbyusername.text']}" style="margin-right: 10px;" />
+                                <p:commandButton value="#{msg['search.text']}" styleClass="ui-button-secondary"
+                                    action="#{friendsBean.search}" update="searchResults" />
+                            </h:panelGroup>
+                            <p:dataTable id="searchResults" value="#{friendsBean.searchResults}" var="result"
+                                style="margin-top: 10px;">
+                                <p:column headerText="#{msg['menu_username.text']}">
+                                    <h:outputText value="#{result.username}" />
+                                </p:column>
+                                <p:column headerText="#{msg['action.text']}">
+                                    <p:commandButton value="#{msg['add.text']}" icon="pi pi-plus"
+                                        styleClass="ui-button-secondary" action="#{friendsBean.addFriend(result)}"
+                                        update="friendsForm" />
+                                </p:column>
+                            </p:dataTable>
                         </p:column>
-                        <p:column headerText="#{msg['action.text']}">
-                            <p:commandButton value="#{msg['add.text']}" icon="pi pi-plus"
-                                styleClass="ui-button-secondary" action="#{friendsBean.addFriend(result)}"
-                                update="friendsForm" />
-                        </p:column>
-                    </p:dataTable>
+                    </p:row>
                 </p:panelGrid>
                 <p:column />
             </p:panelGrid>

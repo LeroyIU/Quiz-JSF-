@@ -33,14 +33,18 @@ public class AuthFilter implements Filter {
         SessionBean sessionBean = (SessionBean) req.getSession().getAttribute("sessionBean");
 
         String loginURL = req.getContextPath() + "/pages/login.xhtml";
-        String registerURL = req.getContextPath() + "/pages/register.xhtml"; // Add register URL
+        String registerURL = req.getContextPath() + "/pages/register.xhtml";
+        String imprintURL = req.getContextPath() + "/pages/imprint.xhtml";
+        String privacyURL = req.getContextPath() + "/pages/privacy.xhtml";
 
         boolean loggedIn = sessionBean != null && sessionBean.isLoggedIn();
         boolean loginRequest = req.getRequestURI().equals(loginURL);
-        boolean registerRequest = req.getRequestURI().equals(registerURL); // Check if the request is for the register page
+        boolean registerRequest = req.getRequestURI().equals(registerURL);
+        boolean imprintRequest = req.getRequestURI().equals(imprintURL); // Check if the request is for imprint
+        boolean privacyRequest = req.getRequestURI().equals(privacyURL); // Check if the request is for privacy
         boolean resourceRequest = req.getRequestURI().startsWith(req.getContextPath() + "/javax.faces.resource");
 
-        if (loggedIn || loginRequest || registerRequest || resourceRequest) { // Allow access to the register page
+        if (loggedIn || loginRequest || registerRequest || imprintRequest || privacyRequest || resourceRequest) { // Allow access to imprint and privacy
             chain.doFilter(request, response);
         } else {
             res.sendRedirect(loginURL);
