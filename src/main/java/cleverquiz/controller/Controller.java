@@ -85,4 +85,9 @@ public class Controller implements IController {
         user.setXp(userxp + xp);
         editProfile(user);
     }
+
+    @Override
+    public boolean createNews(String title, String text, User author) {
+        return DBUtil.createNews(title, text, author);
+    }
 }

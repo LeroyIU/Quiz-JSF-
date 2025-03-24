@@ -352,4 +352,25 @@ public class DBUtil {
         }
         return user; // Den gespeicherten User mit ID zurückgeben
     }
+
+    public static boolean createNews(String title, String text, User author) {
+        News news = new News(title, text, author);
+        Transaction transaction = null;
+        boolean success = false;
+
+        try (Session session = DBUtil.getSession()) {
+            transaction = session.beginTransaction();
+
+            // Speichern
+            session.persist(news);
+            transaction.commit();
+            success = true; // Erfolg
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback(); // Rollback bei Fehler
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
 }
