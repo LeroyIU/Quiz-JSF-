@@ -9,7 +9,9 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -228,6 +230,31 @@ public class DBUtil {
         return friends;
     }
 
+    public static boolean addFriend(int userId1, int userId2) {
+        boolean success = false;
+
+        try (Session session = getSession()) {
+            Transaction tx = session.beginTransaction();
+
+            // Optional: userId1 < userId2, um doppelte Einträge in beide Richtungen zu vermeiden
+            int u1 = Math.min(userId1, userId2);
+            int u2 = Math.max(userId1, userId2);
+
+            String sql = "INSERT INTO Friends (userId1, userId2) VALUES (:u1, :u2)";
+            Query query = session.createNativeQuery(sql);
+            query.setParameter("u1", u1);
+            query.setParameter("u2", u2);
+            query.executeUpdate();
+
+            tx.commit();
+            success = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
     public static boolean removeFriend(int owner, int friend) {
         boolean success = false;
 
@@ -366,5 +393,49 @@ public class DBUtil {
             return null; // Falls ein Fehler auftritt, null zurückgeben
         }
         return user; // Den gespeicherten User mit ID zurückgeben
+    }
+
+    public static boolean createNews(String title, String text, User author) {
+        News news = new News(title, text, author);
+        Transaction transaction = null;
+        boolean success = false;
+
+        try (Session session = DBUtil.getSession()) {
+            transaction = session.beginTransaction();
+
+            // Speichern
+            session.persist(news);
+            transaction.commit();
+            success = true; // Erfolg
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback(); // Rollback bei Fehler
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+
+    /**
+     * Gibt alle Antworten zurück, die zu einer bestimmten Frage gehören.
+     *
+     * @param questionId ID der Frage
+     * @return Liste von Answer-Objekten
+     * @throws SQLException falls ein Datenbankfehler auftritt
+     */
+    public static List<Answer> getAnswersByQuestionId(int questionId) {
+        List<Answer> answers = new ArrayList<>();
+
+        try (Session session = getSession()) {
+            String hql = "FROM Answer a WHERE a.question.questionId = :questionId";
+            Query<Answer> query = session.createQuery(hql, Answer.class);
+            query.setParameter("questionId", questionId);
+
+            answers = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return answers;
     }
 }

@@ -7,11 +7,11 @@ import javax.faces.context.FacesContext;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
 import cleverquiz.model.Category;
-
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.faces.event.ActionEvent;
 import java.util.Collections;
+
 
 
 @ManagedBean

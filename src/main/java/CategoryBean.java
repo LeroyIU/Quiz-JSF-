@@ -36,6 +36,7 @@ public class CategoryBean implements Serializable {
         } else {
             IController controller = new Controller();
             boolean success = controller.addCategory(categoryName);
+
             if (success) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("categorySaved.text") + ": " + categoryName));
             } else {

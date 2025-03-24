@@ -1,5 +1,6 @@
 package cleverquiz.controller;
 
+import cleverquiz.db.DBUtil;
 import cleverquiz.model.*;
 import junit.framework.TestCase;
 
@@ -127,4 +128,21 @@ public class ControllerTest extends TestCase {
         assertTrue(controller.createQuestion(difficulty, text, answers));
     }
 
+    public void testCreateNews() {
+        IController controller = new Controller();
+        User user = controller.login("bot", "robot");
+        assertTrue(controller.createNews("Ich bin ein Titel", "Ich bin ein Text", user));
+    }
+
+    public void testGetAnswersByQuestionId() {
+        List<Answer> list = DBUtil.getAnswersByQuestionId(18);
+        assertNotNull(list);
+        assertFalse(list.isEmpty());
+    }
+
+    public void testAddFriend() {
+        IController controller = new Controller();
+        boolean success = controller.addFriend(97, 98);
+        assertTrue(success);
+    }
 }

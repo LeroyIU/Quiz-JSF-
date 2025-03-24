@@ -48,6 +48,11 @@ public class Controller implements IController {
     }
 
     @Override
+    public boolean addFriend(int ownerId, int friendId) {
+        return DBUtil.addFriend(ownerId, friendId);
+    }
+
+    @Override
     public void deleteFriend(int userId, int friendToDelete) {
         DBUtil.removeFriend(userId, friendToDelete);
     }
@@ -86,7 +91,9 @@ public class Controller implements IController {
         editProfile(user);
     }
 
-    @Override
+    public boolean createNews(String title, String text, User author) {
+        return DBUtil.createNews(title, text, author);
+
     public User getUserById(int userId) {
         return DBUtil.getUserById(userId);
     }

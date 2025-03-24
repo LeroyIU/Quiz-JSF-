@@ -44,7 +44,6 @@ public class LoginBean {
         // Print the username and password to the console
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
-
         IController controller = new Controller();
         cleverquiz.model.User user = controller.login(username, password);
         if (user != null) {

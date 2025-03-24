@@ -117,6 +117,7 @@ public class FriendsBean implements Serializable {
         private String aboutMe;
         private int xp;
         private int userid;
+        private int gamesPlayed;
       
         public Friend(String username, String lastSeen, String aboutMe, int xp, int id) {
             this.username = username;
@@ -132,7 +133,7 @@ public class FriendsBean implements Serializable {
         public String getUsername() {
             return username;
         }
-
+      
         public String getLastSeen() {
             return lastSeen;
         }
@@ -147,6 +148,10 @@ public class FriendsBean implements Serializable {
 
         public int getUserId() {
             return userid;
+        }
+
+        public int getGamesPlayed() {
+            return gamesPlayed;
         }
 
         public int getGamesPlayed() {

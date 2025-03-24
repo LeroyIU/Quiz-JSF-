@@ -93,6 +93,12 @@ public class QuestionBean implements Serializable {
 
             controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Question saved successfully"));
+            // ToDo: Remove print
+            printQuestionDetails();
+
+            controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("questionSaved.text")));
             printQuestionDetails();
 
