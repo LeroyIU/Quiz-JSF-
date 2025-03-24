@@ -10,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "Post")
 public class News {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer postId;
@@ -20,6 +21,15 @@ public class News {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;
+
+    public News() {
+    }
+
+    public News(String title, String text, User author) {
+        this.title = title;
+        this.text = text;
+        this.author = author;
+    }
 
     public Integer getPostId() {
         return postId;
