@@ -48,6 +48,11 @@ public class Controller implements IController {
     }
 
     @Override
+    public boolean addFriend(int ownerId, int friendId) {
+        return DBUtil.addFriend(ownerId, friendId);
+    }
+
+    @Override
     public void deleteFriend(int userId, int friendToDelete) {
         DBUtil.removeFriend(userId, friendToDelete);
     }

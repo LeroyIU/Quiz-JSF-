@@ -71,6 +71,13 @@ public interface IController {
     List<User> getFriends(int userId);
 
     /**
+     * add a friend
+     *
+     * @return true, if friendship is saved
+     */
+    boolean addFriend(int ownerId, int friendId);
+
+    /**
      * Remove a friend
      *
      * @param userId         user
