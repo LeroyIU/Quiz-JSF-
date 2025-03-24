@@ -1,13 +1,13 @@
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import cleverquiz.controller.Controller;
+import cleverquiz.controller.IController;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
-import cleverquiz.controller.IController;
-import cleverquiz.controller.Controller;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -32,10 +32,10 @@ public class NewsBean implements Serializable {
     public static class News {
         private String title;
         private String content;
-        private Date date;
+        private LocalDateTime date;
         private String author;
 
-        public News(String title, String content, Date date, String author) {
+        public News(String title, String content, LocalDateTime date, String author) {
             this.title = title;
             this.content = content;
             this.date = date;
@@ -65,11 +65,11 @@ public class NewsBean implements Serializable {
             this.content = content;
         }
 
-        public Date getDate() {
+        public LocalDateTime getDate() {
             return date;
         }
 
-        public void setDate(Date date) {
+        public void setDate(LocalDateTime date) {
             this.date = date;
         }
 

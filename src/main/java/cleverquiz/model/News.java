@@ -2,7 +2,7 @@ package cleverquiz.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Entity class representing a post.
@@ -17,7 +17,7 @@ public class News {
 
     private String title;
     private String text;
-    private Date date;
+    private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;
@@ -29,6 +29,7 @@ public class News {
         this.title = title;
         this.text = text;
         this.author = author;
+        this.date = LocalDateTime.now();
     }
 
     public Integer getPostId() {
@@ -55,11 +56,11 @@ public class News {
         this.text = text;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
