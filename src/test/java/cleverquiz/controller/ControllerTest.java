@@ -128,4 +128,9 @@ public class ControllerTest extends TestCase {
         assertTrue(controller.createQuestion(difficulty, text, answers));
     }
 
+    public void testCreateNews() {
+        IController controller = new Controller();
+        User user = controller.login("bot", "robot");
+        assertTrue(controller.createNews("Ich bin ein Titel", "Ich bin ein Text", user));
+    }
 }
