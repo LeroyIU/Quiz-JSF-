@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.regex.Pattern;
+import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -34,22 +35,23 @@ public class LoginBean {
 
     // Method to handle login
     public void login() {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         if (!isValidInput(username) || !isValidInput(password)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid input detected."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidInput.text")));
             return;
         }
 
         // Print the username and password to the console
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
-
-
         IController controller = new Controller();
         cleverquiz.model.User user = controller.login(username, password);
-        if(user != null) {
+        if (user != null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
             sessionBean.setLoggedIn(true);
+            sessionBean.setUsername(user.getUsername());
+            sessionBean.setUserid(user.getUserId());
             // Redirect to the home page
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
@@ -58,27 +60,7 @@ public class LoginBean {
             }
         } else {
             // Show error message
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Failed", "Invalid username or password"));
-        }
-       
-
-
-        // Simulate login validation for default user
-        if ("user".equals(username) && "123".equals(password)) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
-            sessionBean.setLoggedIn(true);
-            System.out.println("User login successful!");
-
-            // Redirect to the home page
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // Show error message
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Failed", "Invalid username or password"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("loginFailed.text"), bundle.getString("invalidCredentials.text")));
         }
     }
 
