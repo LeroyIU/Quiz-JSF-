@@ -91,6 +91,8 @@ public class FriendsBean implements Serializable {
         private String aboutMe;
         private int xp;
         private int userid;
+        private int gamesPlayed;
+        
       
         public Friend(String username, String lastSeen, String aboutMe, int xp, int id) {
             this.username = username;
@@ -107,9 +109,6 @@ public class FriendsBean implements Serializable {
             return username;
         }
 
-        public String getBadge() {
-            return badge;
-        }
 
         public String getLastSeen() {
             return lastSeen;
