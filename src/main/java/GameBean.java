@@ -1,15 +1,17 @@
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
+import cleverquiz.model.Category;
+
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.faces.event.ActionEvent;
+import java.util.Collections;
 
 
 @ManagedBean
@@ -25,8 +27,10 @@ public class GameBean implements Serializable {
     private long questionTime;
     private long questionStartTime;
     private List<Question> questions;
-    private String gameId;
     private String redirectUrl;
+    private List<Category> categoryObjects;
+    private int correctAnswersCount;
+    private List<Boolean> ratings;
 
     // Initialize categories and other properties
     public GameBean() {
@@ -34,18 +38,15 @@ public class GameBean implements Serializable {
         IController controller = new Controller();
         List<cleverquiz.model.Category> tmp = controller.getCategories();
         categories = new ArrayList<>();
+        categoryObjects = new ArrayList<>(); // Initialize the list of Category objects
         for (cleverquiz.model.Category c : tmp) {
             categories.add(c.getName());
+            categoryObjects.add(c); // Store the actual Category object
         }
         selectedAnswers = new boolean[4];
         currentQuestionIndex = 0;
-        questions = Arrays.asList(
-            new Question("Sample Question 1", Arrays.asList("Answer 1.1", "Answer 1.2", "Answer 1.3", "Answer 1.4")),
-            new Question("Sample Question 2", Arrays.asList("Answer 2.1", "Answer 2.2", "Answer 2.3", "Answer 2.4")),
-            new Question("Sample Question 3", Arrays.asList("Answer 3.1", "Answer 3.2", "Answer 3.3", "Answer 3.4")),
-            new Question("Sample Question 4", Arrays.asList("Answer 4.1", "Answer 4.2", "Answer 4.3", "Answer 4.4")),
-            new Question("Sample Question 5", Arrays.asList("Answer 5.1", "Answer 5.2", "Answer 5.3", "Answer 5.4"))
-        );
+
+        questions = new ArrayList<>();
     }
 
     public List<String> getCategories() {
@@ -83,10 +84,6 @@ public class GameBean implements Serializable {
         return selectedAnswers;
     }
 
-    public String getGameId() {
-        return gameId;
-    }
-
     public int getCurrentQuestionIndex() {
         return currentQuestionIndex;
     }
@@ -105,10 +102,24 @@ public class GameBean implements Serializable {
 
     public void startGame() {
         System.out.println("Selected Category: " + selectedCategory);
-        System.out.println("Question Count: " + questionCount);
+        System.out.println("Selected QuestionCount: " + questionCount);
         totalTime = 0;
         questionTime = 0;
         currentQuestionIndex = 0;
+
+        IController controller = new Controller();
+        Category selectedCategoryObject = getCategoryByName(selectedCategory);
+        if (selectedCategoryObject != null) {
+            List<cleverquiz.model.Question> tmp2 = controller.startQuiz(selectedCategoryObject, questionCount);
+            for (cleverquiz.model.Question q : tmp2) {
+                questions.add(new Question(q.getText(), Arrays.asList("Random 1", "Random 2", "Random 3", "Random 4")));
+            }
+        } else {
+            System.err.println("Error: Selected category not found!");
+        }
+
+        ratings = new ArrayList<>(Collections.nCopies(questionCount, null)); // Initialize ratings with null
+
         loadNextQuestion();
     }
 
@@ -116,6 +127,7 @@ public class GameBean implements Serializable {
         long currentTime = System.currentTimeMillis();
         questionTime = (currentTime - questionStartTime) / 1000;
         totalTime += questionTime; // Add the time for the current question to the total time
+        checkCorrectAnswers(); // Check if the answer is correct
         printAnswers();
         currentQuestionIndex++;
         System.out.println("currentQuestionIndex: " + currentQuestionIndex);
@@ -168,7 +180,6 @@ public class GameBean implements Serializable {
         totalTime = 0;
         questionTime = 0;
         questionStartTime = 0;
-        gameId = null;
         System.out.println("Game destroyed.");
 
         // Stop polling explicitly
@@ -203,7 +214,6 @@ public class GameBean implements Serializable {
         } else {
             System.err.println("Redirect URL is null or empty. No redirection performed.");
         }
-        gameId = null; // Clear gameId after redirect
     }
 
     public void checkGameOver() {
@@ -295,5 +305,42 @@ public class GameBean implements Serializable {
             return bundle.getString("finishGame.text");
         }
         return bundle.getString("next.text");
+    }
+
+    public Category getCategoryByName(String name) {
+        for (Category category : categoryObjects) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
+        }
+        return null; // Return null if no matching category is found
+    }
+
+    public int getCorrectAnswersCount() {
+        return correctAnswersCount;
+    }
+
+    private void checkCorrectAnswers() {
+        if (currentQuestion != null) {
+            // Assuming the first answer is correct for simplicity
+            if (selectedAnswers[0]) {
+                correctAnswersCount++;
+            }
+        }
+    }
+
+    public List<Boolean> getRatings() {
+        return ratings;
+    }
+
+    public void setRating(int questionIndex, boolean isThumbsUp) {
+        if (questionIndex >= 0 && questionIndex < ratings.size()) {
+            ratings.set(questionIndex, isThumbsUp);
+            System.out.println("Rating for question " + questionIndex + " set to: " + (isThumbsUp ? "Thumbs Up" : "Thumbs Down"));
+        }
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
     }
 }

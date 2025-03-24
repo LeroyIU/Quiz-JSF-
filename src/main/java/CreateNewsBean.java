@@ -49,8 +49,6 @@ public class CreateNewsBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("titleDescriptionRequired.text")));
         }
-
-        //ToDo: Add connector to database
     }
 
     private boolean isValidInput(String input) {

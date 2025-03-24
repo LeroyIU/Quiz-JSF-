@@ -170,7 +170,7 @@
                         <p:column styleClass="ui-grid-col-12">
                             <p:commandButton value="#{msg['start.text']}" action="#{gameBean.startGame}"
                                 update="startGameForm" process="@this, categorySelect, questionCountSelect"
-                                oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml?gameID=#{gameBean.gameId}';"
+                                oncomplete="PF('startGameDialog').hide(); window.location.href='/cleverquiz/pages/quiz.xhtml';"
                                 style="margin-top: 10px;" styleClass="ui-button-secondary" />
                         </p:column>
                     </p:row>
