@@ -139,4 +139,11 @@ public class ControllerTest extends TestCase {
         assertNotNull(list);
         assertFalse(list.isEmpty());
     }
+
+    public void testAddFriend() {
+        IController controller = new Controller();
+        boolean success = controller.addFriend(97, 98);
+        assertTrue(success);
+    }
+
 }
