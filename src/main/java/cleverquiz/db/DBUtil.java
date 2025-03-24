@@ -9,7 +9,9 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -372,5 +374,28 @@ public class DBUtil {
             success = false;
         }
         return success;
+    }
+
+    /**
+     * Gibt alle Antworten zurück, die zu einer bestimmten Frage gehören.
+     *
+     * @param questionId ID der Frage
+     * @return Liste von Answer-Objekten
+     * @throws SQLException falls ein Datenbankfehler auftritt
+     */
+    public static List<Answer> getAnswersByQuestionId(int questionId) {
+        List<Answer> answers = new ArrayList<>();
+
+        try (Session session = getSession()) {
+            String hql = "FROM Answer a WHERE a.question.questionId = :questionId";
+            Query<Answer> query = session.createQuery(hql, Answer.class);
+            query.setParameter("questionId", questionId);
+
+            answers = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return answers;
     }
 }
