@@ -342,9 +342,12 @@ public class GameBean implements Serializable {
 
         for (int i = 0; i < selectedAnswers.length; i++) {
             boolean correctness = answers.get(i) != null && answers.get(i).getCorrectness();
-            System.out.println("Index " + i + ": Selected = " + selectedAnswers[i] + ", Correctness = " + correctness);
+            System.out.println("Answer " + (i + 1) + ": Selected = " + selectedAnswers[i] + ", Correct = " + correctness);
+            if (selectedAnswers[i] != correctness) {
+                return false; // Return false immediately if any mismatch is found
+            }
         }
-        System.out.println("All answers match");
+
         return true; // All answers match
     }
 
