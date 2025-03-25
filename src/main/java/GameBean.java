@@ -170,8 +170,8 @@ public class GameBean implements Serializable {
         if (selectedCategoryObject != null) {
             List<cleverquiz.model.Game> tmp2 = controller.startQuiz(selectedCategoryObject, questionCount);
             for (cleverquiz.model.Game g : tmp2) {
-                // To Be Done für Auswertung s Quiz
-                Question q = new Question(g.getQuestion().getText(), g.getAnswers());
+                // Pass difficulty to the Question constructor
+                Question q = new Question(g.getQuestion().getText(), g.getAnswers(), g.getQuestion().getDifficulty());
                 questions.add(q);
             }
         } else {
@@ -209,7 +209,7 @@ public class GameBean implements Serializable {
         if (currentQuestionIndex < questions.size()) {
             currentQuestion = questions.get(currentQuestionIndex);
         } else {
-            currentQuestion = new Question("No more questions", Arrays.asList(null, null, null, null));
+            currentQuestion = new Question("No more questions", Arrays.asList(null, null, null, null), null);
         }
         selectedAnswers = new boolean[4];
         questionStartTime = System.currentTimeMillis();
@@ -388,7 +388,7 @@ public class GameBean implements Serializable {
         if (isAnswerCorrect()) {
             correctAnswersCount++;
             if (currentQuestion != null) {
-                cleverquiz.model.Difficulty difficulty = currentQuestion.getAnswers().get(0).getQuestion().getDifficulty();
+                cleverquiz.model.Difficulty difficulty = currentQuestion.getDifficulty();
                 points += difficulty.getValue(); // Add points based on difficulty
                 System.out.println("Points awarded: " + difficulty.getValue() + ", Total points: " + points);
             }
@@ -426,10 +426,12 @@ public class GameBean implements Serializable {
     public static class Question {
         private String text;
         private List<Answer> answers;
+        private cleverquiz.model.Difficulty difficulty; // Add difficulty property
 
-        public Question(String text, List<Answer> answers) {
+        public Question(String text, List<Answer> answers, cleverquiz.model.Difficulty difficulty) {
             this.text = text;
             this.answers = answers;
+            this.difficulty = difficulty; // Initialize difficulty
         }
 
         public String getText() {
@@ -438,6 +440,10 @@ public class GameBean implements Serializable {
 
         public List<Answer> getAnswers() {
             return answers;
+        }
+
+        public cleverquiz.model.Difficulty getDifficulty() {
+            return difficulty; // Getter for difficulty
         }
     }
 }

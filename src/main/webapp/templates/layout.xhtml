@@ -103,7 +103,7 @@
             </p:menubar>
         </h:form>
         <!-- Warning Dialog -->
-        <p:dialog header="Warning" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
+        <p:dialog header="#{msg['warning_dialog.header']}" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
             <h:form id="warningForm">
                 <p:remoteCommand name="setRedirectUrl" actionListener="#{gameBean.setRedirectUrl}" process="@this" />
                 <div class="warning-dialog-content">
