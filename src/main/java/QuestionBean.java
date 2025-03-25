@@ -9,12 +9,12 @@ import cleverquiz.model.Difficulty;
 import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.util.ResourceBundle;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class QuestionBean implements Serializable {
     private String question;
     private String category;
