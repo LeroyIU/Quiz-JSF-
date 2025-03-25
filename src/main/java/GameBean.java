@@ -239,6 +239,7 @@ public class GameBean implements Serializable {
         // Update user data to add received points
         User user = sessionBean.getUser();
         user.setXp(user.getXp() + points);
+        user.setGameCount(user.getGameCount() + 1);
         controller.editProfile(user);
     }
 
