@@ -1,17 +1,19 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
-import cleverquiz.model.Category;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import javax.faces.event.ActionEvent;
-import java.util.Collections;
 import cleverquiz.model.Answer;
+import cleverquiz.model.Category;
 
 
 
@@ -32,6 +34,7 @@ public class GameBean implements Serializable {
     private List<Category> categoryObjects;
     private int correctAnswersCount;
     private List<Boolean> ratings;
+    private int points; // Add a field to store total points
 
     // Initialize categories and other properties
     public GameBean() {
@@ -68,8 +71,8 @@ public class GameBean implements Serializable {
 
     public void setQuestionCount(int questionCount) {
         this.questionCount = questionCount;
-          System.out.println("Question Count set to: " + questionCount); // Debug-Ausgabe
     }
+
     public long getTotalTime() {
         return totalTime; 
     }
@@ -96,9 +99,7 @@ public class GameBean implements Serializable {
     public void setRedirectUrl(ActionEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         String redirectUrl = context.getExternalContext().getRequestParameterMap().get("redirectUrl");
-        System.out.println("setRedirectUrl called with: " + redirectUrl); // Debug statement
         this.redirectUrl = redirectUrl;
-        System.out.println("Redirect URL successfully set to: " + this.redirectUrl); // Debug statement
     }
 
     public void startGame() {
@@ -153,6 +154,7 @@ public class GameBean implements Serializable {
     private void loadNextQuestion() {
         if (currentQuestionIndex < questions.size()) {
             currentQuestion = questions.get(currentQuestionIndex);
+            printCurrentQuestionAnswers();
         } else {
             currentQuestion = new Question("No more questions", Arrays.asList(null, null, null, null));
         }
@@ -324,12 +326,31 @@ public class GameBean implements Serializable {
         return correctAnswersCount;
     }
 
+    public int getPoints() {
+        return points; // Getter for points
+    }
+
+    private boolean isAnswerCorrect() {
+        if (currentQuestion == null || currentQuestion.getAnswers() == null) {
+            return false; // No question or answers to compare
+        }
+
+        List<Answer> answers = currentQuestion.getAnswers();
+        if (answers.size() != selectedAnswers.length) {
+            return false; // Mismatch in size
+        }
+
+        for (int i = 0; i < selectedAnswers.length; i++) {
+            boolean correctness = answers.get(i) != null && answers.get(i).getCorrectness();
+            System.out.println("Index " + i + ": Selected = " + selectedAnswers[i] + ", Correctness = " + correctness);
+        }
+        System.out.println("All answers match");
+        return true; // All answers match
+    }
+
     private void checkCorrectAnswers() {
-        if (currentQuestion != null) {
-            // Assuming the first answer is correct for simplicity
-            if (selectedAnswers[0]) {
-                correctAnswersCount++;
-            }
+        if (isAnswerCorrect()) {
+            correctAnswersCount++;
         }
     }
 
@@ -346,5 +367,17 @@ public class GameBean implements Serializable {
 
     public List<Question> getQuestions() {
         return questions;
+    }
+
+    public void printCurrentQuestionAnswers() {
+        if (currentQuestion != null && currentQuestion.getAnswers() != null) {
+            System.out.println("Answers for the current question:");
+            for (int i = 0; i < currentQuestion.getAnswers().size(); i++) {
+                Answer answer = currentQuestion.getAnswers().get(i);
+                System.out.println("Answer " + (i + 1) + ": " + (answer != null ? answer.getText() : "null"));
+            }
+        } else {
+            System.out.println("No current question or answers available.");
+        }
     }
 }

@@ -40,7 +40,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[0]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[0].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -49,7 +49,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[1]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[1].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -58,7 +58,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[2]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[2].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -67,7 +67,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[3]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[3].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
