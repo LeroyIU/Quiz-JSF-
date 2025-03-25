@@ -130,32 +130,30 @@ public class QuestionBean implements Serializable {
      */
     public void saveQuestion() {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        if (isFormValid()) {
-            answers.addAll(rows);
-            IController controller = new Controller();
-            List <cleverquiz.model.Answer> tmp = new ArrayList<>();
-            for (Answer a : answers) {
-                cleverquiz.model.Answer answer = new cleverquiz.model.Answer();
-                answer.setText(a.getAnswer());
-                answer.setCorrectness(a.isCorrect());
-                tmp.add(answer);
+        try {
+            if (isFormValid()) {
+                answers.addAll(rows);
+                IController controller = new Controller();
+                List<cleverquiz.model.Answer> tmp = new ArrayList<>();
+                for (Answer a : answers) {
+                    cleverquiz.model.Answer answer = new cleverquiz.model.Answer();
+                    answer.setText(a.getAnswer());
+                    answer.setCorrectness(a.isCorrect());
+                    tmp.add(answer);
+                }
+
+                controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("questionSaved.text")));
+                printQuestionDetails();
+                resetForm();
+            } else {
+                printQuestionDetails();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidQuestionForm.text")));
             }
-
-            controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Question saved successfully"));
-            // ToDo: Remove print
-            printQuestionDetails();
-
-            controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("questionSaved.text")));
-            printQuestionDetails();
-
-            resetForm();
-        } else {
-            printQuestionDetails();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidQuestionForm.text")));
+        } catch (Exception e) {
+            String errorMessage = bundle.getString("error.text") + ": " + e.getMessage();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), errorMessage));
+            e.printStackTrace(); // Optional: Log the error for debugging purposes
         }
     }
 
