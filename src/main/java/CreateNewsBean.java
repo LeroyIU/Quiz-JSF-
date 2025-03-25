@@ -40,8 +40,10 @@ public class CreateNewsBean implements Serializable {
         }
 
         if (title != null && !title.isEmpty() && description != null && !description.isEmpty()) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
             IController controller = new Controller();
-            controller.createNews(title, description, null);
+            controller.createNews(title, description,sessionBean.getUser());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("newsSaved.text")));
             
             resetForm();
