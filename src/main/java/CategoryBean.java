@@ -38,25 +38,29 @@ public class CategoryBean implements Serializable {
      */
     public void saveCategory() {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-        if (!isValidInput(categoryName)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidCategoryName.text")));
-            return;
-        }
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (categoryName == null || categoryName.trim().isEmpty()) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("emptyCategoryName.text")));
-        } else {
-            IController controller = new Controller();
-            boolean success = controller.addCategory(categoryName);
-
-            if (success) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("categorySaved.text") + ": " + categoryName));
-            } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("categorySaveFailed.text")));
+        try {
+            if (!isValidInput(categoryName)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidCategoryName.text")));
+                return;
             }
 
-            categoryName = null;
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (categoryName == null || categoryName.trim().isEmpty()) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("emptyCategoryName.text")));
+            } else {
+                IController controller = new Controller();
+                boolean success = controller.addCategory(categoryName);
+
+                if (success) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("categorySaved.text") + ": " + categoryName));
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("categorySaveFailed.text")));
+                }
+
+                categoryName = null;
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("unexpectedError.text")));
         }
     }
 
