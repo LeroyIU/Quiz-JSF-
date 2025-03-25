@@ -14,7 +14,7 @@ import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
 import cleverquiz.model.Answer;
 import cleverquiz.model.Category;
-
+import cleverquiz.model.User;
 
 
 @ManagedBean
@@ -34,7 +34,7 @@ public class GameBean implements Serializable {
     private List<Category> categoryObjects;
     private int correctAnswersCount;
     private List<Boolean> ratings;
-    private int points; // Add a field to store total points
+    private int points;
 
     // Initialize categories and other properties
     public GameBean() {
@@ -103,11 +103,13 @@ public class GameBean implements Serializable {
     }
 
     public void startGame() {
-        System.out.println("Selected Category: " + selectedCategory);
-        System.out.println("Selected QuestionCount: " + questionCount);
         totalTime = 0;
         questionTime = 0;
+        questionStartTime = 0;
         currentQuestionIndex = 0;
+        selectedAnswers = new boolean[4];
+        points = 0;
+        correctAnswersCount = 0;
 
         IController controller = new Controller();
         Category selectedCategoryObject = getCategoryByName(selectedCategory);
@@ -121,40 +123,31 @@ public class GameBean implements Serializable {
         } else {
             System.err.println("Error: Selected category not found!");
         }
-
-        ratings = new ArrayList<>(Collections.nCopies(questionCount, null)); // Initialize ratings with null
-
+        ratings = new ArrayList<>(Collections.nCopies(questionCount, null));
         loadNextQuestion();
     }
 
     public void nextQuestion() {
         long currentTime = System.currentTimeMillis();
         questionTime = (currentTime - questionStartTime) / 1000;
-        totalTime += questionTime; // Add the time for the current question to the total time
-        checkCorrectAnswers(); // Check if the answer is correct
-        printAnswers();
+        totalTime += questionTime;
+        checkCorrectAnswers();
         currentQuestionIndex++;
-        System.out.println("currentQuestionIndex: " + currentQuestionIndex);
-        System.out.println("questionCount: " + questionCount); // Debug output
 
         if (currentQuestionIndex < questionCount) {
             loadNextQuestion();
         } else {
-            // End of quiz, show a message
-            currentQuestion = null;
-            System.out.println("Total time taken: " + getFormattedTotalTime()); // Debug output
+            // End the game
+            destroyGame();
         }
-
         // Reset selectedAnswers and ensure the button is disabled
         selectedAnswers = new boolean[4];
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:nextButton");
     }
 
-    // To be Done Michael
     private void loadNextQuestion() {
         if (currentQuestionIndex < questions.size()) {
             currentQuestion = questions.get(currentQuestionIndex);
-            printCurrentQuestionAnswers();
         } else {
             currentQuestion = new Question("No more questions", Arrays.asList(null, null, null, null));
         }
@@ -162,48 +155,27 @@ public class GameBean implements Serializable {
         questionStartTime = System.currentTimeMillis();
     }
 
-    private void printAnswers() {
-        System.out.println("Question ID: " + currentQuestionIndex);
-        for (int i = 0; i < selectedAnswers.length; i++) {
-            System.out.println("Answer ID: " + i + ", Selected: " + selectedAnswers[i]);
-        }
-        System.out.println("Time for question: " + questionTime + " seconds");
-    }
-
     public boolean isGameOver() {
         return currentQuestion == null;
     }
 
     public void destroyGame() {
-        if (!isGameActive()) {
-            System.out.println("Game is already destroyed.");
-            return; // Exit if the game is already destroyed
-        }
-
         currentQuestion = null;
-        currentQuestionIndex = 0;
-        selectedAnswers = new boolean[4];
-        totalTime = 0;
-        questionTime = 0;
-        questionStartTime = 0;
-        System.out.println("Game destroyed.");
 
         // Stop polling explicitly
         stopPolling();
 
-        // Redirect to the URL stored in the redirectUrl property
-        if (redirectUrl != null && !redirectUrl.isEmpty()) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
+        IController controller = new Controller();
+
+        // Update user data to add received points
+        User user = sessionBean.getUser();
+        user.setXp(user.getXp() + points);
+        controller.editProfile(user);
     }
 
     public void destroyGameWithRedirect() {
-        System.out.println("Destroying game and redirecting to: " + redirectUrl); // Debug statement
-
         currentQuestion = null;
         currentQuestionIndex = 0;
         selectedAnswers = new boolean[4];
@@ -219,12 +191,6 @@ public class GameBean implements Serializable {
             }
         } else {
             System.err.println("Redirect URL is null or empty. No redirection performed.");
-        }
-    }
-
-    public void checkGameOver() {
-        if (isGameOver()) {
-            destroyGame();
         }
     }
 
@@ -257,39 +223,16 @@ public class GameBean implements Serializable {
 
     public void stopPolling() {
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:poll");
-        System.out.println("Polling stopped.");
-    }
-
-    public static class Question {
-        private String text;
-        private List<Answer> answers;
-
-        public Question(String text, List<Answer> answers) {
-            this.text = text;
-            this.answers = answers;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public List<Answer> getAnswers() {
-            return answers;
-        }
     }
 
     public void proceedWithRedirect(String redirectUrl) {
-        System.out.println("proceedWithRedirect called by thread: " + Thread.currentThread().getName());
-        System.out.println("Proceeding with redirect. Redirect URL: " + redirectUrl);
-
-        destroyGame(); // Reuse existing logic to reset the game state
+        destroyGame();
 
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             try {
                 if (!FacesContext.getCurrentInstance().getExternalContext().isResponseCommitted()) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
                     FacesContext.getCurrentInstance().responseComplete(); // Mark the response as complete
-                    System.out.println("Redirection successful to: " + redirectUrl);
                 } else {
                     System.err.println("Response already committed. Redirection skipped.");
                 }
@@ -327,7 +270,7 @@ public class GameBean implements Serializable {
     }
 
     public int getPoints() {
-        return points; // Getter for points
+        return points;
     }
 
     private boolean isAnswerCorrect() {
@@ -347,13 +290,17 @@ public class GameBean implements Serializable {
                 return false; // Return false immediately if any mismatch is found
             }
         }
-
         return true; // All answers match
     }
 
     private void checkCorrectAnswers() {
         if (isAnswerCorrect()) {
             correctAnswersCount++;
+            if (currentQuestion != null) {
+                cleverquiz.model.Difficulty difficulty = currentQuestion.getAnswers().get(0).getQuestion().getDifficulty();
+                points += difficulty.getValue(); // Add points based on difficulty
+                System.out.println("Points awarded: " + difficulty.getValue() + ", Total points: " + points);
+            }
         }
     }
 
@@ -372,15 +319,21 @@ public class GameBean implements Serializable {
         return questions;
     }
 
-    public void printCurrentQuestionAnswers() {
-        if (currentQuestion != null && currentQuestion.getAnswers() != null) {
-            System.out.println("Answers for the current question:");
-            for (int i = 0; i < currentQuestion.getAnswers().size(); i++) {
-                Answer answer = currentQuestion.getAnswers().get(i);
-                System.out.println("Answer " + (i + 1) + ": " + (answer != null ? answer.getText() : "null"));
-            }
-        } else {
-            System.out.println("No current question or answers available.");
+    public static class Question {
+        private String text;
+        private List<Answer> answers;
+
+        public Question(String text, List<Answer> answers) {
+            this.text = text;
+            this.answers = answers;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public List<Answer> getAnswers() {
+            return answers;
         }
     }
 }
