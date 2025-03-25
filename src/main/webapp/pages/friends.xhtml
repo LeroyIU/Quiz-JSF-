@@ -19,7 +19,7 @@
                                 selection="#{friendsBean.selectedFriend}" rowKey="#{friend.username}" style="margin-top: 10px;">
                                 <p:ajax event="rowSelect" update=":friendsForm:friendDialog"
                                     oncomplete="PF('friendDialog').show()" />
-                                <p:column headerText="#{msg['menu_username.text']}">
+                                <p:column headerText="#{msg['menu_username.text']}:">
                                     <h:outputText value="#{friend.username}" />
                                 </p:column>
                                 <p:column headerText="#{msg['points.text']}">
@@ -31,7 +31,7 @@
                                 <p:column headerText="#{msg['action.text']}">
                                     <p:commandButton value="#{msg['delete.text']}" icon="pi pi-times"
                                         styleClass="ui-button-danger" action="#{friendsBean.deleteFriend(friend)}"
-                                        update="friendsForm" />
+                                        update="friendsForm friendsForm:searchResults" />
                                 </p:column>
                             </p:dataTable>
                         </p:column>
@@ -57,7 +57,7 @@
                                 <p:column headerText="#{msg['action.text']}">
                                     <p:commandButton value="#{msg['add.text']}" icon="pi pi-plus"
                                         styleClass="ui-button-secondary" action="#{friendsBean.addFriend(result)}"
-                                        update="friendsForm" />
+                                        update="friendsForm friendsForm:searchResults" />
                                 </p:column>
                             </p:dataTable>
                         </p:column>
@@ -66,24 +66,24 @@
                 <p:column />
             </p:panelGrid>
 
-            <p:dialog id="friendDialog" header="Friend Details" widgetVar="friendDialog" modal="true" showEffect="fade"
+            <p:dialog id="friendDialog" header="#{msg['friendDetails.text']}" widgetVar="friendDialog" modal="true" showEffect="fade"
                 hideEffect="fade" resizable="false">
                 <p:panelGrid columns="2" id="panelGrid_dialog" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
                     styleClass="ui-panelgrid-blank ui-fluid"
                     style="border:0px none; background-color:transparent; min-width: 400px;">
-                    <h:outputLabel value="#{msg['menu_username.text']}" />
+                    <h:outputLabel value="#{msg['menu_username.text']}:" />
                     <h:outputText value="#{friendsBean.selectedFriend.username}" />
 
-                    <h:outputLabel value="#{msg['lastseen.text']}" />
+                    <h:outputLabel value="#{msg['lastseen.text']}:" />
                     <h:outputText value="#{friendsBean.selectedFriend.lastSeen}" />
 
-                    <h:outputLabel value="#{msg['points.text']}" />
+                    <h:outputLabel value="#{msg['points.text']}:" />
                     <h:outputText value="#{friendsBean.selectedFriend.xp}" />
 
-                    <h:outputLabel value="#{msg['playedGames.text']}" />
+                    <h:outputLabel value="#{msg['playedGames.text']}:" />
                     <h:outputText value="#{friendsBean.selectedFriend.gamesPlayed}" />
 
-                    <h:outputLabel value="#{msg['aboutme.text']}" />
+                    <h:outputLabel value="#{msg['aboutme.text']}:" />
                     <h:outputText value="#{friendsBean.selectedFriend.aboutMe}" />
                 </p:panelGrid>
             </p:dialog>
