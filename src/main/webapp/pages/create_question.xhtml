@@ -38,7 +38,7 @@
                 <p:row>
                     <p:column />
                     <p:outputLabel for="question" value="#{msg['question.text']}" />
-                    <p:inputText id="question" value="#{questionBean.question}" />
+                    <p:inputText id="question" value="#{questionBean.question}" required="true" requiredMessage="#{msg['questionRequired.text']}" />
                     <p:column />
                 </p:row>
                 <c:forEach var="row" items="#{questionBean.rows}">

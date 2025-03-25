@@ -67,7 +67,7 @@ public class LoginBean {
         if (input == null || input.isEmpty()) {
             return true; // Allow empty fields
         }
-        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"äöüÄÖÜß-]*$"; // Allow German umlauts
         return Pattern.matches(regex, input);
     }
 }

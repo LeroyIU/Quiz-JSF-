@@ -131,9 +131,9 @@ public class QuestionBean implements Serializable {
 
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
-            return true; // Allow empty fields
+            return false; // Disallow empty fields
         }
-        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"äöüÄÖÜß-]*$"; // Allow German umlauts
         return Pattern.matches(regex, input);
     }
 
