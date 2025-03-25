@@ -35,11 +35,14 @@ public class GameBean implements Serializable {
     private int correctAnswersCount;
     private List<Boolean> ratings;
     private int points;
+    private boolean gameOver;
 
     /**
      * Initializes the GameBean, setting up categories and other properties.
      */
     public GameBean() {
+
+        gameOver = true;
 
         IController controller = new Controller();
         List<cleverquiz.model.Category> tmp = controller.getCategories();
@@ -164,6 +167,7 @@ public class GameBean implements Serializable {
         selectedAnswers = new boolean[4];
         points = 0;
         correctAnswersCount = 0;
+        gameOver = false;
 
         IController controller = new Controller();
         Category selectedCategoryObject = getCategoryByName(selectedCategory);
@@ -220,7 +224,7 @@ public class GameBean implements Serializable {
      * @return True if the game is over, false otherwise.
      */
     public boolean isGameOver() {
-        return currentQuestion == null;
+        return gameOver;
     }
 
     /**
@@ -241,6 +245,10 @@ public class GameBean implements Serializable {
         user.setXp(user.getXp() + points);
         user.setGameCount(user.getGameCount() + 1);
         controller.editProfile(user);
+
+        // Update the mainForm
+        gameOver = true;
+        facesContext.getPartialViewContext().getRenderIds().add("mainForm");
     }
 
     /**
@@ -251,7 +259,9 @@ public class GameBean implements Serializable {
 
         // Stop polling explicitly
         stopPolling();
-        
+
+        gameOver = true;
+
         if (redirectUrl != null && !redirectUrl.isEmpty()) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(redirectUrl);
