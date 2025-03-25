@@ -17,48 +17,90 @@ public class RegisterBean {
     private String password;
     private String passwordVerification;
     private String inviteCode;
-    // Getters and Setters
+
+    /**
+     * Gets the name of the user.
+     * @return the name of the user.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the user.
+     * @param name the name to set.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the email of the user.
+     * @return the email of the user.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets the email of the user.
+     * @param email the email to set.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets the password of the user.
+     * @return the password of the user.
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the password of the user.
+     * @param password the password to set.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Gets the password verification input.
+     * @return the password verification input.
+     */
     public String getPasswordVerification() {
         return passwordVerification;
     }
 
+    /**
+     * Sets the password verification input.
+     * @param passwordVerification the password verification to set.
+     */
     public void setPasswordVerification(String passwordVerification) {
         this.passwordVerification = passwordVerification;
     }
 
+    /**
+     * Gets the invite code provided by the user.
+     * @return the invite code.
+     */
     public String getInviteCode() {
         return inviteCode;
     }
 
+    /**
+     * Sets the invite code provided by the user.
+     * @param inviteCode the invite code to set.
+     */
     public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
     }
 
-    // Save method to validate input, show growl messages, and redirect to login page
+    /**
+     * Validates the input fields, displays appropriate messages, and redirects to the login page if successful.
+     */
     public void save() {
         IController Controller = new Controller();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -106,6 +148,11 @@ public class RegisterBean {
         }
     }
 
+    /**
+     * Validates the input string against a specific pattern.
+     * @param input the input string to validate.
+     * @return true if the input is valid or empty, false otherwise.
+     */
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
             return true; // Allow empty fields

@@ -9,20 +9,33 @@ import javax.swing.Icon;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
 
-
 @ManagedBean
 @ViewScoped
 public class CategoryBean implements Serializable {
     private String categoryName;
 
+    /**
+     * Gets the name of the category.
+     * 
+     * @return the category name
+     */
     public String getCategoryName() {
         return categoryName;
     }
 
+    /**
+     * Sets the name of the category.
+     * 
+     * @param categoryName the category name to set
+     */
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
+    /**
+     * Saves the category. Validates the input and interacts with the controller
+     * to persist the category. Displays appropriate messages based on the outcome.
+     */
     public void saveCategory() {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         if (!isValidInput(categoryName)) {
@@ -47,6 +60,12 @@ public class CategoryBean implements Serializable {
         }
     }
 
+    /**
+     * Validates the input string to ensure it matches the allowed pattern.
+     * 
+     * @param input the input string to validate
+     * @return true if the input is valid or empty, false otherwise
+     */
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
             return true; // Allow empty fields

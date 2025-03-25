@@ -16,24 +16,47 @@ public class LoginBean {
     private String username;
     private String password;
 
-    // Getters and setters
+    /**
+     * Gets the username entered by the user.
+     * 
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the username entered by the user.
+     * 
+     * @param username the username to set
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Gets the password entered by the user.
+     * 
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the password entered by the user.
+     * 
+     * @param password the password to set
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // Method to handle login
+    /**
+     * Handles the login process. Validates the input, attempts to log in the user,
+     * and redirects to the home page if successful. Displays error messages if the
+     * login fails.
+     */
     public void login() {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         if (!isValidInput(username) || !isValidInput(password)) {
@@ -63,6 +86,12 @@ public class LoginBean {
         }
     }
 
+    /**
+     * Validates the input string to ensure it contains only allowed characters.
+     * 
+     * @param input the input string to validate
+     * @return true if the input is valid or empty, false otherwise
+     */
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
             return true; // Allow empty fields

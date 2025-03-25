@@ -21,12 +21,19 @@ public class FriendsBean implements Serializable {
     private String searchQuery;
     private Friend selectedFriend;
     private static int gamesPlayed;
+
+    /**
+     * Initializes the FriendsBean and populates the friends list.
+     */
     public FriendsBean() {
         friends = new ArrayList<>();
         searchResults = new ArrayList<>();
         populateFriendsList(); // Populate the friends list during initialization
     }
 
+    /**
+     * Populates the friends list with data from the controller.
+     */
     private void populateFriendsList() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
@@ -38,30 +45,57 @@ public class FriendsBean implements Serializable {
         }
     }
 
+    /**
+     * Returns the list of friends.
+     * @return List of friends.
+     */
     public List<Friend> getFriends() {
         return friends;
     }
 
+    /**
+     * Returns the search results.
+     * @return List of search results.
+     */
     public List<Friend> getSearchResults() {
         return searchResults;
     }
 
+    /**
+     * Returns the current search query.
+     * @return Search query string.
+     */
     public String getSearchQuery() {
         return searchQuery;
     }
 
+    /**
+     * Sets the search query.
+     * @param searchQuery The search query string.
+     */
     public void setSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery;
     }
 
+    /**
+     * Returns the currently selected friend.
+     * @return The selected friend.
+     */
     public Friend getSelectedFriend() {
         return selectedFriend;
     }
 
+    /**
+     * Sets the currently selected friend.
+     * @param selectedFriend The friend to set as selected.
+     */
     public void setSelectedFriend(Friend selectedFriend) {
         this.selectedFriend = selectedFriend;
     }
 
+    /**
+     * Searches for users based on the search query and filters out current user and friends.
+     */
     public void search() {
         populateFriendsList(); // Ensure the friends list is up-to-date
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -84,6 +118,10 @@ public class FriendsBean implements Serializable {
         }
     }
 
+    /**
+     * Deletes a friend from the user's friend list.
+     * @param friend The friend to delete.
+     */
     public void deleteFriend(Friend friend) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
@@ -94,6 +132,10 @@ public class FriendsBean implements Serializable {
         System.out.println("User deleted: " + friend.getUsername());
     }
 
+    /**
+     * Adds a friend to the user's friend list.
+     * @param friend The friend to add.
+     */
     public void addFriend(Friend friend) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
@@ -103,6 +145,11 @@ public class FriendsBean implements Serializable {
         System.out.println("User added: " + friend.getUsername());
     }
 
+    /**
+     * Validates the input string to ensure it matches the allowed pattern.
+     * @param input The input string to validate.
+     * @return True if the input is valid, false otherwise.
+     */
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
             return true; // Allow empty fields
@@ -111,6 +158,9 @@ public class FriendsBean implements Serializable {
         return Pattern.matches(regex, input);
     }
 
+    /**
+     * Represents a friend with details such as username, last seen, about me, XP, and user ID.
+     */
     public static class Friend {
         private String username;
         private String lastSeen;
@@ -119,6 +169,14 @@ public class FriendsBean implements Serializable {
         private int userid;
         private int gamesPlayed;
       
+        /**
+         * Constructs a Friend object with full details.
+         * @param username The username of the friend.
+         * @param lastSeen The last seen timestamp of the friend.
+         * @param aboutMe The "about me" description of the friend.
+         * @param xp The XP points of the friend.
+         * @param id The user ID of the friend.
+         */
         public Friend(String username, String lastSeen, String aboutMe, int xp, int id) {
             this.username = username;
             this.lastSeen = lastSeen;
@@ -126,30 +184,59 @@ public class FriendsBean implements Serializable {
             this.xp = xp;
             this.userid = id;
         }
+
+        /**
+         * Constructs a Friend object with only a username.
+         * @param username The username of the friend.
+         */
         public Friend(String username) {
             this(username,"","",0,0);
         }
 
+        /**
+         * Returns the username of the friend.
+         * @return The username.
+         */
         public String getUsername() {
             return username;
         }
       
+        /**
+         * Returns the last seen timestamp of the friend.
+         * @return The last seen timestamp.
+         */
         public String getLastSeen() {
             return lastSeen;
         }
 
+        /**
+         * Returns the "about me" description of the friend.
+         * @return The "about me" description.
+         */
         public String getAboutMe() {
             return aboutMe;
         }
 
+        /**
+         * Returns the XP points of the friend.
+         * @return The XP points.
+         */
         public int getXp() {
             return xp;
         }
 
+        /**
+         * Returns the user ID of the friend.
+         * @return The user ID.
+         */
         public int getUserId() {
             return userid;
         }
 
+        /**
+         * Returns the number of games played by the friend.
+         * @return The number of games played.
+         */
         public int getGamesPlayed() {
             return gamesPlayed;
         }

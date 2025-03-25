@@ -28,56 +28,106 @@ public class QuestionBean implements Serializable {
         }
     }
 
+    /**
+     * Gets the question text.
+     * @return the question text.
+     */
     public String getQuestion() {
         return question;
     }
 
+    /**
+     * Sets the question text.
+     * @param question the question text to set.
+     */
     public void setQuestion(String question) {
         this.question = question;
     }
 
+    /**
+     * Gets the category of the question.
+     * @return the category of the question.
+     */
     public String getCategory() {
         return category;
     }
 
+    /**
+     * Sets the category of the question.
+     * @param category the category to set.
+     */
     public void setCategory(String category) {
         this.category = category;
     }
 
+    /**
+     * Gets the difficulty level of the question.
+     * @return the difficulty level of the question.
+     */
     public String getDifficulty() {
         return difficulty;
     }
 
+    /**
+     * Sets the difficulty level of the question.
+     * @param difficulty the difficulty level to set.
+     */
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 
+    /**
+     * Gets the list of answers.
+     * @return the list of answers.
+     */
     public List<Answer> getAnswers() {
         return answers;
     }
 
+    /**
+     * Sets the list of answers.
+     * @param answers the list of answers to set.
+     */
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
 
+    /**
+     * Gets the list of answer rows.
+     * @return the list of answer rows.
+     */
     public List<Answer> getRows() {
         return rows;
     }
 
+    /**
+     * Sets the list of answer rows.
+     * @param rows the list of answer rows to set.
+     */
     public void setRows(List<Answer> rows) {
         this.rows = rows;
     }
 
+    /**
+     * Adds a new row to the list of answer rows.
+     */
     public void addRow() {
         rows.add(new Answer());
     }
 
+    /**
+     * Removes the last row from the list of answer rows if there are more than four rows.
+     */
     public void removeRow() {
         if (rows.size() > 4) {
             rows.remove(rows.size() - 1);
         }
     }
 
+    /**
+     * Saves the question along with its answers to the database.
+     * Validates the form before saving and displays appropriate messages.
+     */
     public void saveQuestion() {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
         if (isFormValid()) {
@@ -109,6 +159,10 @@ public class QuestionBean implements Serializable {
         }
     }
 
+    /**
+     * Validates the form inputs for the question and its answers.
+     * @return true if the form inputs are valid, false otherwise.
+     */
     private boolean isFormValid() {
         if (!isValidInput(question) || !isValidInput(category) || !isValidInput(difficulty)) {
             return false;
@@ -129,6 +183,11 @@ public class QuestionBean implements Serializable {
         return atLeastOneCorrect;
     }
 
+    /**
+     * Validates a single input string.
+     * @param input the input string to validate.
+     * @return true if the input is valid, false otherwise.
+     */
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
             return false; // Disallow empty fields
@@ -137,6 +196,10 @@ public class QuestionBean implements Serializable {
         return Pattern.matches(regex, input);
     }
 
+    /**
+     * Prints the details of the question and its answers to the console.
+     * Used for debugging purposes.
+     */
     private void printQuestionDetails() {
         System.out.println("Question: " + question);
         System.out.println("Category: " + category);
@@ -146,6 +209,9 @@ public class QuestionBean implements Serializable {
         }
     }
 
+    /**
+     * Resets the form fields and initializes the answer rows.
+     */
     public void resetForm() {
         question = null;
         category = null;
