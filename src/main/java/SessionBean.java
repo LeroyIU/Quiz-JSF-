@@ -4,20 +4,22 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import cleverquiz.model.User;
+
 @ManagedBean
 @SessionScoped
 public class SessionBean {
 
     private boolean loggedIn;
     private String username;
-    private int userid;
+    private User user;
 
-    public int getUserid() {
-        return userid;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getUsername() {

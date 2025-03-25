@@ -42,8 +42,6 @@ public class LoginBean {
         }
 
         // Print the username and password to the console
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
         IController controller = new Controller();
         cleverquiz.model.User user = controller.login(username, password);
         if (user != null) {
@@ -51,7 +49,8 @@ public class LoginBean {
             SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
             sessionBean.setLoggedIn(true);
             sessionBean.setUsername(user.getUsername());
-            sessionBean.setUserid(user.getUserId());
+            sessionBean.setUser(user);
+
             // Redirect to the home page
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/cleverquiz/index.xhtml");

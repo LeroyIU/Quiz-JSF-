@@ -43,10 +43,10 @@ public class NewsBean implements Serializable {
         }
 
         public News(cleverquiz.model.News tmp){
-            this.title = "";
+            this.title = tmp.getTitle();
             this.content = tmp.getText();
             this.date = tmp.getDate();
-            this.author = "";
+            this.author = tmp.getAuthor().getUsername();
         }
 
         public String getTitle() {

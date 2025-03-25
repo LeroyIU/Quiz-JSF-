@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.faces.event.ActionEvent;
 import java.util.Collections;
+import cleverquiz.model.Answer;
 
 
 
@@ -110,9 +111,11 @@ public class GameBean implements Serializable {
         IController controller = new Controller();
         Category selectedCategoryObject = getCategoryByName(selectedCategory);
         if (selectedCategoryObject != null) {
-            List<cleverquiz.model.Question> tmp2 = controller.startQuiz(selectedCategoryObject, questionCount);
-            for (cleverquiz.model.Question q : tmp2) {
-                questions.add(new Question(q.getText(), Arrays.asList("Random 1", "Random 2", "Random 3", "Random 4")));
+            List<cleverquiz.model.Game> tmp2 = controller.startQuiz(selectedCategoryObject, questionCount);
+            for (cleverquiz.model.Game g : tmp2) {
+                // To Be Done für Auswertung s Quiz
+                Question q = new Question(g.getQuestion().getText(), g.getAnswers());
+                questions.add(q);
             }
         } else {
             System.err.println("Error: Selected category not found!");
@@ -146,11 +149,12 @@ public class GameBean implements Serializable {
         FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("quizForm:nextButton");
     }
 
+    // To be Done Michael
     private void loadNextQuestion() {
         if (currentQuestionIndex < questions.size()) {
             currentQuestion = questions.get(currentQuestionIndex);
         } else {
-            currentQuestion = new Question("No more questions", Arrays.asList("", "", "", ""));
+            currentQuestion = new Question("No more questions", Arrays.asList(null, null, null, null));
         }
         selectedAnswers = new boolean[4];
         questionStartTime = System.currentTimeMillis();
@@ -256,9 +260,9 @@ public class GameBean implements Serializable {
 
     public static class Question {
         private String text;
-        private List<String> answers;
+        private List<Answer> answers;
 
-        public Question(String text, List<String> answers) {
+        public Question(String text, List<Answer> answers) {
             this.text = text;
             this.answers = answers;
         }
@@ -267,7 +271,7 @@ public class GameBean implements Serializable {
             return text;
         }
 
-        public List<String> getAnswers() {
+        public List<Answer> getAnswers() {
             return answers;
         }
     }
