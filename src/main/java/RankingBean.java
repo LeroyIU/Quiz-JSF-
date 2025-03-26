@@ -14,6 +14,10 @@ import cleverquiz.controller.IController;
 public class RankingBean implements Serializable {
     private List<Ranking> rankingList = new ArrayList<>(); // Initialisierung hinzugefügt
 
+    /**
+     * Initializes the ranking list by fetching user rankings from the controller
+     * and populating the list with ranking data.
+     */
     @PostConstruct
     public void init() {
         IController controller = new Controller();
@@ -28,6 +32,11 @@ public class RankingBean implements Serializable {
         }
     }
 
+    /**
+     * Retrieves the list of rankings.
+     * 
+     * @return a list of {@link Ranking} objects representing the user rankings.
+     */
     public List<Ranking> getRankingList() {
         return rankingList;
     }
@@ -37,32 +46,69 @@ public class RankingBean implements Serializable {
         private String username;
         private int points;
 
+        /**
+         * Constructs a new Ranking object.
+         * 
+         * @param position the position of the user in the ranking.
+         * @param username the username of the user.
+         * @param points   the points (XP) of the user.
+         */
         public Ranking(int position, String username, int points) {
             this.position = position;
             this.username = username;
             this.points = points;
         }
 
+        /**
+         * Retrieves the position of the user in the ranking.
+         * 
+         * @return the position of the user.
+         */
         public int getPosition() {
             return position;
         }
 
+        /**
+         * Sets the position of the user in the ranking.
+         * 
+         * @param position the position to set.
+         */
         public void setPosition(int position) {
             this.position = position;
         }
 
+        /**
+         * Retrieves the username of the user.
+         * 
+         * @return the username of the user.
+         */
         public String getUsername() {
             return username;
         }
 
+        /**
+         * Sets the username of the user.
+         * 
+         * @param username the username to set.
+         */
         public void setUsername(String username) {
             this.username = username;
         }
 
+        /**
+         * Retrieves the points (XP) of the user.
+         * 
+         * @return the points of the user.
+         */
         public int getPoints() {
             return points;
         }
 
+        /**
+         * Sets the points (XP) of the user.
+         * 
+         * @param points the points to set.
+         */
         public void setPoints(int points) {
             this.points = points;
         }

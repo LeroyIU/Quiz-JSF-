@@ -61,7 +61,8 @@
             </h5>
             <p:selectOneRadio id="page" layout="pageDirection" value="#{profileSettingsBean.selectedBadge}"
               disabled="#{!profileSettingsBean.editable}">
-              <f:selectItems value="#{profileSettingsBean.userBadges}" var="badge" itemValue="#{badge}" itemLabel="#{badge.name}" />
+              <f:selectItems value="#{profileSettingsBean.userBadges}" var="badge" itemValue="#{badge}"
+                itemLabel="#{badge.name}" />
             </p:selectOneRadio>
           </p:column>
           <p:column />
@@ -77,12 +78,36 @@
               rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-secondary"
               style="width: auto; margin-right: 10px;" update="@form" />
             <p:commandButton value="#{msg['cancel.text']}" action="#{profileSettingsBean.cancel}"
-              rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-danger" style="width: auto"
-              update="@form" />
+              rendered="#{profileSettingsBean.editable}" styleClass="mr-2 ui-button-danger"
+              style="width: auto; margin-right: 10px;" update="@form" />
+            <p:commandButton value="#{msg['changePassword.text']}" onclick="PF('changePasswordDialog').show();"
+              styleClass="mr-2 ui-button-secondary" style="width: auto;" process="@this"
+              oncomplete="PF('changePasswordDialog').show();" />
           </p:column>
           <p:column styleClass="ui-grid-col-1" />
         </p:row>
       </p:panelGrid>
     </h:form>
+    <p:dialog header="#{msg['changePassword.text']}" widgetVar="changePasswordDialog" modal="true" closable="true"
+      resizable="false" draggable="false">
+      <h:form id="changePasswordForm">
+        <p:growl id="passwordGrowl" showDetail="true" life="3000" />
+        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" styleClass="ui-panelgrid-blank ui-fluid"
+          style="border:0px none; background-color:transparent;">
+          <p:outputLabel for="currentPassword" value="#{msg['currentPassword.text']}:" />
+          <p:password id="currentPassword" value="#{profileSettingsBean.currentPassword}" />
+
+          <p:outputLabel for="newPassword" value="#{msg['newPassword.text']}:" />
+          <p:password id="newPassword" value="#{profileSettingsBean.newPassword}" />
+
+          <p:outputLabel for="repeatNewPassword" value="#{msg['repeatNewPassword.text']}:" />
+          <p:password id="repeatNewPassword" value="#{profileSettingsBean.repeatNewPassword}" />
+
+          <h:outputText />
+          <p:commandButton value="#{msg['save.text']}" action="#{profileSettingsBean.changePassword}" update="@form"
+            styleClass="ui-button-secondary" />
+        </p:panelGrid>
+      </h:form>
+    </p:dialog>
   </ui:define>
 </ui:composition>

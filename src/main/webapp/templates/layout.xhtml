@@ -103,17 +103,16 @@
             </p:menubar>
         </h:form>
         <!-- Warning Dialog -->
-        <p:dialog header="Warning" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
+        <p:dialog header="#{msg['warning_dialog.header']}" widgetVar="warningDialog" modal="true" closable="false" resizable="false">
             <h:form id="warningForm">
                 <p:remoteCommand name="setRedirectUrl" actionListener="#{gameBean.setRedirectUrl}" process="@this" />
                 <div class="warning-dialog-content">
-                    <h:outputText
-                        value="A game is currently running. Do you want to proceed and lose the current game?" />
+                    <h:outputText value="#{msg['warning_dialog.text']}" />
                     <div class="warning-dialog-buttons">
-                        <p:commandButton id="proceedButton" value="Proceed" onclick="PF('warningDialog').hide();"
+                        <p:commandButton id="proceedButton" value="#{msg['warning_dialog.proceed']}" onclick="PF('warningDialog').hide();"
                             action="#{gameBean.destroyGameWithRedirect}" process="@this"
                             styleClass="proceed-button ui-button-secondary" />
-                        <p:commandButton value="Stay" onclick="PF('warningDialog').hide();" type="button"
+                        <p:commandButton value="#{msg['warning_dialog.stay']}" onclick="PF('warningDialog').hide();" type="button"
                             styleClass="stay-button ui-button-secondary" />
                     </div>
                 </div>

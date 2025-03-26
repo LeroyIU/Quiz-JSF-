@@ -12,7 +12,12 @@
                         <h:outputText
                             value="#{msg['question.text']} #{gameBean.currentQuestionIndex + 1} #{msg['of.text']} #{gameBean.questionCount}" />
                     </p:column>
-                    <p:column styleClass="ui-grid-col-4" />
+                    <p:column styleClass="ui-grid-col-1" />
+                    <p:column styleClass="ui-grid-col-2" style="text-align: center;">
+                        <h:outputText id="difficulty"
+                            value="#{msg['difficulty.text']}: #{gameBean.currentQuestion.difficulty}" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-1" />
                     <p:column styleClass="ui-grid-col-2" style="text-align: right;">
                         <h:outputText id="elapsedTime"
                             value="#{msg['elapsedTime.text']} #{gameBean.elapsedQuestionTime} #{msg['seconds.text']}" />
@@ -40,7 +45,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[0]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[0].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -49,7 +54,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[1]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[1].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -58,7 +63,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[2]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[2].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -67,7 +72,7 @@
                         style="float: right; width: 40px; height: 20px;">
                         <p:ajax update="quizForm:nextButton" />
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{gameBean.currentQuestion.answers[3]}" />
+                    <h:outputText value="#{gameBean.currentQuestion.answers[3].text}" />
                     <p:column />
                 </p:row>
                 <p:row rendered="#{not gameBean.isGameOver()}">
@@ -99,6 +104,13 @@
                     <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
                         <h:outputText value="#{msg['correctAnswers.text']}: #{gameBean.correctAnswersCount} / #{gameBean.questionCount}" style="font-size: 18px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3" />
+                    <p:column styleClass="ui-grid-col-6" style="text-align: center;">
+                        <h:outputText value="#{msg['pointsReceived.text']}: #{gameBean.points}" style="font-size: 18px;" />
                     </p:column>
                     <p:column styleClass="ui-grid-col-3" />
                 </p:row>

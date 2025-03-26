@@ -13,6 +13,10 @@ public class MotivationBean {
     private List<String> motivations;
     private Random random;
 
+    /**
+     * Initializes the list of motivational quotes and the random number generator.
+     * This method is called automatically after the bean is constructed.
+     */
     @PostConstruct
     public void init() {
         motivations = Arrays.asList(
@@ -44,6 +48,11 @@ public class MotivationBean {
         random = new Random();
     }
 
+    /**
+     * Returns a random motivational quote from the list.
+     * 
+     * @return A randomly selected motivational quote.
+     */
     public String getRandomMotivation() {
         int index = random.nextInt(motivations.size());
         return motivations.get(index);

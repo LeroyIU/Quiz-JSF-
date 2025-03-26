@@ -6,8 +6,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.swing.Icon;
-import java.io.Serializable;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
 import java.util.ResourceBundle;
@@ -20,13 +18,19 @@ public class FriendsBean implements Serializable {
     private List<Friend> searchResults;
     private String searchQuery;
     private Friend selectedFriend;
-    private static int gamesPlayed;
+
+    /**
+     * Initializes the FriendsBean and populates the friends list.
+     */
     public FriendsBean() {
         friends = new ArrayList<>();
         searchResults = new ArrayList<>();
         populateFriendsList(); // Populate the friends list during initialization
     }
 
+    /**
+     * Populates the friends list with data from the controller.
+     */
     private void populateFriendsList() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
@@ -34,37 +38,71 @@ public class FriendsBean implements Serializable {
         List<cleverquiz.model.User> tmpList = controller.getFriends(sessionBean.getUser().getUserId());
         friends.clear();
         for (cleverquiz.model.User user : tmpList) {
-            friends.add(new Friend(user.getUsername(), user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId()));
+            friends.add(new Friend(user.getUsername(), user.getLastLogin().toString(), user.getAboutme(), user.getXp(), user.getUserId(), user.getGameCount())); // Include gamesPlayed
         }
     }
 
+    /**
+     * Returns the list of friends.
+     * @return List of friends.
+     */
     public List<Friend> getFriends() {
         return friends;
     }
 
+    /**
+     * Returns the search results.
+     * @return List of search results.
+     */
     public List<Friend> getSearchResults() {
         return searchResults;
     }
 
+    /**
+     * Returns the current search query.
+     * @return Search query string.
+     */
     public String getSearchQuery() {
         return searchQuery;
     }
 
+    /**
+     * Sets the search query.
+     * @param searchQuery The search query string.
+     */
     public void setSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery;
     }
 
+    /**
+     * Returns the currently selected friend.
+     * @return The selected friend.
+     */
     public Friend getSelectedFriend() {
         return selectedFriend;
     }
 
+    /**
+     * Sets the currently selected friend.
+     * @param selectedFriend The friend to set as selected.
+     */
     public void setSelectedFriend(Friend selectedFriend) {
         this.selectedFriend = selectedFriend;
     }
 
+    /**
+     * Searches for users based on the search query and filters out current user and friends.
+     */
     public void search() {
-        populateFriendsList(); // Ensure the friends list is up-to-date
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+
+        // Validate the search query
+        if (!isValidInput(searchQuery)) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidSearchQuery.text")));
+            return; // Cancel the search
+        }
+
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
 
@@ -79,38 +117,66 @@ public class FriendsBean implements Serializable {
         searchResults.clear();
         for (cleverquiz.model.User user : tmpList) {
             if (!user.getUsername().equals(sessionBean.getUsername()) && !friendUsernames.contains(user.getUsername())) { // Exclude current user and friends
-                searchResults.add(new Friend(user.getUsername()));
+                searchResults.add(new Friend(user.getUsername(), "", "", 0, user.getUserId(), user.getGameCount())); // Include gamesPlayed
             }
         }
     }
 
+    /**
+     * Deletes a friend from the user's friend list.
+     * @param friend The friend to delete.
+     */
     public void deleteFriend(Friend friend) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-        controller.deleteFriend(sessionBean.getUser().getUserId(), friend.getUserId());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Deleted", "Removed friend: " + friend.getUsername()));
-
-        System.out.println("User deleted: " + friend.getUsername());
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        try {
+            controller.deleteFriend(sessionBean.getUser().getUserId(), friend.getUserId());
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("friendDeleted.text"), bundle.getString("removedFriend.text") + ": " + friend.getUsername()));
+            populateFriendsList(); // Refresh the friends list
+        } catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("friendAddFailed.text") + ": " + friend.getUsername()));
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Adds a friend to the user's friend list.
+     * @param friend The friend to add.
+     */
     public void addFriend(Friend friend) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         IController controller = new Controller();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Friend Added", "Adding friend: " + friend.getUsername()));
-
-        System.out.println("User added: " + friend.getUsername());
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        try {
+            controller.addFriend(sessionBean.getUser().getUserId(), friend.getUserId());
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("friendAddSuccess.text"), bundle.getString("addingFriend.text") + ": " + friend.getUsername()));
+            populateFriendsList(); // Refresh the friends list
+            search(); // Refresh the search results
+        } catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("friendAddFailed.text") + ": " + friend.getUsername()));
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Validates the input string to ensure it matches the allowed pattern.
+     * @param input The input string to validate.
+     * @return True if the input is valid, false otherwise.
+     */
     private boolean isValidInput(String input) {
         if (input == null || input.isEmpty()) {
             return true; // Allow empty fields
         }
-        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
+        String regex = "^[a-zA-Z0-9\\s.,!?@#'\"äöüÄÖÜß-]*$"; // Allow German umlauts
         return Pattern.matches(regex, input);
     }
 
+    /**
+     * Represents a friend with details such as username, last seen, about me, XP, and user ID.
+     */
     public static class Friend {
         private String username;
         private String lastSeen;
@@ -119,37 +185,76 @@ public class FriendsBean implements Serializable {
         private int userid;
         private int gamesPlayed;
       
-        public Friend(String username, String lastSeen, String aboutMe, int xp, int id) {
+        /**
+         * Constructs a Friend object with full details.
+         * @param username The username of the friend.
+         * @param lastSeen The last seen timestamp of the friend.
+         * @param aboutMe The "about me" description of the friend.
+         * @param xp The XP points of the friend.
+         * @param id The user ID of the friend.
+         * @param gamesPlayed The number of games played by the friend.
+         */
+        public Friend(String username, String lastSeen, String aboutMe, int xp, int id, int gamesPlayed) {
             this.username = username;
             this.lastSeen = lastSeen;
             this.aboutMe = aboutMe;
             this.xp = xp;
             this.userid = id;
-        }
-        public Friend(String username) {
-            this(username,"","",0,0);
+            this.gamesPlayed = gamesPlayed;
         }
 
+        /**
+         * Constructs a Friend object with only a username.
+         * @param username The username of the friend.
+         */
+        public Friend(String username) {
+            this(username,"","",0,0,0);
+        }
+
+        /**
+         * Returns the username of the friend.
+         * @return The username.
+         */
         public String getUsername() {
             return username;
         }
       
+        /**
+         * Returns the last seen timestamp of the friend.
+         * @return The last seen timestamp.
+         */
         public String getLastSeen() {
             return lastSeen;
         }
 
+        /**
+         * Returns the "about me" description of the friend.
+         * @return The "about me" description.
+         */
         public String getAboutMe() {
             return aboutMe;
         }
 
+        /**
+         * Returns the XP points of the friend.
+         * @return The XP points.
+         */
         public int getXp() {
             return xp;
         }
 
+        /**
+         * Returns the user ID of the friend.
+         * @return The user ID.
+         */
         public int getUserId() {
             return userid;
         }
 
+        /**
+         * Returns the number of games played by the friend.
+         * @return The number of games played.
+         */
         public int getGamesPlayed() {
             return gamesPlayed;
         }
