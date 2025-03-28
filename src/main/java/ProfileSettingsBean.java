@@ -6,6 +6,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import cleverquiz.controller.Controller;
@@ -219,7 +222,8 @@ public class ProfileSettingsBean {
         }
 
         User user = sessionBean.getUser();
-        if (!user.getPassword().equals(currentPassword)) {
+        String currentHashedPassword = hashPassword(currentPassword);
+        if (!user.getPassword().equals(currentHashedPassword)) {
             System.out.println("Current password does not match"); // Debugging log
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("incorrectPassword.text"));
             FacesContext.getCurrentInstance().addMessage("passwordGrowl", message); // Ensure growl is updated
@@ -242,7 +246,8 @@ public class ProfileSettingsBean {
 
         try {
             IController controller = new Controller();
-            user.setPassword(newPassword); // Update the password
+            String newHashedPassword = hashPassword(newPassword);
+            user.setPassword(newHashedPassword); // Update the password
             controller.editProfile(user); // Save the updated user to the database
 
             System.out.println("Password changed successfully"); // Debugging log
@@ -364,5 +369,29 @@ public class ProfileSettingsBean {
 
     public void setRepeatNewPassword(String repeatNewPassword) {
         this.repeatNewPassword = repeatNewPassword;
+    }
+
+    /**
+     * Hashes the given password using SHA-256.
+     * 
+     * @param password the password to hash
+     * @return the hashed password as a hexadecimal string
+     */
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing password", e);
+        }
     }
 }

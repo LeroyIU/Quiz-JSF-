@@ -56,7 +56,7 @@
                     <p:menuitem icon="pi pi-home" style="margin-left: 10px;"
                         onclick="showWarningPopup('/cleverquiz/index.xhtml')" />
                     <p:menuitem value="#{msg['menu_news.text']}"
-                        onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" />
+                        onclick="showWarningPopup('/cleverquiz/pages/create_news.xhtml')" rendered="#{sessionBean.admin}" />
                     <p:menuitem value="#{msg['menu_question.text']}"
                         onclick="showWarningPopup('/cleverquiz/pages/create_question.xhtml')" />
                     <p:menuitem value="#{msg['menu_quiz.text']}" onclick="PF('startGameDialog').show();"

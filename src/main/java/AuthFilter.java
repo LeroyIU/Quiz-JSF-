@@ -53,15 +53,19 @@ public class AuthFilter implements Filter {
         String registerURL = req.getContextPath() + "/pages/register.xhtml";
         String imprintURL = req.getContextPath() + "/pages/imprint.xhtml";
         String privacyURL = req.getContextPath() + "/pages/privacy.xhtml";
+        String weihnachtsmannURL = req.getContextPath() + "/pages/weihnachtsmann.xhtml";
+        String osterhaseURL = req.getContextPath() + "/pages/osterhase.xhtml";
 
         boolean loggedIn = sessionBean != null && sessionBean.isLoggedIn();
         boolean loginRequest = req.getRequestURI().equals(loginURL);
         boolean registerRequest = req.getRequestURI().equals(registerURL);
         boolean imprintRequest = req.getRequestURI().equals(imprintURL); // Check if the request is for imprint
         boolean privacyRequest = req.getRequestURI().equals(privacyURL); // Check if the request is for privacy
+        boolean weihnachtsmannRequest = req.getRequestURI().equals(weihnachtsmannURL);
+        boolean osterhaseRequest = req.getRequestURI().equals(osterhaseURL);
         boolean resourceRequest = req.getRequestURI().startsWith(req.getContextPath() + "/javax.faces.resource");
 
-        if (loggedIn || loginRequest || registerRequest || imprintRequest || privacyRequest || resourceRequest) { // Allow access to imprint and privacy
+        if (loggedIn || loginRequest || registerRequest || imprintRequest || privacyRequest || resourceRequest || weihnachtsmannRequest || osterhaseRequest) { // Allow access to new pages
             chain.doFilter(request, response);
         } else {
             res.sendRedirect(loginURL);
