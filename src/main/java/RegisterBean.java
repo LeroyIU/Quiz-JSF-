@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 import java.util.ResourceBundle;
 
@@ -126,7 +128,8 @@ public class RegisterBean {
             return;
         }
 
-        cleverquiz.model.User newUser = Controller.addUser(name, email, password);
+        String newhashedPassword = hashPassword(password);
+        cleverquiz.model.User newUser = Controller.addUser(name, email, newhashedPassword);
         if (newUser == null) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("userCreationFailed.text")));
             return;
@@ -136,7 +139,8 @@ public class RegisterBean {
         System.out.println("Invite Code: " + inviteCode);
 
         try {
-            cleverquiz.model.User user = Controller.login(name, password);
+            String hashedPassword = hashPassword(password);
+            cleverquiz.model.User user = Controller.login(name, hashedPassword);
             SessionBean sessionBean = context.getApplication().evaluateExpressionGet(context, "#{sessionBean}", SessionBean.class);
             sessionBean.setLoggedIn(true);
             sessionBean.setUsername(user.getUsername());
@@ -159,5 +163,29 @@ public class RegisterBean {
         }
         String regex = "^[a-zA-Z0-9\\s.,!?@#'\"-]*$";
         return Pattern.matches(regex, input);
+    }
+
+    /**
+     * Hashes the given password using SHA-256.
+     * 
+     * @param password the password to hash
+     * @return the hashed password as a hexadecimal string
+     */
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing password", e);
+        }
     }
 }
