@@ -13,6 +13,7 @@ public class SessionBean {
     private boolean loggedIn;
     private String username;
     private User user;
+    private boolean admin;
 
     /**
      * Gets the current user.
@@ -30,6 +31,15 @@ public class SessionBean {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /**
+     * Gets the admin status of the current user.
+     * 
+     * @return true if the user is an admin, false otherwise
+     */
+    public boolean getAdmin(){
+        return this.user.isAdmin();
     }
 
     /**
