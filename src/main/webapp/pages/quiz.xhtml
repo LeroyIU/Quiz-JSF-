@@ -5,7 +5,7 @@
         <h:form id="quizForm">
             <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2"
                 layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
-                style="border:0px none; background-color:transparent;">
+                style="border:0px none; background-color:transparent; margin-bottom: 50px;">
                 <p:row rendered="#{not gameBean.isGameOver()}">
                     <p:column styleClass="ui-grid-col-2" />
                     <p:column styleClass="ui-grid-col-2">
@@ -118,6 +118,37 @@
                     <p:column styleClass="ui-grid-col-3" />
                     <p:column styleClass="ui-grid-col-6" style="text-align: center;">
                         <h:outputText value="#{msg['goodbyeMessage.text']}" style="font-size: 18px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3" />
+                    <p:column styleClass="ui-grid-col-6">
+                        <h:outputText value="#{msg['correctAnswersOverview.text']}" style="font-size: 18px;" />
+                    </p:column>
+                    <p:column styleClass="ui-grid-col-3" />
+                </p:row>
+                <p:row rendered="#{gameBean.isGameOver()}">
+                    <p:column styleClass="ui-grid-col-3" />
+                    <p:column styleClass="ui-grid-col-6">
+                        <h:panelGroup layout="block" style="margin-top: 20px;">
+                            <ui:repeat value="#{gameBean.questionDisplays}" var="questionDisplay">
+                                <p:panel style="margin-bottom: 20px;">
+                                    <h:outputText value="#{questionDisplay.questionText}" style="font-weight: bold;" />
+                                    <ui:repeat value="#{questionDisplay.answers}" var="answerDisplay">
+                                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                                            <h:selectBooleanCheckbox value="#{answerDisplay.correct}" disabled="true" />
+                                            <h:outputText value="#{answerDisplay.answerText}" style="margin-left: 10px;" />
+                                            <h:outputText 
+                                                value="(#{msg['yourAnswer.text']})" 
+                                                style="margin-left: 10px;" 
+                                                rendered="#{answerDisplay.userSelected}" />
+                                        </div>
+                                    </ui:repeat>
+                                    <h:outputText value="#{msg['pointsReceived.text']}: #{questionDisplay.pointsEarned}" style="margin-top: 10px; display: block;" />
+                                </p:panel>
+                            </ui:repeat>
+                        </h:panelGroup>
                     </p:column>
                     <p:column styleClass="ui-grid-col-3" />
                 </p:row>
