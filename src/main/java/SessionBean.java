@@ -13,7 +13,6 @@ public class SessionBean {
     private boolean loggedIn;
     private String username;
     private User user;
-    private boolean admin;
 
     /**
      * Gets the current user.

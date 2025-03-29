@@ -36,6 +36,7 @@ public class GameBean implements Serializable {
     private List<Boolean> ratings;
     private int points;
     private boolean gameOver;
+    private List<boolean[]> allSelectedAnswers; // Store selected answers for all questions
 
     /**
      * Initializes the GameBean, setting up categories and other properties.
@@ -52,10 +53,6 @@ public class GameBean implements Serializable {
             categories.add(c.getName());
             categoryObjects.add(c); // Store the actual Category object
         }
-        selectedAnswers = new boolean[4];
-        currentQuestionIndex = 0;
-
-        questions = new ArrayList<>();
     }
 
     /**
@@ -164,17 +161,18 @@ public class GameBean implements Serializable {
         questionTime = 0;
         questionStartTime = 0;
         currentQuestionIndex = 0;
-        selectedAnswers = new boolean[4];
         points = 0;
-        correctAnswersCount = 0;
         gameOver = false;
+        selectedAnswers = new boolean[4];
+        currentQuestionIndex = 0;
+        questions = new ArrayList<>();
+        allSelectedAnswers = new ArrayList<>(Collections.nCopies(questionCount, new boolean[4])); // Initialize list
 
         IController controller = new Controller();
         Category selectedCategoryObject = getCategoryByName(selectedCategory);
         if (selectedCategoryObject != null) {
             List<cleverquiz.model.Game> tmp2 = controller.startQuiz(selectedCategoryObject, questionCount);
             for (cleverquiz.model.Game g : tmp2) {
-                // Pass difficulty to the Question constructor
                 Question q = new Question(g.getQuestion().getText(), g.getAnswers(), g.getQuestion().getDifficulty());
                 questions.add(q);
             }
@@ -193,6 +191,7 @@ public class GameBean implements Serializable {
         questionTime = (currentTime - questionStartTime) / 1000;
         totalTime += questionTime;
         checkCorrectAnswers();
+        allSelectedAnswers.set(currentQuestionIndex, selectedAnswers.clone()); // Save current selections
         currentQuestionIndex++;
 
         if (currentQuestionIndex < questionCount) {
@@ -432,6 +431,100 @@ public class GameBean implements Serializable {
      */
     public List<Question> getQuestions() {
         return questions;
+    }
+
+    /**
+     * Gets a list of questions with their answers, correctness, user answers, and points for display.
+     * @return List of questions with answers, correctness, user answers, and points.
+     */
+    public List<QuestionDisplay> getQuestionDisplays() {
+        List<QuestionDisplay> questionDisplays = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++) {
+            Question question = questions.get(i);
+            List<AnswerDisplay> answerDisplays = new ArrayList<>();
+            boolean[] userSelections = allSelectedAnswers.get(i); // Get user's selections for this question
+            for (int j = 0; j < question.getAnswers().size(); j++) {
+                Answer answer = question.getAnswers().get(j);
+                boolean isCorrect = answer != null && answer.getCorrectness();
+                boolean userSelected = userSelections[j]; // Use stored selections
+                answerDisplays.add(new AnswerDisplay(answer != null ? answer.getText() : "", isCorrect, userSelected));
+            }
+            int pointsEarned = isAnswerCorrectForIndex(i) ? question.getDifficulty().getValue() : 0;
+            questionDisplays.add(new QuestionDisplay(question.getText(), answerDisplays, pointsEarned));
+        }
+        return questionDisplays;
+    }
+
+    /**
+     * Checks if the user's answers for a specific question are correct.
+     * @param questionIndex The index of the question.
+     * @return True if the answers are correct, false otherwise.
+     */
+    private boolean isAnswerCorrectForIndex(int questionIndex) {
+        Question question = questions.get(questionIndex);
+        List<Answer> answers = question.getAnswers();
+        boolean[] userSelections = allSelectedAnswers.get(questionIndex); // Get user's selections for this question
+        for (int i = 0; i < answers.size(); i++) {
+            boolean correctness = answers.get(i) != null && answers.get(i).getCorrectness();
+            if (userSelections[i] != correctness) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Inner class to represent a question and its answers for display.
+     */
+    public static class QuestionDisplay {
+        private String questionText;
+        private List<AnswerDisplay> answers;
+        private int pointsEarned;
+
+        public QuestionDisplay(String questionText, List<AnswerDisplay> answers, int pointsEarned) {
+            this.questionText = questionText;
+            this.answers = answers;
+            this.pointsEarned = pointsEarned;
+        }
+
+        public String getQuestionText() {
+            return questionText;
+        }
+
+        public List<AnswerDisplay> getAnswers() {
+            return answers;
+        }
+
+        public int getPointsEarned() {
+            return pointsEarned;
+        }
+    }
+
+    /**
+     * Inner class to represent an answer with its correctness and user selection for display.
+     */
+    public static class AnswerDisplay {
+        private String answerText;
+        private boolean correct;
+        private boolean userSelected;
+
+        public AnswerDisplay(String answerText, boolean correct, boolean userSelected) {
+            this.answerText = answerText;
+            this.correct = correct;
+            this.userSelected = userSelected;
+        }
+
+        public String getAnswerText() {
+            return answerText;
+        }
+
+        public boolean isCorrect() {
+            return correct;
+        }
+
+        public boolean isUserSelected() {
+            return userSelected;
+        }
     }
 
     public static class Question {

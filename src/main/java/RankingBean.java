@@ -27,7 +27,6 @@ public class RankingBean implements Serializable {
         for (int i = 0; i < rankinglist.size(); i++) {
             cleverquiz.model.User user = rankinglist.get(i);
             Ranking ranking = new Ranking(i + 1, user.getUsername(), user.getXp()); // Position beginnt bei 1
-            System.out.println(ranking);
             rankingList.add(ranking); // Füge die Daten zur initialisierten Liste hinzu
         }
     }
