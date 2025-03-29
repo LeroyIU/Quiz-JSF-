@@ -146,7 +146,7 @@ public class DBUtil {
         return success;
     }
 
-    public static boolean createQuestion(Difficulty difficulty, String questionText, List<Answer> answers) {
+    public static boolean createQuestion(Difficulty difficulty, String questionText, List<Answer> answers, Category category, Integer creatorId) {
         //validator
         int correct = 0;
         for (Answer answer : answers) {
@@ -166,6 +166,8 @@ public class DBUtil {
             question.setText(questionText);
             question.setDifficulty(difficulty);
             question.setDate(LocalDate.now());
+            question.setCategory(category);
+            question.setCreatedBy(creatorId);
 
             // Frage speichern, damit sie eine ID bekommt
             session.persist(question);

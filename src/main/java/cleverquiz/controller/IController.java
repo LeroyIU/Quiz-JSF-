@@ -49,9 +49,11 @@ public interface IController {
      * @param difficulty with difficulty
      * @param question   question text
      * @param answers    answer options
+     * @param category   category of the question
+     * @param creatorId  ID of the user creating the question
      * @return true, if it could be created, otherwise false
      */
-    boolean createQuestion(Difficulty difficulty, String question, List<Answer> answers);
+    boolean createQuestion(Difficulty difficulty, String question, List<Answer> answers, Category category, Integer creatorId);
 
     /**
      * Start a quiz
