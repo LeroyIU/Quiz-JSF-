@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,36 +40,36 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
+        String contextPath = req.getContextPath();
         String requestURI = req.getRequestURI();
 
         // Allow access to resources directory
-        if (requestURI.startsWith(req.getContextPath() + "/resources/")) {
+        if (requestURI.startsWith(contextPath + "/resources/")) {
             chain.doFilter(request, response);
             return;
         }
 
         SessionBean sessionBean = (SessionBean) req.getSession().getAttribute("sessionBean");
 
-        String loginURL = req.getContextPath() + "/pages/login.xhtml";
-        String registerURL = req.getContextPath() + "/pages/register.xhtml";
-        String imprintURL = req.getContextPath() + "/pages/imprint.xhtml";
-        String privacyURL = req.getContextPath() + "/pages/privacy.xhtml";
-        String weihnachtsmannURL = req.getContextPath() + "/pages/weihnachtsmann.xhtml";
-        String osterhaseURL = req.getContextPath() + "/pages/osterhase.xhtml";
+        // Define allowed URLs
+        Set<String> allowedURLs = Set.of(
+            contextPath + "/pages/login.xhtml",
+            contextPath + "/pages/register.xhtml",
+            contextPath + "/pages/imprint.xhtml",
+            contextPath + "/pages/privacy.xhtml",
+            contextPath + "/pages/weihnachtsmann.xhtml",
+            contextPath + "/pages/osterhase.xhtml"
+        );
 
         boolean loggedIn = sessionBean != null && sessionBean.isLoggedIn();
-        boolean loginRequest = req.getRequestURI().equals(loginURL);
-        boolean registerRequest = req.getRequestURI().equals(registerURL);
-        boolean imprintRequest = req.getRequestURI().equals(imprintURL); // Check if the request is for imprint
-        boolean privacyRequest = req.getRequestURI().equals(privacyURL); // Check if the request is for privacy
-        boolean weihnachtsmannRequest = req.getRequestURI().equals(weihnachtsmannURL);
-        boolean osterhaseRequest = req.getRequestURI().equals(osterhaseURL);
-        boolean resourceRequest = req.getRequestURI().startsWith(req.getContextPath() + "/javax.faces.resource");
+        boolean resourceRequest = requestURI.startsWith(contextPath + "/javax.faces.resource");
+        boolean allowedRequest = allowedURLs.contains(requestURI);
 
-        if (loggedIn || loginRequest || registerRequest || imprintRequest || privacyRequest || resourceRequest || weihnachtsmannRequest || osterhaseRequest) { // Allow access to new pages
+        // Allow access if logged in, requesting a public page, or accessing resources
+        if (loggedIn || allowedRequest || resourceRequest) {
             chain.doFilter(request, response);
         } else {
-            res.sendRedirect(loginURL);
+            res.sendRedirect(contextPath + "/pages/login.xhtml");
         }
     }
 
