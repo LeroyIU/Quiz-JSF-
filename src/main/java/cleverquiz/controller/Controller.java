@@ -37,8 +37,8 @@ public class Controller implements IController {
     }
 
     @Override
-    public boolean createQuestion(Difficulty difficulty, String question, List<Answer> answers) {
-        return DBUtil.createQuestion(difficulty, question, answers);
+    public boolean createQuestion(Difficulty difficulty, String question, List<Answer> answers, Category category, Integer creatorId) {
+        return DBUtil.createQuestion(difficulty, question, answers, category, creatorId);
     }
 
     @Override

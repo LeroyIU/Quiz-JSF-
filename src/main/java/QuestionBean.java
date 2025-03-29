@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import cleverquiz.controller.Controller;
 import cleverquiz.controller.IController;
+import cleverquiz.model.Category;
 import cleverquiz.model.Difficulty;
 import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
@@ -17,12 +18,23 @@ import java.util.ResourceBundle;
 @ViewScoped
 public class QuestionBean implements Serializable {
     private String question;
-    private String category;
+    private List<String> categories;
     private String difficulty;
+    private String selectedCategory;
+    private List<Category> categoryObjects;
     private List<Answer> answers = new ArrayList<>();
     private List<Answer> rows = new ArrayList<>();
 
     public QuestionBean() {
+        IController controller = new Controller();
+        List<cleverquiz.model.Category> tmp = controller.getCategories();
+        categories = new ArrayList<>();
+        categoryObjects = new ArrayList<>(); // Initialize the list of Category objects
+        for (cleverquiz.model.Category c : tmp) {
+            categories.add(c.getName());
+            categoryObjects.add(c); // Store the actual Category object
+        }
+
         for (int i = 0; i < 4; i++) {
             rows.add(new Answer());
         }
@@ -49,7 +61,7 @@ public class QuestionBean implements Serializable {
      * @return the category of the question.
      */
     public String getCategory() {
-        return category;
+        return selectedCategory;
     }
 
     /**
@@ -57,7 +69,7 @@ public class QuestionBean implements Serializable {
      * @param category the category to set.
      */
     public void setCategory(String category) {
-        this.category = category;
+        this.selectedCategory = category;
     }
 
     /**
@@ -130,6 +142,8 @@ public class QuestionBean implements Serializable {
      */
     public void saveQuestion() {
         ResourceBundle bundle = ResourceBundle.getBundle("messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SessionBean sessionBean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{sessionBean}", SessionBean.class);
         try {
             if (isFormValid()) {
                 answers.addAll(rows);
@@ -141,13 +155,11 @@ public class QuestionBean implements Serializable {
                     answer.setCorrectness(a.isCorrect());
                     tmp.add(answer);
                 }
-
-                controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp);
+                Category selectedCategoryObject = getCategoryByName(selectedCategory);
+                controller.createQuestion(Difficulty.valueOf(this.difficulty), question, tmp, selectedCategoryObject, sessionBean.getUser().getUserId());
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getString("success.text"), bundle.getString("questionSaved.text")));
-                printQuestionDetails();
                 resetForm();
             } else {
-                printQuestionDetails();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("error.text"), bundle.getString("invalidQuestionForm.text")));
             }
         } catch (Exception e) {
@@ -162,7 +174,7 @@ public class QuestionBean implements Serializable {
      * @return true if the form inputs are valid, false otherwise.
      */
     private boolean isFormValid() {
-        if (!isValidInput(question) || !isValidInput(category) || !isValidInput(difficulty)) {
+        if (!isValidInput(question) || !isValidInput(selectedCategory) || !isValidInput(difficulty)) {
             return false;
         }
         boolean atLeastOneCorrect = false;
@@ -195,29 +207,30 @@ public class QuestionBean implements Serializable {
     }
 
     /**
-     * Prints the details of the question and its answers to the console.
-     * Used for debugging purposes.
-     */
-    private void printQuestionDetails() {
-        System.out.println("Question: " + question);
-        System.out.println("Category: " + category);
-        System.out.println("Difficulty: " + difficulty);
-        for (Answer answer : rows) {
-            System.out.println("Answer: " + answer.getAnswer() + " - Correct: " + answer.isCorrect());
-        }
-    }
-
-    /**
      * Resets the form fields and initializes the answer rows.
      */
     public void resetForm() {
         question = null;
-        category = null;
+        selectedCategory = null;
         difficulty = null;
         rows.clear();
         for (int i = 0; i < 4; i++) {
             rows.add(new Answer());
         }
+    }
+
+    /**
+     * Finds a category object by its name.
+     * @param name The name of the category.
+     * @return The matching category object, or null if not found.
+     */
+    public Category getCategoryByName(String name) {
+        for (Category category : categoryObjects) {
+            if (category.getName().equals(name)) {
+                return category;
+            }
+        }
+        return null; // Return null if no matching category is found
     }
 
     public static class Answer {
