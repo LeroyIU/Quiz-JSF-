@@ -32,9 +32,6 @@ public class DBUtil {
             properties.load(input);
             configuration.setProperties(properties);
 
-            // Hier die User-Klasse explizit hinzufügen
-            configuration.addAnnotatedClass(User.class);
-
             return configuration.buildSessionFactory();
         } catch (Exception ex) {
             throw new RuntimeException("Fehler beim Laden der Hibernate-Properties", ex);
