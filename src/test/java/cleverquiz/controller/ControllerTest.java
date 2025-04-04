@@ -2,13 +2,24 @@ package cleverquiz.controller;
 
 import cleverquiz.db.DBUtil;
 import cleverquiz.model.*;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.*;
 
+public class ControllerTest {
+
+    private IController controller;
+
+    @BeforeAll
+    public static void init() {
+
+    }
+
+    @Test
     public void testGetLatestNews() {
         IController controller = new Controller();
         List<News> news = controller.getLatestNews();
